@@ -32,7 +32,9 @@ using util::isNumber;
 using util::readWithPrompt;
 using util::splitString;
 
-namespace util {
+#include "bootstrap.h"
+
+namespace bootstrap {
     Coordinate readCoordinate(string const &prompt) {
         string input;
         vector<string> items;
