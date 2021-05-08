@@ -13,10 +13,10 @@ namespace models {
         static const unsigned int height = 10;
         static const ShipTypes shipTypes = {
                 {"Speed boat", 2},
-               /* {"Destroyer", 3},
+                {"Destroyer", 3},
                 {"Submarine", 3},
                 {"Battleship", 4},
-                {"Aircraft Carrier", 5},*/
+                {"Aircraft Carrier", 5},
         };
     }
 }
