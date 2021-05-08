@@ -10,13 +10,13 @@
 namespace models {
     class Board {
     private:
-        unsigned int width;
-        unsigned int height;
+        unsigned short width;
+        unsigned short height;
     public:
-        Board(unsigned int width, unsigned int height);
+        Board(unsigned short width, unsigned short height);
 
-        unsigned int getWidth() const;
-        unsigned int getHeight() const;
+        unsigned short getWidth() const;
+        unsigned short getHeight() const;
         models::Coordinates getCoordinates() const;
     };
 }

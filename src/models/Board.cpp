@@ -5,16 +5,16 @@
 #include "Coordinate.h"
 
 namespace models {
-    Board::Board(unsigned int width, unsigned int height)
+    Board::Board(unsigned short width, unsigned short height)
         : width(width), height(height)
     {}
 
-    unsigned int Board::getWidth() const
+    unsigned short Board::getWidth() const
     {
         return width;
     }
 
-    unsigned int Board::getHeight() const
+    unsigned short Board::getHeight() const
     {
         return height;
     }
