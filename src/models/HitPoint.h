@@ -19,6 +19,8 @@ namespace models {
         HitResult doHit();
         bool isHit() const;
     };
+
+    typedef std::vector<HitPoint> HitPoints;
 }
 
 #endif //BATTLESHIP_HITPOINT_H

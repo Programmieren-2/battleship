@@ -13,8 +13,6 @@
 #include "HitPoint.h"
 
 namespace models {
-    typedef std::vector<HitPoint> HitPoints;
-
     class Ship {
     private:
         std::string type;
