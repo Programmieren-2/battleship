@@ -17,7 +17,6 @@ namespace models {
 
         unsigned short getWidth() const;
         unsigned short getHeight() const;
-        models::Coordinates getCoordinates() const;
     };
 }
 

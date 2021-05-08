@@ -48,7 +48,7 @@ namespace bootstrap {
         return Coordinate(x, y);
     }
 
-    Orientation readOrientation(std::string const &prompt) {
+    static Orientation readOrientation(std::string const &prompt) {
         string input = readWithPrompt(prompt);
 
         if (input == "x" || input == "X")
@@ -61,7 +61,7 @@ namespace bootstrap {
         return readOrientation(prompt);
     }
 
-    void readShip(PlayerBoard &playerBoard, string type, unsigned short length) {
+    static void readShip(PlayerBoard &playerBoard, string type, unsigned short length) {
         Coordinate anchorPoint = readCoordinate("Coordinates (<x>,<y>): ");
         Orientation orientation = readOrientation("Orientation (x or y): ");
         Ship ship(type, anchorPoint, length, orientation);
@@ -83,7 +83,7 @@ namespace bootstrap {
         readShip(playerBoard, type, length);
     }
 
-    void readShips(PlayerBoard &playerBoard) {
+    static void readShips(PlayerBoard &playerBoard) {
         for (auto const &[type, length] : models::Constants::shipTypes) {
             cout << "Place your " << type << "." << endl;
             readShip(playerBoard, type, length);

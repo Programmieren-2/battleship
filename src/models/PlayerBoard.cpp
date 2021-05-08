@@ -66,35 +66,6 @@ namespace models {
         return "~";
     }
 
-    PlacementResult PlayerBoard::placeShip(const Ship &ship)
-    {
-        if (!shipOnBoard(ship))
-            return PlacementResult::NOT_ON_BOARD;
-
-        if (shipCollides(ship))
-            return PlacementResult::COLLISION;
-
-        ships.push_back(ship);
-        return PlacementResult::SUCCESS;
-    }
-
-    HitResult PlayerBoard::fireAt(const Coordinate &coordinate)
-    {
-        for (Ship &ship : ships) {
-            switch (ship.hitAt(coordinate)) {
-                case HitResult::MISSED:
-                    break;
-                case HitResult::ALREADY_HIT:
-                    return HitResult::ALREADY_HIT;
-                case HitResult::HIT:
-                    return HitResult::HIT;
-            }
-        }
-
-        misses.push_back(coordinate);
-        return HitResult::MISSED;
-    }
-
     bool PlayerBoard::allShipsDestroyed() const
     {
         for (Ship ship : ships) {
@@ -123,5 +94,34 @@ namespace models {
     string PlayerBoard::toString() const
     {
         return toString(false);
+    }
+
+    PlacementResult PlayerBoard::placeShip(const Ship &ship)
+    {
+        if (!shipOnBoard(ship))
+            return PlacementResult::NOT_ON_BOARD;
+
+        if (shipCollides(ship))
+            return PlacementResult::COLLISION;
+
+        ships.push_back(ship);
+        return PlacementResult::SUCCESS;
+    }
+
+    HitResult PlayerBoard::fireAt(const Coordinate &coordinate)
+    {
+        for (Ship &ship : ships) {
+            switch (ship.hitAt(coordinate)) {
+                case HitResult::MISSED:
+                    break;
+                case HitResult::ALREADY_HIT:
+                    return HitResult::ALREADY_HIT;
+                case HitResult::HIT:
+                    return HitResult::HIT;
+            }
+        }
+
+        misses.push_back(coordinate);
+        return HitResult::MISSED;
     }
 }

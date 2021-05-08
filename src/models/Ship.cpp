@@ -59,26 +59,6 @@ namespace models {
         return false;
     }
 
-    bool Ship::occupiesPosition(const Coordinate &coordinate) const
-    {
-        for (HitPoint hitPoint : hitPoints) {
-            if (hitPoint == coordinate)
-                return true;
-        }
-
-        return false;
-    }
-
-    bool Ship::isHit() const
-    {
-        for (HitPoint hitPoint : hitPoints) {
-            if (hitPoint.isHit())
-                return true;
-        }
-
-        return false;
-    }
-
     bool Ship::isDestroyed() const
     {
         for (HitPoint hitPoint : hitPoints) {
@@ -102,11 +82,6 @@ namespace models {
     string Ship::getType() const
     {
         return type;
-    }
-
-    string Ship::toString() const
-    {
-        return type + " (" + anchorPoint.toString() + ", " + getEndPoint().toString() + ")";
     }
 
     bool Ship::operator==(const Ship &other) const

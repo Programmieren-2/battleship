@@ -18,16 +18,4 @@ namespace models {
     {
         return height;
     }
-
-    Coordinates Board::getCoordinates() const
-    {
-        Coordinates coordinates;
-
-        for (unsigned short x = 0; x < width; x++) {
-            for (unsigned short y = 0; y < height; y++)
-                coordinates.push_back(Coordinate(x, y));
-        }
-
-        return coordinates;
-    }
 }

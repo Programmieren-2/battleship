@@ -28,11 +28,12 @@ namespace models {
         PlayerBoard(std::string name);
 
         std::string getName() const;
-        PlacementResult placeShip(Ship const &ship);
-        HitResult fireAt(Coordinate const &coordinate);
         bool allShipsDestroyed() const;
         std::string toString(bool showShips) const;
         std::string toString() const;
+
+        PlacementResult placeShip(Ship const &ship);
+        HitResult fireAt(Coordinate const &coordinate);
     };
 
     typedef std::vector<PlayerBoard> PlayerBoards;

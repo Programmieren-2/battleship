@@ -9,9 +9,6 @@
 
 namespace bootstrap {
     models::Coordinate readCoordinate(std::string const &prompt);
-    models::Orientation readOrientation(std::string const &prompt);
-    void readShip(models::PlayerBoard &playerBoard, std::string type, unsigned short length);
-    void readShips(models::PlayerBoard &playerBoard);
     models::PlayerBoard readPlayerBoard();
 }
 

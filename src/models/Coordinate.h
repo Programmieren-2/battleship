@@ -19,8 +19,6 @@ namespace models {
 
         unsigned short getX() const;
         unsigned short getY() const;
-        double distanceTo(const Coordinate &coordinate) const;
-        std::string toString() const;
 
         bool operator==(Coordinate const & coordinate) const;
     };
