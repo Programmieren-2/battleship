@@ -18,10 +18,6 @@ using models::HitResult;
 using models::PlayerBoard;
 using models::PlayerBoards;
 
-#include "Ship.h"
-using models::Ship;
-using models::Ships;
-
 #include "bootstrap.h"
 using bootstrap::readCoordinate;
 using bootstrap::readPlayerBoard;
