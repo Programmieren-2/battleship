@@ -96,6 +96,7 @@ namespace bootstrap {
         playerNum++;
         string name = readWithPrompt("Enter name of player #" + to_string(playerNum) + ": ");
         PlayerBoard playerBoard(name);
+        cout << playerBoard.toString(true);
         readShips(playerBoard);
         return playerBoard;
     }
