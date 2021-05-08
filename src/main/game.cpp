@@ -19,8 +19,8 @@ using models::PlayerBoard;
 using models::PlayerBoards;
 
 #include "bootstrap.h"
-using bootstrap::readCoordinate;
-using bootstrap::readPlayerBoard;
+using util::readCoordinate;
+using util::readPlayerBoard;
 
 #include "game.h"
 

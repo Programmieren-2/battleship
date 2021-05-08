@@ -7,7 +7,7 @@
 
 #include <string>
 
-namespace bootstrap {
+namespace util {
     models::Coordinate readCoordinate(std::string const &prompt);
     models::Orientation readOrientation(string const &prompt);
     models::PlayerBoard readPlayerBoard();

@@ -1,6 +1,6 @@
-add_executable(battleship main.cpp util.cpp util.h bootstrap.cpp bootstrap.h game.cpp game.h)
-target_link_libraries(battleship models)
-target_include_directories(battleship PUBLIC ../models)
+add_executable(battleship main.cpp game.cpp game.h)
+target_link_libraries(battleship models util)
+target_include_directories(battleship PUBLIC ../models ../util)
 
 add_executable(server server.cpp)
 target_link_libraries(server models proto)

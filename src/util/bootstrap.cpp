@@ -34,7 +34,7 @@ using util::splitString;
 
 #include "bootstrap.h"
 
-namespace bootstrap {
+namespace util {
     Coordinate readCoordinate(string const &prompt) {
         string input;
         vector<string> items;
