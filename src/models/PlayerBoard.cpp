@@ -2,22 +2,31 @@
 // Created by rne on 07.05.21.
 //
 
-#include <iostream>
-using std::cout;
-using std::endl;
+#include <string>
+using std::string;
 
 #include "Board.h"
+#include "Constants.h"
 #include "PlayerBoard.h"
 #include "Ship.h"
 
 namespace models {
-    PlayerBoard::PlayerBoard(unsigned short width, unsigned short height, Ships ships)
-            : Board(width, height), ships(ships)
+    PlayerBoard::PlayerBoard(string name, unsigned short width, unsigned short height)
+            : Board(width, height), name(name), ships(Ships()), misses(Coordinates())
     {}
+
+    PlayerBoard::PlayerBoard(std::string name)
+            : PlayerBoard(name, Constants::width, Constants::height)
+    {}
+
+    string PlayerBoard::getName() const
+    {
+        return name;
+    }
 
     bool PlayerBoard::coordinateOnBoard(const Coordinate &coordinate) const
     {
-        return coordinate.getX() < width && coordinate.getY() < height;
+        return coordinate.getX() < getWidth() && coordinate.getY() < getHeight();
     }
 
     bool PlayerBoard::shipOnBoard(const Ship &ship) const
@@ -35,7 +44,29 @@ namespace models {
         return false;
     }
 
-    PlacementResult PlayerBoard::checkPlacement(const Ship &ship) const
+    string PlayerBoard::getCharAt(const Coordinate &coordinate, bool showShips)
+    {
+        for (Ship &ship : ships) {
+            for (HitPoint &hitPoint : ship.getHitPoints()) {
+                if (hitPoint == coordinate) {
+                    if (hitPoint.isHit())
+                        return "x";
+
+                    if (showShips)
+                        return "█";
+                }
+            }
+        }
+
+        for (Coordinate miss : misses) {
+            if (miss == coordinate)
+                return "o";
+        }
+
+        return "~";
+    }
+
+    PlacementResult PlayerBoard::placeShip(const Ship &ship)
     {
         if (!shipOnBoard(ship))
             return PlacementResult::NOT_ON_BOARD;
@@ -43,32 +74,54 @@ namespace models {
         if (shipCollides(ship))
             return PlacementResult::COLLISION;
 
+        ships.push_back(ship);
         return PlacementResult::SUCCESS;
     }
 
-    bool PlayerBoard::placeShip(const Ship &ship)
+    HitResult PlayerBoard::fireAt(const Coordinate &coordinate)
     {
-        switch (checkPlacement(ship)) {
-            case PlacementResult::NOT_ON_BOARD:
-                cout << "Ship " + ship.toString() + " is not on the board." << endl;
-                return false;
-            case PlacementResult::COLLISION:
-                cout << "Ship " + ship.toString() + " collides with another ship." << endl;
-                return false;
-            case PlacementResult::SUCCESS:
-                return true;
+        for (Ship &ship : ships) {
+            switch (ship.hitAt(coordinate)) {
+                case HitResult::MISSED:
+                    break;
+                case HitResult::ALREADY_HIT:
+                    return HitResult::ALREADY_HIT;
+                case HitResult::HIT:
+                    return HitResult::HIT;
+            }
         }
 
-        return false;
+        misses.push_back(coordinate);
+        return HitResult::MISSED;
     }
 
-    bool PlayerBoard::fireAt(const Coordinate &coordinate)
+    bool PlayerBoard::allShipsDestroyed()
     {
-        for (Ship ship : ships) {
-            if (ship.hitAt(coordinate))
-                return true;
+        for (Ship &ship : ships) {
+            if (!ship.isDestroyed())
+                return false;
         }
 
-        return false;
+        return true;
+    }
+
+    string PlayerBoard::toString(bool showShips)
+    {
+        string result = "";
+
+        for (unsigned int y = 0; y < getHeight(); y++) {
+            for (unsigned int x = 0; x < getWidth(); x++) {
+                result += getCharAt(Coordinate(x, y), showShips);
+            }
+
+            result += "\n";
+        }
+
+        return result;
+    }
+
+    string PlayerBoard::toString()
+    {
+        return toString(false);
     }
 }

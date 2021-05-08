@@ -15,7 +15,7 @@ using std::string;
 
 namespace models {
     Ship::Ship(string type, Coordinate const &anchorPoint, unsigned short length, Orientation orientation)
-            : type(type), anchorPoint(anchorPoint), length(length), orientation(orientation), hitPoints{}
+            : type(type), anchorPoint(anchorPoint), length(length), orientation(orientation), hitPoints(HitPoints())
     {
         for (unsigned int offset = 0; offset < length; offset++) {
             switch (orientation) {
@@ -69,9 +69,9 @@ namespace models {
         return false;
     }
 
-    bool Ship::isHit() const
+    bool Ship::isHit()
     {
-        for (HitPoint hitPoint : hitPoints) {
+        for (HitPoint &hitPoint : hitPoints) {
             if (hitPoint.isHit())
                 return true;
         }
@@ -79,9 +79,9 @@ namespace models {
         return false;
     }
 
-    bool Ship::isDestroyed() const
+    bool Ship::isDestroyed()
     {
-        for (HitPoint hitPoint : hitPoints) {
+        for (HitPoint &hitPoint : hitPoints) {
             if (!hitPoint.isHit())
                 return false;
         }
@@ -89,16 +89,14 @@ namespace models {
         return true;
     }
 
-    bool Ship::hitAt(const Coordinate &coordinate)
+    HitResult Ship::hitAt(const Coordinate &coordinate)
     {
-        for (HitPoint hitPoint : hitPoints) {
-            if (hitPoint == coordinate) {
-                cout << "You hit the " << type << endl;
+        for (HitPoint &hitPoint : hitPoints) {
+            if (hitPoint == coordinate)
                 return hitPoint.doHit();
-            }
         }
 
-        return false;
+        return HitResult::MISSED;
     }
 
     string Ship::getType() const
@@ -108,7 +106,7 @@ namespace models {
 
     string Ship::toString() const
     {
-        return type + " (" + anchorPoint.toString() + ", " + ((orientation == Orientation::X) ? "X" : "Y") + ")";
+        return type + " (" + anchorPoint.toString() + ", " + getEndPoint().toString() + ")";
     }
 
     bool Ship::operator==(const Ship &other) const

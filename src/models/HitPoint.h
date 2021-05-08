@@ -8,13 +8,15 @@
 #include "Coordinate.h"
 
 namespace models {
+    enum HitResult { HIT, ALREADY_HIT, MISSED };
+
     class HitPoint : public Coordinate {
     private:
         bool hit;
     public:
         HitPoint(unsigned short x, unsigned short y);
 
-        bool doHit();
+        HitResult doHit();
         bool isHit() const;
     };
 }

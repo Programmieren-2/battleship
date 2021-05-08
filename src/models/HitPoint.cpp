@@ -10,13 +10,13 @@ namespace models {
             : Coordinate(x, y), hit(false)
     {}
 
-    bool HitPoint::doHit()
+    HitResult HitPoint::doHit()
     {
         if (hit)
-            return false;
+            return HitResult::ALREADY_HIT;
 
         hit = true;
-        return true;
+        return HitResult::HIT;
     }
 
     bool HitPoint::isHit() const

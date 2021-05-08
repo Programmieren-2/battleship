@@ -13,21 +13,26 @@
 namespace models {
     enum PlacementResult { SUCCESS, NOT_ON_BOARD, COLLISION };
 
-    class PlayerBoard : Board {
+    class PlayerBoard : public Board {
     private:
-        unsigned short width;
-        unsigned short height;
+        std::string name;
         Ships ships;
+        Coordinates misses;
 
         bool coordinateOnBoard(Coordinate const &coordinate) const;
         bool shipOnBoard(Ship const &ship) const;
         bool shipCollides(Ship const &ship) const;
-        PlacementResult checkPlacement(Ship const &ship) const;
+        std::string getCharAt(Coordinate const &coordinate, bool showShips);
     public:
-        PlayerBoard(unsigned short width, unsigned short height, Ships ships);
+        PlayerBoard(std::string name, unsigned short width, unsigned short height);
+        PlayerBoard(std::string name);
 
-        bool placeShip(Ship const &ship);
-        bool fireAt(Coordinate const &coordinate);
+        std::string getName() const;
+        PlacementResult placeShip(Ship const &ship);
+        HitResult fireAt(Coordinate const &coordinate);
+        bool allShipsDestroyed();
+        std::string toString(bool showShips);
+        std::string toString();
     };
 
     typedef std::vector<PlayerBoard> PlayerBoards;

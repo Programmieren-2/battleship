@@ -14,6 +14,7 @@ namespace models {
         unsigned short x;
         unsigned short y;
     public:
+        Coordinate(const Coordinate&) = default;
         Coordinate(unsigned short x, unsigned short y);
 
         unsigned short getX() const;

@@ -5,10 +5,19 @@
 #ifndef BATTLESHIP_CONSTANTS_H
 #define BATTLESHIP_CONSTANTS_H
 
+#include "Ship.h"
+
 namespace models {
     namespace Constants {
-        static const unsigned int width = 12;
-        static const unsigned int height = 12;
+        static const unsigned int width = 10;
+        static const unsigned int height = 10;
+        static const ShipTypes shipTypes = {
+                {"Speed boat", 2},
+               /* {"Destroyer", 3},
+                {"Submarine", 3},
+                {"Battleship", 4},
+                {"Aircraft Carrier", 5},*/
+        };
     }
 }
 #endif //BATTLESHIP_CONSTANTS_H

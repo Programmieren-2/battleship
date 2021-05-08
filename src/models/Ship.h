@@ -5,8 +5,8 @@
 #ifndef BATTLESHIP_SHIP_H
 #define BATTLESHIP_SHIP_H
 
+#include <map>
 #include <string>
-
 #include <vector>
 
 #include "Coordinate.h"
@@ -30,9 +30,9 @@ namespace models {
         HitPoints getHitPoints() const;
         bool collidesWith(Ship const &ship) const;
         bool occupiesPosition(Coordinate const &coordinate) const;
-        bool isHit() const;
-        bool isDestroyed() const;
-        bool hitAt(Coordinate const &coordinate);
+        bool isHit();
+        bool isDestroyed();
+        HitResult hitAt(Coordinate const &coordinate);
         std::string getType() const;
         std::string toString() const;
 
@@ -41,6 +41,7 @@ namespace models {
     };
 
     typedef std::vector<Ship> Ships;
+    typedef std::map<std::string, int> ShipTypes;
 }
 
 #endif //BATTLESHIP_SHIP_H

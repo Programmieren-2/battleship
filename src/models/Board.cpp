@@ -6,7 +6,7 @@
 
 namespace models {
     Board::Board(unsigned int width, unsigned int height)
-    : width(width), height(height)
+        : width(width), height(height)
     {}
 
     unsigned int Board::getWidth() const
