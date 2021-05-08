@@ -6,6 +6,10 @@
 using std::cin;
 using std::cout;
 
+#include <regex>
+using std::regex;
+using std::regex_match;
+
 #include <string>
 using std::string;
 
@@ -15,6 +19,8 @@ using std::vector;
 #include "util.h"
 
 namespace util {
+    static const regex number("^\\d{1,6}$");
+
     vector<string> splitString(string const &str, string const &delimiter) {
         vector<string> result;
         string processed = "";
@@ -47,5 +53,10 @@ namespace util {
         cout << prompt;
         cin >> input;
         return input;
+    }
+
+    bool isNumber(string const &str)
+    {
+        return regex_match(str, number);
     }
 }

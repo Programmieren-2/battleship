@@ -28,8 +28,9 @@ using models::Ship;
 using models::Ships;
 
 #include "util.h"
-using util::splitString;
+using util::isNumber;
 using util::readWithPrompt;
+using util::splitString;
 
 #include "bootstrap.h"
 
@@ -43,9 +44,14 @@ namespace bootstrap {
             return readCoordinate(prompt);
         }
 
-        unsigned short x = stoi(items[0]);
-        unsigned short y = stoi(items[1]);
-        return Coordinate(x, y);
+        string strX = items[0];
+        string strY = items[1];
+
+        if (isNumber(strX) && isNumber(strY))
+            return Coordinate(stoi(strX), stoi(strY));
+
+        cout << "Invalid coordinates! " << endl;
+        return readCoordinate(prompt);
     }
 
     static Orientation readOrientation(std::string const &prompt) {

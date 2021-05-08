@@ -5,6 +5,7 @@
 #ifndef BATTLESHIP_UTIL_H
 #define BATTLESHIP_UTIL_H
 
+#include <regex>
 #include <string>
 #include <vector>
 
@@ -15,6 +16,7 @@
 namespace util {
     std::vector <std::string> splitString(std::string const &str, std::string const &delimiter);
     std::string readWithPrompt(std::string const &prompt);
+    bool isNumber(std::string const &str);
 }
 
 #endif //BATTLESHIP_UTIL_H
