@@ -69,9 +69,9 @@ namespace models {
         return false;
     }
 
-    bool Ship::isHit()
+    bool Ship::isHit() const
     {
-        for (HitPoint &hitPoint : hitPoints) {
+        for (HitPoint hitPoint : hitPoints) {
             if (hitPoint.isHit())
                 return true;
         }
@@ -79,9 +79,9 @@ namespace models {
         return false;
     }
 
-    bool Ship::isDestroyed()
+    bool Ship::isDestroyed() const
     {
-        for (HitPoint &hitPoint : hitPoints) {
+        for (HitPoint hitPoint : hitPoints) {
             if (!hitPoint.isHit())
                 return false;
         }

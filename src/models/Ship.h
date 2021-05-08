@@ -30,8 +30,8 @@ namespace models {
         HitPoints getHitPoints() const;
         bool collidesWith(Ship const &ship) const;
         bool occupiesPosition(Coordinate const &coordinate) const;
-        bool isHit();
-        bool isDestroyed();
+        bool isHit() const;
+        bool isDestroyed() const;
         HitResult hitAt(Coordinate const &coordinate);
         std::string getType() const;
         std::string toString() const;

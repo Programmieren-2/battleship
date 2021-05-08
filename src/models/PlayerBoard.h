@@ -22,7 +22,7 @@ namespace models {
         bool coordinateOnBoard(Coordinate const &coordinate) const;
         bool shipOnBoard(Ship const &ship) const;
         bool shipCollides(Ship const &ship) const;
-        std::string getCharAt(Coordinate const &coordinate, bool showShips);
+        std::string getCharAt(Coordinate const &coordinate, bool showShips) const;
     public:
         PlayerBoard(std::string name, unsigned short width, unsigned short height);
         PlayerBoard(std::string name);
@@ -30,9 +30,9 @@ namespace models {
         std::string getName() const;
         PlacementResult placeShip(Ship const &ship);
         HitResult fireAt(Coordinate const &coordinate);
-        bool allShipsDestroyed();
-        std::string toString(bool showShips);
-        std::string toString();
+        bool allShipsDestroyed() const;
+        std::string toString(bool showShips) const;
+        std::string toString() const;
     };
 
     typedef std::vector<PlayerBoard> PlayerBoards;

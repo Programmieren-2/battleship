@@ -44,10 +44,10 @@ namespace models {
         return false;
     }
 
-    string PlayerBoard::getCharAt(const Coordinate &coordinate, bool showShips)
+    string PlayerBoard::getCharAt(const Coordinate &coordinate, bool showShips) const
     {
-        for (Ship &ship : ships) {
-            for (HitPoint &hitPoint : ship.getHitPoints()) {
+        for (Ship ship : ships) {
+            for (HitPoint hitPoint : ship.getHitPoints()) {
                 if (hitPoint == coordinate) {
                     if (hitPoint.isHit())
                         return "x";
@@ -95,9 +95,9 @@ namespace models {
         return HitResult::MISSED;
     }
 
-    bool PlayerBoard::allShipsDestroyed()
+    bool PlayerBoard::allShipsDestroyed() const
     {
-        for (Ship &ship : ships) {
+        for (Ship ship : ships) {
             if (!ship.isDestroyed())
                 return false;
         }
@@ -105,7 +105,7 @@ namespace models {
         return true;
     }
 
-    string PlayerBoard::toString(bool showShips)
+    string PlayerBoard::toString(bool showShips) const
     {
         string result = "";
 
@@ -120,7 +120,7 @@ namespace models {
         return result;
     }
 
-    string PlayerBoard::toString()
+    string PlayerBoard::toString() const
     {
         return toString(false);
     }
