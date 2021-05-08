@@ -7,18 +7,25 @@
 
 #include <string>
 
-#include <boost/asio.hpp>
+#include "TCPSocket.h"
 
 namespace net {
-    class Client {
-    private:
-        boost::system::error_code send(boost::asio::ip::tcp::socket &socket, string const &message);
-        std::string receive(boost::asio::ip::tcp::socket &socket);
+    class Client : public TCPSocket {
+    protected:
+        using TCPSocket::getAcceptor;
+        using TCPSocket::getSocket;
+        using TCPSocket::receive;
+        using TCPSocket::send;
+
+        virtual Bytes receive(Socket &socket) = 0;
     public:
-        std::string communicate(std::string const &host, unsigned int port, std::string const &message);
-        std::string communicate(unsigned int port, std::string const &message);
-        std::string communicate(std::string const &host, std::string const &message);
-        std::string communicate(std::string const &message);
+        Client();
+        virtual ~Client() = default;
+
+        Bytes communicate(std::string const &host, unsigned int port, Bytes const &message);
+        Bytes communicate(unsigned int port, Bytes const &message);
+        Bytes communicate(std::string const &host, Bytes const &message);
+        Bytes communicate(Bytes const &message);
     };
 }
 

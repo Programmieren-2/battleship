@@ -5,33 +5,35 @@
 #ifndef BATTLESHIP_SERVER_H
 #define BATTLESHIP_SERVER_H
 
-#include <map>
 #include <string>
 
-#include <boost/asio.hpp>
+#include "Net.h"
+#include "TCPSocket.h"
 
 namespace net {
-    typedef std::map<unsigned long, std::string> Players;
-
-    class Server {
+    class Server : public TCPSocket {
     private:
         std::string host;
         unsigned int port;
-        Players players;
-        boost::asio::io_service service;
+    protected:
+        using TCPSocket::getAcceptor;
+        using TCPSocket::getSocket;
+        using TCPSocket::receive;
+        using TCPSocket::send;
 
-        boost::asio::ip::tcp::acceptor getAcceptor();
-        boost::asio::ip::tcp::socket getSocket();
-        std::string receive(boost::asio::ip::tcp::socket &socket);
-        void send(boost::asio::ip::tcp::socket &socket, const std::string &message);
-        std::string process(std::string const &message);
+        Acceptor getAcceptor();
+        Socket getSocket();
     public:
         Server(std::string const &host, unsigned int port);
-        Server(unsigned int port);
         Server(std::string const &host);
+        Server(unsigned int port);
         Server();
+        virtual ~Server() = default;
 
-        void listen();
+        std::string getHost() const;
+        unsigned int getPort() const;
+
+        [[noreturn]] virtual void listen() = 0;
     };
 }
 

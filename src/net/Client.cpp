@@ -9,60 +9,38 @@ using std::endl;
 #include <string>
 using std::string;
 
-#include <boost/asio.hpp>
-using boost::asio::buffer;
-using boost::asio::buffer_cast;
-using boost::asio::error::eof;
-using boost::asio::io_service;
-using boost::asio::ip::address;
-using boost::asio::ip::tcp;
-using boost::asio::streambuf;
-using boost::asio::write;
-using boost::system::error_code;
-
-#include "Defaults.h"
+#include "Net.h"
 #include "Client.h"
 
 namespace net {
-    error_code Client::send(tcp::socket &socket, string const &message)
-    {
-        error_code error;
-        write(socket, buffer(message + "\n"), error);
-        return error;
-    }
+    Client::Client()
+            : TCPSocket()
+    {}
 
-    string Client::receive(tcp::socket &socket)
+    Bytes Client::communicate(string const &host, unsigned int port, Bytes const &bytes)
     {
-        streambuf buf;
-        read_until(socket, buf, "\n" );
-        return buffer_cast<const char*>(buf.data());
-    }
+        Socket socket = getSocket(host, port);
+        socket.connect(Endpoint(IPAddress::from_string(host), port));
 
-    string Client::communicate(string const &host, unsigned int port, string const &message)
-    {
-        io_service io_service;
-        tcp::socket socket(io_service);
-        socket.connect(tcp::endpoint(address::from_string(host), port));
-
-        error_code error = send(socket, message);
+        ErrorCode error = send(socket, bytes);
 
         if (error && error != eof)
-            cerr << "Error while sending message to server." << endl;
+            cerr << "Error while sending message to server: " << error.message() << endl;
 
         return receive(socket);
     }
 
-    string Client::communicate(unsigned int port, string const &message)
+    Bytes Client::communicate(unsigned int port, Bytes const &message)
     {
         return communicate(Defaults::HOST, port, message);
     }
 
-    string Client::communicate(string const &host, string const &message)
+    Bytes Client::communicate(string const &host, Bytes const &message)
     {
         return communicate(host, Defaults::PORT, message);
     }
 
-    string Client::communicate(string const &message)
+    Bytes Client::communicate(Bytes const &message)
     {
         return communicate(Defaults::HOST, Defaults::PORT, message);
     }

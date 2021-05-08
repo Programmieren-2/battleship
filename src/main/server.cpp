@@ -1,9 +1,9 @@
-#include "Server.h"
-using net::Server;
+#include "GameServer.h"
+using proto::GameServer;
 
 int main()
 {
-    Server server;
+    GameServer server;
     server.listen();
     return 0;
 }

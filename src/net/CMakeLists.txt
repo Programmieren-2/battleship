@@ -1,3 +1,1 @@
-add_library(net Server.cpp Server.h Client.cpp Client.h RequestHandler.cpp RequestHandler.h)
-target_link_libraries(net models)
-target_include_directories(net PUBLIC ../models)
+add_library(net Client.cpp Client.h Net.h Server.cpp Server.h TCPSocket.cpp TCPSocket.h)

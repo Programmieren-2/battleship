@@ -6,24 +6,13 @@ using std::endl;
 #include <string>
 using std::string;
 
-#include "Client.h"
-using net::Client;
+#include "GameClient.h"
+using proto::GameClient;
 
 int main()
 {
-    Client client;
+    GameClient client;
 
-    while (true) {
-        string message;
-        cout << "Enter message: ";
-        cin >> message;
-        cout << "Sending message '" << message << "' to server." << endl;
-        string response = client.communicate(message);
-        cout << "Server responded with: " << response << endl;
-
-        if (message == "terminate" || message == "exit")
-            break;
-    }
 
     return 0;
 }

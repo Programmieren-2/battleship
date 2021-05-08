@@ -3,9 +3,9 @@ target_link_libraries(battleship models)
 target_include_directories(battleship PUBLIC ../models)
 
 add_executable(server server.cpp)
-target_link_libraries(server models net)
-target_include_directories(server PUBLIC ../models ../net)
+target_link_libraries(server models proto)
+target_include_directories(server PUBLIC ../models ../proto)
 
 add_executable(client client.cpp)
-target_link_libraries(client models net)
-target_include_directories(client PUBLIC ../models ../net)
+target_link_libraries(client models proto)
+target_include_directories(client PUBLIC ../models ../proto)
