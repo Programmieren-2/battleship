@@ -36,40 +36,46 @@ using util::splitString;
 
 namespace bootstrap {
     Coordinate readCoordinate(string const &prompt) {
-        string input = readWithPrompt(prompt);
-        vector<string> items = splitString(input, ",");
+        string input;
+        vector<string> items;
+        string strX, strY;
 
-        if (items.size() != 2) {
-            cout << "Invalid coordinates!" << endl;
-            return readCoordinate(prompt);
+        while (true) {
+            input = readWithPrompt(prompt);
+            items = splitString(input, ",");
+
+            if (items.size() == 2) {
+                strX = items[0];
+                strY = items[1];
+
+                if (isNumber(strX) && isNumber(strY))
+                    return Coordinate(stoi(strX), stoi(strY));
+            }
+
+            cout << "Invalid coordinates! " << endl;
         }
-
-        string strX = items[0];
-        string strY = items[1];
-
-        if (isNumber(strX) && isNumber(strY))
-            return Coordinate(stoi(strX), stoi(strY));
-
-        cout << "Invalid coordinates! " << endl;
-        return readCoordinate(prompt);
     }
 
-    static Orientation readOrientation(std::string const &prompt) {
-        string input = readWithPrompt(prompt);
+    Orientation readOrientation(string const &prompt) {
+        string input;
 
-        if (input == "x" || input == "X")
-            return Orientation::X;
+        while (true) {
+            input = readWithPrompt(prompt);
 
-        if (input == "y" || input == "Y")
-            return Orientation::Y;
+            if (input == "x" || input == "X")
+                return Orientation::X;
 
-        cout << "Invalid orientation!" << endl;
-        return readOrientation(prompt);
+            if (input == "y" || input == "Y")
+                return Orientation::Y;
+
+            cout << "Invalid orientation!" << endl;
+        }
     }
 
     static void readShip(PlayerBoard &playerBoard, string type, unsigned short length) {
         Coordinate anchorPoint = readCoordinate("Coordinates (<x>,<y>): ");
         Orientation orientation = readOrientation("Orientation (x or y): ");
+
         Ship ship(type, anchorPoint, length, orientation);
 
         switch (playerBoard.placeShip(ship)) {
