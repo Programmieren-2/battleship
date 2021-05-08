@@ -9,7 +9,7 @@
 #include "Coordinate.h"
 #include "PlayerBoard.h"
 
-namespace messages {
+namespace proto {
     enum Status {
         WAITING_FOR_OPPONENT, WAITING_FOR_YOU
     };
