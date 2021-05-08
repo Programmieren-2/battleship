@@ -28,7 +28,9 @@ namespace proto {
     Bytes GameServer::processShipTypesRequest(ShipTypesRequest const &shipTypesRequest)
     {
         ShipTypesResponse response;
-        return packetToBytes(response);
+        Bytes buf = packetToBytes(response);
+        appendShipTypes(buf);
+        return buf;
     }
 
     Bytes GameServer::processMapRequest(MapRequest const &mapRequest)
@@ -43,11 +45,6 @@ namespace proto {
         return packetToBytes(response);
     }
 
-    void GameServer::appendShipTypes(Bytes &buf)
-    {
-        return;
-    }
-
     Bytes GameServer::processStatusRequest(StatusRequest const &statusRequest)
     {
         StatusResponse response;
@@ -60,20 +57,24 @@ namespace proto {
         return packetToBytes(response);
     }
 
+    void GameServer::appendShipTypes(Bytes &buf)
+    {
+        return;
+    }
+
     Bytes GameServer::processRequest(net::Socket &socket)
     {
-        Bytes response, buf = receive(socket, sizeof(RequestHeader));
+        Bytes buf = receive(socket, sizeof(RequestHeader));
         RequestHeader header;
         memcpy(&header, &buf[0], buf.size());
         cerr << "Received request " << header.type << " from player " << header.playerId << "." << endl;
+        InvalidRequest invalidRequest;
 
         switch (header.type) {
             case RequestType::LOGIN_REQUEST:
                 return processLoginRequest(readPacket<LoginRequest>(socket, buf));
             case RequestType::SHIP_TYPES_REQUEST:
-                response = processShipTypesRequest(readPacket<ShipTypesRequest>(socket, buf));
-                appendShipTypes(response);
-                return response;
+                return processShipTypesRequest(readPacket<ShipTypesRequest>(socket, buf));
             case RequestType::MAP_REQUEST:
                 return processMapRequest(readPacket<MapRequest>(socket, buf));
             case RequestType::SHIP_PLACEMENT_REQUEST:
@@ -82,9 +83,9 @@ namespace proto {
                 return processStatusRequest(readPacket<StatusRequest>(socket, buf));
             case RequestType::TURN_REQUEST:
                 return processTurnRequest(readPacket<TurnRequest>(socket, buf));
+            default:
+                return packetToBytes(invalidRequest);
         }
-
-        return response;
     }
 
     void GameServer::listen()
@@ -94,6 +95,7 @@ namespace proto {
         while (true) {
             Socket socket = getSocket();
             response = processRequest(socket);
+            send(socket, response);
         }
     }
 }

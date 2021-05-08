@@ -15,11 +15,11 @@ namespace proto {
         net::Bytes processRequest(net::Socket &socket);
         net::Bytes processLoginRequest(LoginRequest const &loginRequest);
         net::Bytes processShipTypesRequest(ShipTypesRequest const &shipTypesRequest);
-        void appendShipTypes(net::Bytes &buf);
         net::Bytes processMapRequest (MapRequest const &mapRequest);
         net::Bytes processShipPlacementRequest(ShipPlacementRequest const &shipPlacementRequest);
         net::Bytes processStatusRequest(StatusRequest const &statusRequest);
         net::Bytes processTurnRequest(TurnRequest const &turnRequest);
+        void appendShipTypes(net::Bytes &buf);
     protected:
         using net::Server::getAcceptor;
         using net::Server::getSocket;

@@ -31,7 +31,8 @@ namespace proto {
         MAP_RESPONSE,
         SHIP_PLACEMENT_RESPONSE,
         STATUS_RESPONSE,
-        TURN_RESPONSE
+        TURN_RESPONSE,
+        INVALID_REQUEST
     };
 
     typedef struct {
@@ -112,6 +113,10 @@ namespace proto {
         bool gameOver = false;
         bool won = false;
     } TurnResponse;
+
+    typedef struct {
+        ResponseHeader header = {ResponseType::INVALID_REQUEST};
+    } InvalidRequest;
 
     template <typename PacketType>
     PacketType readPacket(net::Socket &socket, net::Bytes &buf)
