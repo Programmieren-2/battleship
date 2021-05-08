@@ -9,8 +9,8 @@
 
 namespace models {
     namespace Constants {
-        static const unsigned int width = 10;
-        static const unsigned int height = 10;
+        static const unsigned short width = 10;
+        static const unsigned short height = 10;
         static const ShipTypes shipTypes = {
                 {"Speed boat", 2},
                 {"Destroyer", 3},
