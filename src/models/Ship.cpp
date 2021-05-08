@@ -52,8 +52,8 @@ namespace models {
 
     bool Ship::collidesWith(const Ship &ship) const
     {
-        for (HitPoint hitPoint : hitPoints) {
-            for (HitPoint otherHitPoint : ship.getHitPoints()) {
+        for (HitPoint const &hitPoint : hitPoints) {
+            for (HitPoint const &otherHitPoint : ship.getHitPoints()) {
                 if (hitPoint == otherHitPoint)
                     return true;
             }
