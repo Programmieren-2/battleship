@@ -8,6 +8,8 @@
 #include "Ship.h"
 
 namespace models {
+    typedef std::map<std::string, int> ShipTypes;
+
     namespace Constants {
         static const unsigned short width = 10;
         static const unsigned short height = 10;

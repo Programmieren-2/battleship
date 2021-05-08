@@ -37,7 +37,6 @@ namespace models {
     };
 
     typedef std::vector<Ship> Ships;
-    typedef std::map<std::string, int> ShipTypes;
 }
 
 #endif //BATTLESHIP_SHIP_H
