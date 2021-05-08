@@ -50,7 +50,7 @@ namespace game {
 
         if (targetBoard.allShipsDestroyed()) {
             cout << "All of " << targetBoard.getName() << "'s ships have been destroyed!" << endl;
-            cout << playerBoard.getName() << " has won the game.";
+            cout << playerBoard.getName() << " has won the game." << endl;
             return false;
         }
 
