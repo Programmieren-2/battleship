@@ -8,7 +8,7 @@
 #include "Ship.h"
 
 namespace models {
-    typedef std::map<std::string, int> ShipTypes;
+    typedef std::map<std::string, unsigned short> ShipTypes;
 
     namespace Constants {
         static const unsigned short width = 10;

@@ -20,7 +20,7 @@ namespace models {
     Ship::Ship(string &type, Coordinate const &anchorPoint, unsigned short length, Orientation orientation)
             : type(type), anchorPoint(anchorPoint), length(length), orientation(orientation), hitPoints(HitPoints())
     {
-        for (unsigned int offset = 0; offset < length; offset++) {
+        for (unsigned short offset = 0; offset < length; offset++) {
             switch (orientation) {
                 case Orientation::X:
                     hitPoints.push_back(HitPoint(anchorPoint.getX() + offset, anchorPoint.getY()));
