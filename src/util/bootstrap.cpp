@@ -32,8 +32,6 @@ using util::isNumber;
 using util::readWithPrompt;
 using util::splitString;
 
-#include "bootstrap.h"
-
 namespace util {
     Coordinate readCoordinate(string const &prompt) {
         string input;

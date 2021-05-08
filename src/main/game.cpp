@@ -18,7 +18,7 @@ using models::HitResult;
 using models::PlayerBoard;
 using models::PlayerBoards;
 
-#include "bootstrap.h"
+#include "util.h"
 using util::readCoordinate;
 using util::readPlayerBoard;
 
