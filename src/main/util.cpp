@@ -19,12 +19,10 @@ using std::vector;
 #include "util.h"
 
 namespace util {
-    static const regex number("^\\d{1,6}$");
-
     vector<string> splitString(string const &str, string const &delimiter) {
         vector<string> result;
-        string processed = "";
-        string lookahead = "";
+        string processed;
+        string lookahead;
 
         for (char const character : str) {
             lookahead += character;
@@ -49,7 +47,7 @@ namespace util {
 
     string readWithPrompt(string const &prompt)
     {
-        string input = "";
+        string input;
         cout << prompt;
         cin >> input;
         return input;
@@ -57,6 +55,7 @@ namespace util {
 
     bool isNumber(string const &str)
     {
+        const regex number("^\\d{1,6}$");
         return regex_match(str, number);
     }
 }

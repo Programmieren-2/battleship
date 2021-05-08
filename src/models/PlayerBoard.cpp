@@ -2,6 +2,9 @@
 // Created by rne on 07.05.21.
 //
 
+#include <algorithm>
+using std::all_of;
+
 #include <string>
 using std::string;
 
@@ -11,11 +14,11 @@ using std::string;
 #include "Ship.h"
 
 namespace models {
-    PlayerBoard::PlayerBoard(string name, unsigned short width, unsigned short height)
+    PlayerBoard::PlayerBoard(string &name, unsigned short width, unsigned short height)
             : Board(width, height), name(name), ships(Ships()), misses(Coordinates())
     {}
 
-    PlayerBoard::PlayerBoard(std::string name)
+    PlayerBoard::PlayerBoard(string &name)
             : PlayerBoard(name, Constants::width, Constants::height)
     {}
 
@@ -36,7 +39,7 @@ namespace models {
 
     bool PlayerBoard::shipCollides(const Ship &ship) const
     {
-        for (Ship existingShip : ships) {
+        for (Ship const &existingShip : ships) {
             if (existingShip.collidesWith(ship))
                 return true;
         }
@@ -46,8 +49,8 @@ namespace models {
 
     string PlayerBoard::getCharAt(const Coordinate &coordinate, bool showShips) const
     {
-        for (Ship ship : ships) {
-            for (HitPoint hitPoint : ship.getHitPoints()) {
+        for (Ship const &ship : ships) {
+            for (HitPoint const &hitPoint : ship.getHitPoints()) {
                 if (hitPoint == coordinate) {
                     if (hitPoint.isHit())
                         return "x";
@@ -68,17 +71,12 @@ namespace models {
 
     bool PlayerBoard::allShipsDestroyed() const
     {
-        for (Ship ship : ships) {
-            if (!ship.isDestroyed())
-                return false;
-        }
-
-        return true;
+        return all_of(ships.begin(), ships.end(), [](Ship const &ship){ return ship.isDestroyed(); });
     }
 
     string PlayerBoard::toString(bool showShips) const
     {
-        string result = "";
+        string result;
 
         for (unsigned int y = 0; y < getHeight(); y++) {
             for (unsigned int x = 0; x < getWidth(); x++) {

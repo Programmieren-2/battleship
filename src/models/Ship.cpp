@@ -2,6 +2,9 @@
 // Created by rne on 07.05.21.
 //
 
+#include <algorithm>
+using std::all_of;
+
 #include <iostream>
 using std::cout;
 using std::endl;
@@ -14,7 +17,7 @@ using std::string;
 #include "Ship.h"
 
 namespace models {
-    Ship::Ship(string type, Coordinate const &anchorPoint, unsigned short length, Orientation orientation)
+    Ship::Ship(string &type, Coordinate const &anchorPoint, unsigned short length, Orientation orientation)
             : type(type), anchorPoint(anchorPoint), length(length), orientation(orientation), hitPoints(HitPoints())
     {
         for (unsigned int offset = 0; offset < length; offset++) {
@@ -61,12 +64,9 @@ namespace models {
 
     bool Ship::isDestroyed() const
     {
-        for (HitPoint hitPoint : hitPoints) {
-            if (!hitPoint.isHit())
-                return false;
-        }
-
-        return true;
+        return all_of(hitPoints.begin(), hitPoints.end(), [](HitPoint const &hitPoint) {
+            return hitPoint.isHit();
+        });
     }
 
     HitResult Ship::hitAt(const Coordinate &coordinate)

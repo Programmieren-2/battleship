@@ -17,7 +17,7 @@ namespace models {
         HitPoint(unsigned short x, unsigned short y);
 
         HitResult doHit();
-        bool isHit() const;
+        [[nodiscard]] bool isHit() const;
     };
 
     typedef std::vector<HitPoint> HitPoints;

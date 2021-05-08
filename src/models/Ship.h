@@ -21,14 +21,14 @@ namespace models {
         Orientation orientation;
         HitPoints hitPoints;
     public:
-        Ship(std::string type, Coordinate const &anchorPoint, unsigned short length, Orientation orientation);
+        Ship(std::string &type, Coordinate const &anchorPoint, unsigned short length, Orientation orientation);
 
-        Coordinate getAnchorPoint() const;
-        Coordinate getEndPoint() const;
-        HitPoints getHitPoints() const;
-        bool collidesWith(Ship const &ship) const;
-        bool isDestroyed() const;
-        std::string getType() const;
+        [[nodiscard]] Coordinate getAnchorPoint() const;
+        [[nodiscard]] Coordinate getEndPoint() const;
+        [[nodiscard]] HitPoints getHitPoints() const;
+        [[nodiscard]] bool collidesWith(Ship const &ship) const;
+        [[nodiscard]] bool isDestroyed() const;
+        [[nodiscard]] std::string getType() const;
 
         HitResult hitAt(Coordinate const &coordinate);
 

@@ -15,8 +15,8 @@ namespace models {
     public:
         Board(unsigned short width, unsigned short height);
 
-        unsigned short getWidth() const;
-        unsigned short getHeight() const;
+        [[nodiscard]] unsigned short getWidth() const;
+        [[nodiscard]] unsigned short getHeight() const;
     };
 }
 

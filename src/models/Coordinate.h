@@ -17,8 +17,8 @@ namespace models {
         Coordinate(const Coordinate&) = default;
         Coordinate(unsigned short x, unsigned short y);
 
-        unsigned short getX() const;
-        unsigned short getY() const;
+        [[nodiscard]] unsigned short getX() const;
+        [[nodiscard]] unsigned short getY() const;
 
         bool operator==(Coordinate const & coordinate) const;
     };

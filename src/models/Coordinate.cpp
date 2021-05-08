@@ -2,7 +2,6 @@
 // Created by rne on 07.05.21.
 //
 
-#include <math.h>
 #include <string>
 using std::string;
 using std::to_string;

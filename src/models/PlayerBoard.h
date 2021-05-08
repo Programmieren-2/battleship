@@ -19,18 +19,18 @@ namespace models {
         Ships ships;
         Coordinates misses;
 
-        bool coordinateOnBoard(Coordinate const &coordinate) const;
-        bool shipOnBoard(Ship const &ship) const;
-        bool shipCollides(Ship const &ship) const;
-        std::string getCharAt(Coordinate const &coordinate, bool showShips) const;
+        [[nodiscard]] bool coordinateOnBoard(Coordinate const &coordinate) const;
+        [[nodiscard]] bool shipOnBoard(Ship const &ship) const;
+        [[nodiscard]] bool shipCollides(Ship const &ship) const;
+        [[nodiscard]] std::string getCharAt(Coordinate const &coordinate, bool showShips) const;
     public:
-        PlayerBoard(std::string name, unsigned short width, unsigned short height);
-        PlayerBoard(std::string name);
+        PlayerBoard(std::string &name, unsigned short width, unsigned short height);
+        explicit PlayerBoard(std::string &name);
 
-        std::string getName() const;
-        bool allShipsDestroyed() const;
-        std::string toString(bool showShips) const;
-        std::string toString() const;
+        [[nodiscard]] std::string getName() const;
+        [[nodiscard]] bool allShipsDestroyed() const;
+        [[nodiscard]] std::string toString(bool showShips) const;
+        [[nodiscard]] std::string toString() const;
 
         PlacementResult placeShip(Ship const &ship);
         HitResult fireAt(Coordinate const &coordinate);
