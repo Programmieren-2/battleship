@@ -19,22 +19,22 @@ namespace net {
         TCPIO();
 
         /*
-         * Send a raw string followed by a terminator over the socket.
+         * Receive a raw string from the socket until the terminator is met.
          */
         static std::string receive(Socket &socket, std::string const &terminator);
 
         /*
-         * Send a base64 encoded string followed by a newline character over the socket.
+         * Receive a base64 encoded string from the socket which is terminated by a newline character.
          */
         static std::string receive(Socket &socket);
 
         /*
-         * Receive a raw string from the socket until the terminator is met.
+         * Send a raw string followed by a terminator over the socket.
          */
         static boost::system::error_code send(Socket &socket, std::string const &message, std::string const &terminator);
 
         /*
-         * Receive a base64 encoded string from the socket which is terminated by a newline character.
+         * Send a base64 encoded string followed by a newline character over the socket.
          */
         static boost::system::error_code send(Socket &socket, std::string const &message);
     };
