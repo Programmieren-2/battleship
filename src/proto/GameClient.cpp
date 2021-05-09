@@ -21,29 +21,47 @@ using net::Socket;
 #include "GameClient.h"
 
 namespace proto {
+    GameClient::GameClient(unsigned long playerId)
+            : playerId(playerId)
+    {}
+
+    GameClient::GameClient()
+            : GameClient(0)
+    {}
+
+    LoginRequest GameClient::createLoginRequest(const std::string &playerName)
+    {
+        LoginRequest loginRequest;
+        loginRequest.header.playerId = playerId;
+
+        if (playerName.size() > 32)
+            cerr << "Player name exceeds 32 bytes, so it will be truncated." << endl;
+
+        strncpy(loginRequest.playerName, playerName.c_str(), 32);
+        return loginRequest;
+    }
+
     void GameClient::processResponse(string &buf)
     {
         ResponseHeader header = deserialize<ResponseHeader>(buf, true);
-        cerr << "Received response " << header.type << "." << endl;
 
         switch (header.type) {
             case ResponseType::LOGIN_RESPONSE:
-                cerr << "Got valid login response." << endl;
                 processLoginResponse(deserialize<LoginResponse>(buf));
         }
     }
 
     void GameClient::processLoginResponse(LoginResponse const &loginResponse)
     {
-        LoginResponse response = loginResponse;
-        cout << "Server response: " << response.accepted << endl;
+        if (loginResponse.accepted)
+            cout << "Server allowed us to login. Yay!" << endl;
+        else
+            cerr << "Server denied us to login. Darn it!" << endl;
     }
 
     bool GameClient::sendLoginRequest(string const &name)
     {
-        LoginRequest loginRequest;
-        loginRequest.header.playerId = 42;
-        strncpy(loginRequest.playerName, name.c_str(), 32);
+        LoginRequest loginRequest = createLoginRequest(name);
         string response = communicate(serialize(loginRequest));
         processResponse(response);
         return true;

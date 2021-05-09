@@ -9,22 +9,27 @@ using std::endl;
 #include <string>
 using std::string;
 
+#include <boost/asio.hpp>
+using boost::asio::ip::address;
+using boost::asio::ip::tcp;
+using boost::system::error_code;
+
 #include "Net.h"
 #include "Client.h"
 
 namespace net {
     Client::Client()
-            : TCPSocket()
+            : TCPIO()
     {}
 
     std::string Client::communicate(string const &host, unsigned int port, std::string const &bytes)
     {
         Socket socket(service);
-        socket.connect(Endpoint(IPAddress::from_string(host), port));
+        socket.connect(tcp::endpoint(address::from_string(host), port));
 
-        ErrorCode error = send(socket, bytes);
+        error_code error = send(socket, bytes);
 
-        if (error && error != eof)
+        if (error)
             cerr << "Error while sending message to server: " << error.message() << endl;
 
         return receive(socket);

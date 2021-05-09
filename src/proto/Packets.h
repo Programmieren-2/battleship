@@ -141,11 +141,8 @@ namespace proto {
     template <typename PacketType>
     std::string serialize(PacketType &packet)
     {
-        std::cerr << "Converting packet type: " << packet.header.type << std::endl;
-        std::cerr << "Total packet size: " << (sizeof packet) << std::endl;
         auto ptr = reinterpret_cast<char*>(&packet);
         std::string bytes(ptr, ptr + sizeof packet);
-        std::cerr << "Total amount of bytes: " << bytes.size() << std::endl;
         return bytes;
     }
 }

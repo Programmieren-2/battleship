@@ -14,6 +14,8 @@
 namespace proto {
     class GameServer : public net::Server {
     private:
+        LoginResponse createLoginResponse(bool accepted);
+
         std::string processRequest(net::Socket &socket);
         std::string processLoginRequest(LoginRequest const &loginRequest);
         std::string processShipTypesRequest(ShipTypesRequest const &shipTypesRequest);

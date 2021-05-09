@@ -2,6 +2,9 @@
 // Created by rne on 08.05.21.
 //
 
+#include <algorithm>
+using std::find;
+
 #include <iostream>
 using std::cerr;
 using std::endl;
@@ -13,14 +16,27 @@ using std::string;
 using net::Socket;
 
 #include "Server.h"
+#include "util.h"
+using util::contains;
 
 #include "Packets.h"
 #include "GameServer.h"
 
 namespace proto {
+    namespace Constants {
+        static const std::vector<std::string> VALID_PLAYER_NAMES = {"Richard", "Steve"};
+    }
+
     GameServer::GameServer()
             : Server()
     {}
+
+    LoginResponse GameServer::createLoginResponse(bool accepted)
+    {
+        LoginResponse loginResponse;
+        loginResponse.accepted = accepted;
+        return loginResponse;
+    }
 
     string GameServer::processLoginRequest(LoginRequest const &loginRequest)
     {
@@ -28,8 +44,12 @@ namespace proto {
         string playerName = loginRequest.playerName;
         cerr << "Player '" << playerName << "' wants to log in." << endl;
 
-        if (playerName == "Richard")
+        if (contains(Constants::VALID_PLAYER_NAMES, playerName)) {
+            cerr << "Player name is whitelisted. Allowing login." << endl;
             response.accepted = true;
+        } else {
+            cerr << "Player name is not whitelisted. Denying login." << endl;
+        }
 
         cerr << "Response size: " << sizeof response << endl;
         return serialize(response);

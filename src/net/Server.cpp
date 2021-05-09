@@ -5,12 +5,16 @@
 #include <string>
 using std::string;
 
+#include <boost/asio.hpp>
+using boost::asio::ip::address;
+using boost::asio::ip::tcp;
+
 #include "Net.h"
 #include "Server.h"
 
 namespace net {
     Server::Server(string const &host, unsigned int port)
-            : TCPSocket(), host(host), port(port)
+            : TCPIO(), host(host), port(port)
     {}
 
     Server::Server(string const &host)
@@ -25,15 +29,15 @@ namespace net {
             : Server(Defaults::HOST, Defaults::PORT)
     {}
 
-    Acceptor Server::getAcceptor()
+    tcp::acceptor Server::getAcceptor()
     {
-        return Acceptor(service, Endpoint(IPAddress::from_string(host), port));
+        return tcp::acceptor(service, tcp::endpoint(address::from_string(host), port));
     }
 
     Socket Server::getSocket()
     {
         Socket socket(service);
-        Acceptor acceptor = getAcceptor();
+        tcp::acceptor acceptor = getAcceptor();
         acceptor.accept(socket);
         return socket;
     }

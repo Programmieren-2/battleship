@@ -7,16 +7,19 @@
 
 #include <string>
 
-#include "TCPSocket.h"
+#include "TCPIO.h"
 
 namespace net {
-    class Client : public TCPSocket {
+    class Client : public TCPIO {
     protected:
-        using TCPSocket::receive;
-        using TCPSocket::send;
+        using TCPIO::receive;
+        using TCPIO::send;
     public:
         Client();
 
+        /*
+         * Sends a base64 encoded string to the server and returns a base64 encoded string as response.
+         */
         std::string communicate(std::string const &host, unsigned int port, std::string const &message);
         std::string communicate(unsigned int port, std::string const &message);
         std::string communicate(std::string const &host, std::string const &message);

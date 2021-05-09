@@ -7,20 +7,21 @@
 
 #include <string>
 
+#include <boost/asio.hpp>
+
 #include "Net.h"
-#include "TCPSocket.h"
+#include "TCPIO.h"
 
 namespace net {
-    class Server : public TCPSocket {
+    class Server : public TCPIO {
     private:
         std::string host;
         unsigned int port;
     protected:
-        using TCPSocket::receive;
-        using TCPSocket::receiveAll;
-        using TCPSocket::send;
+        using TCPIO::receive;
+        using TCPIO::send;
 
-        Acceptor getAcceptor();
+        boost::asio::ip::tcp::acceptor getAcceptor();
         Socket getSocket();
     public:
         Server(std::string const &host, unsigned int port);
@@ -32,6 +33,10 @@ namespace net {
         std::string getHost() const;
         unsigned int getPort() const;
 
+        /*
+         * Abstract method to spawn the server and let it serve requests.
+         * Must be overridden by subclasses.
+         */
         [[noreturn]] virtual void listen() = 0;
     };
 }

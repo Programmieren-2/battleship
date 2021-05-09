@@ -14,11 +14,18 @@
 namespace proto {
     class GameClient : public net::Client{
     private:
+        unsigned long playerId;
+
+        LoginRequest createLoginRequest(std::string const &playerName);
+
         void processResponse(string &buf);
         void processLoginResponse(LoginResponse const &loginResponse);
     protected:
         using net::Client::receive;
     public:
+        GameClient(unsigned long playerId);
+        GameClient();
+
         bool sendLoginRequest(std::string const &name);
     };
 }
