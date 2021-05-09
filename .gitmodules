@@ -1,0 +1,6 @@
+[submodule "src/b64"]
+	path = src/b64
+	url = https://github.com/ReneNyffenegger/cpp-base64.git
+[submodule "src/base64"]
+	path = src/base64
+	url = https://github.com/ReneNyffenegger/cpp-base64.git

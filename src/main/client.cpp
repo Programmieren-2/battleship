@@ -12,7 +12,9 @@ using proto::GameClient;
 int main()
 {
     GameClient client;
-
-
+    cout << "Enter your name: ";
+    string name;
+    cin >> name;
+    client.sendLoginRequest(name);
     return 0;
 }

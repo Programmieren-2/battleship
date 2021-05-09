@@ -22,6 +22,12 @@ namespace proto {
     Bytes GameServer::processLoginRequest(LoginRequest const &loginRequest)
     {
         LoginResponse response;
+
+        cerr << "Player '" << loginRequest.playerName << "' wants to log in." << endl;
+
+        if (loginRequest.playerName == "Richard")
+            response.accepted = true;
+
         return packetToBytes(response);
     }
 
@@ -64,8 +70,10 @@ namespace proto {
 
     Bytes GameServer::processRequest(net::Socket &socket)
     {
-        Bytes buf = receive(socket, sizeof(RequestHeader));
         RequestHeader header;
+        cerr << "Incoming packet. Reading header of size: " << (sizeof header) << endl;
+        Bytes buf = receive(socket, sizeof header);
+        cerr << "Bytes received: " << buf.size() << endl;
         memcpy(&header, &buf[0], buf.size());
         cerr << "Received request " << header.type << " from player " << header.playerId << "." << endl;
         InvalidRequest invalidRequest;

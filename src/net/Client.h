@@ -12,8 +12,6 @@
 namespace net {
     class Client : public TCPSocket {
     protected:
-        using TCPSocket::getAcceptor;
-        using TCPSocket::getSocket;
         using TCPSocket::receive;
         using TCPSocket::send;
 

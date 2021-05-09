@@ -11,13 +11,13 @@
 
 namespace net {
     class TCPSocket {
-    private:
-        IOService service;
     protected:
-        Acceptor getAcceptor(std::string const &host, unsigned int port);
-        Socket getSocket(std::string const &host, unsigned int port);
-        static Bytes receive(Socket &socket, size_t size);
-        static ErrorCode send(Socket &socket, Bytes bytes);
+        IOService service;
+        static std::string receive(Socket &socket, std::string const &sep);
+        static std::string receive(Socket &socket);
+        static std::string receiveAll(Socket &socket);
+        static ErrorCode send(Socket &socket, std::string const &message, std::string const &sep);
+        static ErrorCode send(Socket &socket, std::string const &message);
     public:
         TCPSocket();
     };

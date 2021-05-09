@@ -19,7 +19,7 @@ namespace net {
 
     Bytes Client::communicate(string const &host, unsigned int port, Bytes const &bytes)
     {
-        Socket socket = getSocket(host, port);
+        Socket socket(service);
         socket.connect(Endpoint(IPAddress::from_string(host), port));
 
         ErrorCode error = send(socket, bytes);

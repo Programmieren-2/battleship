@@ -16,8 +16,6 @@ namespace net {
         std::string host;
         unsigned int port;
     protected:
-        using TCPSocket::getAcceptor;
-        using TCPSocket::getSocket;
         using TCPSocket::receive;
         using TCPSocket::send;
 

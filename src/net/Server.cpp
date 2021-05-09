@@ -27,12 +27,15 @@ namespace net {
 
     Acceptor Server::getAcceptor()
     {
-        return getAcceptor(host, port);
+        return Acceptor(service, Endpoint(IPAddress::from_string(host), port));
     }
 
     Socket Server::getSocket()
     {
-        return getSocket(host, port);
+        Socket socket(service);
+        Acceptor acceptor = getAcceptor();
+        acceptor.accept(socket);
+        return socket;
     }
 
     string Server::getHost() const

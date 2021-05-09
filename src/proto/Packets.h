@@ -5,6 +5,9 @@
 #ifndef BATTLESHIP_PACKETS_H
 #define BATTLESHIP_PACKETS_H
 
+#include <cstddef>
+#include <iostream>
+
 #include <boost/asio.hpp>
 
 #include "Constants.h"
@@ -121,21 +124,23 @@ namespace proto {
     template <typename PacketType>
     PacketType readPacket(net::Socket &socket, net::Bytes &buf)
     {
-        boost::asio::read(socket, boost::asio::buffer(buf, sizeof(PacketType) - buf.size()));
         PacketType request;
-        memcpy(&request, &buf[0], buf.size());
+        std::cerr << "Packet header length: " << buf.size() << std::endl;
+        boost::asio::read(socket, boost::asio::buffer(buf, (sizeof request) - buf.size()));
+        std::cerr << "Total packet length: " << buf.size() << std::endl;
+        auto ptr = reinterpret_cast<std::byte*>(&buf[0]);
+        memcpy(&request, ptr, buf.size());
         return request;
     }
 
     template <typename PacketType>
     net::Bytes packetToBytes(PacketType &packet)
     {
-        net::Bytes bytes;
-        char* buf = reinterpret_cast<char*>(&packet);
-
-        for (unsigned int i = 0; i < sizeof(PacketType); i++)
-            bytes.push_back(buf[i]);
-
+        std::cerr << "Converting packet type: " << packet.header.type << std::endl;
+        std::cerr << "Total packet size: " << (sizeof packet) << std::endl;
+        auto ptr = reinterpret_cast<std::byte*>(&packet);
+        net::Bytes bytes(ptr, ptr + sizeof packet);
+        std::cerr << "Total amount of bytes: " << bytes.size() << std::endl;
         return bytes;
     }
 }
