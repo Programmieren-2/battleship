@@ -50,7 +50,6 @@ namespace net {
 
     error_code TCPIO::send(Socket &socket, string const &message)
     {
-        string raw = base64_encode(message);
-        return send(socket, raw, "\n");
+        return send(socket, base64_encode(message), "\n");
     }
 }
