@@ -7,7 +7,6 @@
 
 #include <cstddef>
 #include <string>
-#include <vector>
 
 #include <boost/asio.hpp>
 
@@ -19,7 +18,6 @@ namespace net {
     using boost::asio::write;
 
     typedef boost::asio::ip::tcp::acceptor  Acceptor;
-    typedef std::vector<std::byte>          Bytes;
     typedef boost::asio::ip::tcp::endpoint  Endpoint;
     typedef boost::system::error_code       ErrorCode;
     typedef boost::asio::io_service         IOService;

@@ -17,6 +17,7 @@ namespace net {
         unsigned int port;
     protected:
         using TCPSocket::receive;
+        using TCPSocket::receiveAll;
         using TCPSocket::send;
 
         Acceptor getAcceptor();

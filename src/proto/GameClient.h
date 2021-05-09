@@ -13,12 +13,13 @@
 
 namespace proto {
     class GameClient : public net::Client{
+    private:
+        void processResponse(string &buf);
+        void processLoginResponse(LoginResponse const &loginResponse);
     protected:
         using net::Client::receive;
-        net::Bytes receive(net::Socket &socket) override;
     public:
         bool sendLoginRequest(std::string const &name);
-        net::Bytes processLoginResponse(LoginResponse const &loginResponse);
     };
 }
 

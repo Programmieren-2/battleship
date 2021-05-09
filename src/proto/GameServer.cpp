@@ -6,8 +6,10 @@
 using std::cerr;
 using std::endl;
 
+#include <string>
+using std::string;
+
 #include "Net.h"
-using net::Bytes;
 using net::Socket;
 
 #include "Server.h"
@@ -19,86 +21,86 @@ namespace proto {
     GameServer::GameServer()
             : Server()
     {}
-    Bytes GameServer::processLoginRequest(LoginRequest const &loginRequest)
+
+    string GameServer::processLoginRequest(LoginRequest const &loginRequest)
     {
         LoginResponse response;
+        string playerName = loginRequest.playerName;
+        cerr << "Player '" << playerName << "' wants to log in." << endl;
 
-        cerr << "Player '" << loginRequest.playerName << "' wants to log in." << endl;
-
-        if (loginRequest.playerName == "Richard")
+        if (playerName == "Richard")
             response.accepted = true;
 
-        return packetToBytes(response);
+        cerr << "Response size: " << sizeof response << endl;
+        return serialize(response);
     }
 
-    Bytes GameServer::processShipTypesRequest(ShipTypesRequest const &shipTypesRequest)
+    string GameServer::processShipTypesRequest(ShipTypesRequest const &shipTypesRequest)
     {
         ShipTypesResponse response;
-        Bytes buf = packetToBytes(response);
+        string buf = serialize(response);
         appendShipTypes(buf);
         return buf;
     }
 
-    Bytes GameServer::processMapRequest(MapRequest const &mapRequest)
+    string GameServer::processMapRequest(MapRequest const &mapRequest)
     {
         MapResponse response;
-        return packetToBytes(response);
+        return serialize(response);
     }
 
-    Bytes GameServer::processShipPlacementRequest(ShipPlacementRequest const &shipPlacementRequest)
+    string GameServer::processShipPlacementRequest(ShipPlacementRequest const &shipPlacementRequest)
     {
         ShipPlacementResponse response;
-        return packetToBytes(response);
+        return serialize(response);
     }
 
-    Bytes GameServer::processStatusRequest(StatusRequest const &statusRequest)
+    string GameServer::processStatusRequest(StatusRequest const &statusRequest)
     {
         StatusResponse response;
-        return packetToBytes(response);
+        return serialize(response);
     }
 
-    Bytes GameServer::processTurnRequest(TurnRequest const &turnRequest)
+    string GameServer::processTurnRequest(TurnRequest const &turnRequest)
     {
         TurnResponse response;
-        return packetToBytes(response);
+        return serialize(response);
     }
 
-    void GameServer::appendShipTypes(Bytes &buf)
+    void GameServer::appendShipTypes(string &buf)
     {
         return;
     }
 
-    Bytes GameServer::processRequest(net::Socket &socket)
+    string GameServer::processRequest(net::Socket &socket)
     {
-        RequestHeader header;
-        cerr << "Incoming packet. Reading header of size: " << (sizeof header) << endl;
-        Bytes buf = receive(socket, sizeof header);
+        string buf = receive(socket);
         cerr << "Bytes received: " << buf.size() << endl;
-        memcpy(&header, &buf[0], buf.size());
+        RequestHeader header = deserialize<RequestHeader>(buf, true);
         cerr << "Received request " << header.type << " from player " << header.playerId << "." << endl;
         InvalidRequest invalidRequest;
 
         switch (header.type) {
             case RequestType::LOGIN_REQUEST:
-                return processLoginRequest(readPacket<LoginRequest>(socket, buf));
+                return processLoginRequest(deserialize<LoginRequest>(buf));
             case RequestType::SHIP_TYPES_REQUEST:
-                return processShipTypesRequest(readPacket<ShipTypesRequest>(socket, buf));
+                return processShipTypesRequest(deserialize<ShipTypesRequest>(buf));
             case RequestType::MAP_REQUEST:
-                return processMapRequest(readPacket<MapRequest>(socket, buf));
+                return processMapRequest(deserialize<MapRequest>(buf));
             case RequestType::SHIP_PLACEMENT_REQUEST:
-                return processShipPlacementRequest(readPacket<ShipPlacementRequest>(socket, buf));
+                return processShipPlacementRequest(deserialize<ShipPlacementRequest>(buf));
             case RequestType::STATUS_REQUEST:
-                return processStatusRequest(readPacket<StatusRequest>(socket, buf));
+                return processStatusRequest(deserialize<StatusRequest>(buf));
             case RequestType::TURN_REQUEST:
-                return processTurnRequest(readPacket<TurnRequest>(socket, buf));
+                return processTurnRequest(deserialize<TurnRequest>(buf));
             default:
-                return packetToBytes(invalidRequest);
+                return serialize(invalidRequest);
         }
     }
 
     void GameServer::listen()
     {
-        Bytes response;
+        string response;
 
         while (true) {
             Socket socket = getSocket();

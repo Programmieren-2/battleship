@@ -5,6 +5,8 @@
 #ifndef BATTLESHIP_GAMESERVER_H
 #define BATTLESHIP_GAMESERVER_H
 
+#include <string>
+
 #include "Net.h"
 #include "Packets.h"
 #include "Server.h"
@@ -12,14 +14,14 @@
 namespace proto {
     class GameServer : public net::Server {
     private:
-        net::Bytes processRequest(net::Socket &socket);
-        net::Bytes processLoginRequest(LoginRequest const &loginRequest);
-        net::Bytes processShipTypesRequest(ShipTypesRequest const &shipTypesRequest);
-        net::Bytes processMapRequest (MapRequest const &mapRequest);
-        net::Bytes processShipPlacementRequest(ShipPlacementRequest const &shipPlacementRequest);
-        net::Bytes processStatusRequest(StatusRequest const &statusRequest);
-        net::Bytes processTurnRequest(TurnRequest const &turnRequest);
-        void appendShipTypes(net::Bytes &buf);
+        std::string processRequest(net::Socket &socket);
+        std::string processLoginRequest(LoginRequest const &loginRequest);
+        std::string processShipTypesRequest(ShipTypesRequest const &shipTypesRequest);
+        std::string processMapRequest (MapRequest const &mapRequest);
+        std::string processShipPlacementRequest(ShipPlacementRequest const &shipPlacementRequest);
+        std::string processStatusRequest(StatusRequest const &statusRequest);
+        std::string processTurnRequest(TurnRequest const &turnRequest);
+        void appendShipTypes(std::string &buf);
     protected:
         using net::Server::getAcceptor;
         using net::Server::getSocket;

@@ -2,9 +2,8 @@
 // Created by rne on 08.05.21.
 //
 
-#include <iostream>
-using std::cerr;
-using std::endl;
+#include <cstddef>
+using std::byte;
 
 #include <string>
 using std::string;
@@ -18,24 +17,28 @@ using boost::asio::streambuf;
 using boost::asio::transfer_all;
 using boost::asio::write;
 
+#include "base64.h"
+
 #include "Net.h"
 #include "TCPSocket.h"
 
 namespace net {
     TCPSocket::TCPSocket()
             : service(IOService())
-{}
+    {}
 
     string TCPSocket::receive(Socket &socket, string const &sep)
     {
         streambuf buf;
         read_until(socket, buf, sep);
-        return buffer_cast<const char*>(buf.data());
+        string raw = buffer_cast<const char*>(buf.data());
+        raw = raw.substr(0, raw.size() - sep.size());
+        return raw;
     }
 
     string TCPSocket::receive(Socket &socket)
     {
-        return receive(socket, "\n");
+        return base64_decode(receive(socket, "\n"));
     }
 
     string TCPSocket::receiveAll(Socket &socket)
@@ -55,6 +58,7 @@ namespace net {
 
     ErrorCode TCPSocket::send(Socket &socket, string const &message)
     {
-        return send(socket, message, "\n");
+        string raw = base64_encode(message);
+        return send(socket, raw, "\n");
     }
 }

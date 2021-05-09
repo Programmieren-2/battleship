@@ -5,7 +5,6 @@
 #ifndef BATTLESHIP_PACKETS_H
 #define BATTLESHIP_PACKETS_H
 
-#include <cstddef>
 #include <iostream>
 
 #include <boost/asio.hpp>
@@ -122,24 +121,30 @@ namespace proto {
     } InvalidRequest;
 
     template <typename PacketType>
-    PacketType readPacket(net::Socket &socket, net::Bytes &buf)
+    PacketType deserialize(std::string &buf, bool partialProcessing = false)
     {
-        PacketType request;
-        std::cerr << "Packet header length: " << buf.size() << std::endl;
-        boost::asio::read(socket, boost::asio::buffer(buf, (sizeof request) - buf.size()));
-        std::cerr << "Total packet length: " << buf.size() << std::endl;
+        PacketType packet;
+        size_t bufSize = buf.length();
+        size_t packetSize = sizeof packet;
+
+        if (packetSize > bufSize)
+            std::cerr << "Packet larger than buffer size. Partial read: " << (packetSize - bufSize) << std::endl;
+
+        if (packetSize < bufSize && !partialProcessing)
+            std::cerr << "Packet smaller than buffer size. Bytes unprocessed: " << (bufSize - packetSize) << std::endl;
+
         auto ptr = reinterpret_cast<std::byte*>(&buf[0]);
-        memcpy(&request, ptr, buf.size());
-        return request;
+        memcpy(&packet, ptr, (packetSize < bufSize) ? packetSize : bufSize);
+        return packet;
     }
 
     template <typename PacketType>
-    net::Bytes packetToBytes(PacketType &packet)
+    std::string serialize(PacketType &packet)
     {
         std::cerr << "Converting packet type: " << packet.header.type << std::endl;
         std::cerr << "Total packet size: " << (sizeof packet) << std::endl;
-        auto ptr = reinterpret_cast<std::byte*>(&packet);
-        net::Bytes bytes(ptr, ptr + sizeof packet);
+        auto ptr = reinterpret_cast<char*>(&packet);
+        std::string bytes(ptr, ptr + sizeof packet);
         std::cerr << "Total amount of bytes: " << bytes.size() << std::endl;
         return bytes;
     }

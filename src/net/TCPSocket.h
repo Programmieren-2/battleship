@@ -13,6 +13,7 @@ namespace net {
     class TCPSocket {
     protected:
         IOService service;
+
         static std::string receive(Socket &socket, std::string const &sep);
         static std::string receive(Socket &socket);
         static std::string receiveAll(Socket &socket);

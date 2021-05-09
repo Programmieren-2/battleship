@@ -4,6 +4,7 @@
 
 #include <iostream>
 using std::cerr;
+using std::cout;
 using std::endl;
 
 #include <string>
@@ -13,7 +14,6 @@ using std::string;
 using net::Client;
 
 #include "Net.h"
-using net::Bytes;
 using net::Socket;
 
 #include "Packets.h"
@@ -21,38 +21,31 @@ using net::Socket;
 #include "GameClient.h"
 
 namespace proto {
-    Bytes GameClient::receive(Socket &socket)
+    void GameClient::processResponse(string &buf)
     {
-        Bytes buf = receive(socket, sizeof(ResponseHeader));
-        ResponseHeader header;
-        memcpy(&header, &buf[0], buf.size());
+        ResponseHeader header = deserialize<ResponseHeader>(buf, true);
         cerr << "Received response " << header.type << "." << endl;
 
         switch (header.type) {
             case ResponseType::LOGIN_RESPONSE:
                 cerr << "Got valid login response." << endl;
-                return processLoginResponse(readPacket<LoginResponse>(socket, buf));
+                processLoginResponse(deserialize<LoginResponse>(buf));
         }
     }
 
-    Bytes GameClient::processLoginResponse(LoginResponse const &loginResponse)
+    void GameClient::processLoginResponse(LoginResponse const &loginResponse)
     {
         LoginResponse response = loginResponse;
-        return packetToBytes(response);
+        cout << "Server response: " << response.accepted << endl;
     }
 
     bool GameClient::sendLoginRequest(string const &name)
     {
         LoginRequest loginRequest;
-
-        if (name.size() > 32) {
-            cerr << "Name too long." << endl;
-            return false;
-        }
-
         loginRequest.header.playerId = 42;
-        memcpy(&loginRequest.playerName, &name, name.length());
-        Bytes response = communicate(packetToBytes(loginRequest));
+        strncpy(loginRequest.playerName, name.c_str(), 32);
+        string response = communicate(serialize(loginRequest));
+        processResponse(response);
         return true;
     }
 }

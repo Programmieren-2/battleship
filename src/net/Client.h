@@ -14,16 +14,13 @@ namespace net {
     protected:
         using TCPSocket::receive;
         using TCPSocket::send;
-
-        virtual Bytes receive(Socket &socket) = 0;
     public:
         Client();
-        virtual ~Client() = default;
 
-        Bytes communicate(std::string const &host, unsigned int port, Bytes const &message);
-        Bytes communicate(unsigned int port, Bytes const &message);
-        Bytes communicate(std::string const &host, Bytes const &message);
-        Bytes communicate(Bytes const &message);
+        std::string communicate(std::string const &host, unsigned int port, std::string const &message);
+        std::string communicate(unsigned int port, std::string const &message);
+        std::string communicate(std::string const &host, std::string const &message);
+        std::string communicate(std::string const &message);
     };
 }
 

@@ -17,7 +17,7 @@ namespace net {
             : TCPSocket()
     {}
 
-    Bytes Client::communicate(string const &host, unsigned int port, Bytes const &bytes)
+    std::string Client::communicate(string const &host, unsigned int port, std::string const &bytes)
     {
         Socket socket(service);
         socket.connect(Endpoint(IPAddress::from_string(host), port));
@@ -30,17 +30,17 @@ namespace net {
         return receive(socket);
     }
 
-    Bytes Client::communicate(unsigned int port, Bytes const &message)
+    std::string Client::communicate(unsigned int port, std::string const &message)
     {
         return communicate(Defaults::HOST, port, message);
     }
 
-    Bytes Client::communicate(string const &host, Bytes const &message)
+    std::string Client::communicate(string const &host, std::string const &message)
     {
         return communicate(host, Defaults::PORT, message);
     }
 
-    Bytes Client::communicate(Bytes const &message)
+    std::string Client::communicate(std::string const &message)
     {
         return communicate(Defaults::HOST, Defaults::PORT, message);
     }
