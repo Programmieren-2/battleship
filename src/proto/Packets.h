@@ -120,6 +120,9 @@ namespace proto {
         ResponseHeader header = {ResponseType::INVALID_REQUEST};
     } InvalidRequest;
 
+    /*
+     * Convert a byte string into a packet.
+     */
     template <typename PacketType>
     PacketType deserialize(std::string &buf, bool partialProcessing = false)
     {
@@ -133,11 +136,14 @@ namespace proto {
         if (packetSize < bufSize && !partialProcessing)
             std::cerr << "Packet smaller than buffer size. Bytes unprocessed: " << (bufSize - packetSize) << std::endl;
 
-        auto ptr = reinterpret_cast<std::byte*>(&buf[0]);
+        auto ptr = reinterpret_cast<char*>(&buf[0]);
         memcpy(&packet, ptr, (packetSize < bufSize) ? packetSize : bufSize);
         return packet;
     }
 
+    /*
+     * Convert a packet into a byte string.
+     */
     template <typename PacketType>
     std::string serialize(PacketType &packet)
     {
