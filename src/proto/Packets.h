@@ -153,8 +153,7 @@ namespace proto {
     std::string serialize(PacketType &packet)
     {
         auto ptr = reinterpret_cast<char*>(&packet);
-        std::string bytes(ptr, ptr + sizeof packet);
-        return bytes;
+        return std::string(ptr, ptr + sizeof packet);
     }
 }
 
