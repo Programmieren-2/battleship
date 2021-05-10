@@ -98,7 +98,11 @@ namespace proto {
     {
         for (auto &[name, size] : shipTypes) {
             ShipType shipType;
+#if defined(__linux__)
             strncpy(shipType.name, name.c_str(), sizeof shipType.name);
+#else
+            strncpy_s(shipType.name, sizeof shipType.name, name.c_str(), name.size());
+#endif
             shipType.size = size;
             buf += serialize(shipType);
         }
