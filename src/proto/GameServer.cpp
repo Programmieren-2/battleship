@@ -9,6 +9,9 @@ using std::find;
 using std::cerr;
 using std::endl;
 
+#include <map>
+using std::map;
+
 #include <string>
 using std::string;
 
@@ -28,8 +31,12 @@ using util::contains;
 #include "GameServer.h"
 
 namespace proto {
+    GameServer::GameServer(map<string, unsigned short> shipTypes)
+            : Server(), shipTypes(shipTypes)
+    {}
+
     GameServer::GameServer()
-            : Server()
+            : GameServer(models::Constants::shipTypes)
     {}
 
     LoginResponse GameServer::createLoginResponse(bool accepted)

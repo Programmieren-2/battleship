@@ -5,6 +5,7 @@
 #ifndef BATTLESHIP_GAMESERVER_H
 #define BATTLESHIP_GAMESERVER_H
 
+#include <map>
 #include <string>
 
 #include "Net.h"
@@ -14,6 +15,8 @@
 namespace proto {
     class GameServer : public net::Server {
     private:
+        std::map<std::string, unsigned short> shipTypes;
+
         LoginResponse createLoginResponse(bool accepted);
 
         std::string processRequest(net::Socket &socket);
@@ -28,6 +31,7 @@ namespace proto {
         using net::Server::getAcceptor;
         using net::Server::getSocket;
     public:
+        GameServer(std::map<std::string, unsigned short> shipTypes);
         GameServer();
         [[noreturn]] void listen() override;
     };
