@@ -14,7 +14,7 @@
 namespace proto {
     class GameClient : public net::Client {
     private:
-        unsigned long playerId;
+        const unsigned long playerId;
 
         LoginRequest createLoginRequest(std::string const &playerName);
         ShipTypesRequest createShipTypesRequest();

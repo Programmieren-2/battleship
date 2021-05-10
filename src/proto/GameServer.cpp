@@ -66,7 +66,7 @@ namespace proto {
     string GameServer::processShipTypesRequest(ShipTypesRequest const &shipTypesRequest)
     {
         ShipTypesResponse shipTypesResponse;
-        shipTypesResponse.ships = models::Constants::shipTypes.size();
+        shipTypesResponse.ships = shipTypes.size();
         string buf = serialize(shipTypesResponse);
         appendShipTypes(buf);
         return buf;
@@ -98,7 +98,7 @@ namespace proto {
 
     void GameServer::appendShipTypes(string &buf)
     {
-        for (auto &[name, size] : models::Constants::shipTypes) {
+        for (auto &[name, size] : shipTypes) {
             ShipType shipType;
             strncpy(shipType.name, name.c_str(), sizeof shipType.name);
             shipType.size = size;
