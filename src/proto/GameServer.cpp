@@ -49,12 +49,14 @@ namespace proto {
     string GameServer::processLoginRequest(LoginRequest const &loginRequest)
     {
         LoginResponse response;
+        response.header = {0, 0, ResponseType::LOGIN_RESPONSE};
         string playerName = loginRequest.playerName;
 
         if (contains(models::Constants::VALID_PLAYER_NAMES, playerName)) {
-            cerr << "Player name is whitelisted. Allowing login." << endl;
             response.accepted = true;
+            cerr << "Player name is whitelisted. Allowing login." << endl;
         } else {
+            response.accepted = false;
             cerr << "Player name is not whitelisted. Denying login." << endl;
         }
 
