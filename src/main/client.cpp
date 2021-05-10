@@ -12,7 +12,7 @@ using proto::GameClient;
 int main()
 {
     GameClient client;
-    cout << "Enter your name: ";
+    cout << "Enter your name to login or 'ships' to list the ships: ";
     string name;
     cin >> name;
 
