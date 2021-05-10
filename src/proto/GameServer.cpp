@@ -66,7 +66,7 @@ namespace proto {
     string GameServer::processShipTypesRequest(ShipTypesRequest const &shipTypesRequest)
     {
         ShipTypesResponse shipTypesResponse;
-        shipTypesResponse.ships = shipTypes.size();
+        shipTypesResponse.ships = (unsigned short) shipTypes.size();
         string buf = serialize(shipTypesResponse);
         appendShipTypes(buf);
         return buf;
