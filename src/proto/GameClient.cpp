@@ -33,7 +33,7 @@ namespace proto {
     {
         LoginRequest loginRequest;
         loginRequest.header.playerId = playerId;
-        size_t maxPlayerNameSize = sizeof loginRequest.playerName;
+        size_t maxPlayerNameSize = sizeof loginRequest.playerName - 1;
 
         if (playerName.size() > maxPlayerNameSize)
             cerr << "Player name exceeds " << maxPlayerNameSize << " bytes, so it will be truncated." << endl;
