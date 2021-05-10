@@ -2,8 +2,9 @@
 // Created by rne on 08.05.21.
 //
 
-#include <cstddef>
-using std::byte;
+#include <iostream>
+using std::cerr;
+using std::endl;
 
 #include <string>
 using std::string;
@@ -11,6 +12,7 @@ using std::string;
 #include <boost/asio.hpp>
 using boost::asio::buffer;
 using boost::asio::buffer_cast;
+using boost::asio::error::eof;
 using boost::asio::io_service;
 using boost::asio::read_until;
 using boost::asio::streambuf;
@@ -52,7 +54,12 @@ namespace net {
     string TCPService::receive(string const &terminator)
     {
         streambuf buf;
-        read_until(socket, buf, terminator);
+        error_code error;
+        read_until(socket, buf, terminator, error);
+
+        if (error == eof)
+            cerr << "Reached EOF while reading message." << endl;
+
         string raw = buffer_cast<const char*>(buf.data());
         raw = raw.substr(0, raw.size() - terminator.size());
         return raw;
