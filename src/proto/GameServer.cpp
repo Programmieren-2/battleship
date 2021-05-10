@@ -50,7 +50,6 @@ namespace proto {
     {
         LoginResponse response;
         string playerName = loginRequest.playerName;
-        cerr << "Player '" << playerName << "' wants to log in." << endl;
 
         if (contains(models::Constants::VALID_PLAYER_NAMES, playerName)) {
             cerr << "Player name is whitelisted. Allowing login." << endl;
@@ -59,7 +58,6 @@ namespace proto {
             cerr << "Player name is not whitelisted. Denying login." << endl;
         }
 
-        cerr << "Response size: " << sizeof response << endl;
         return serialize(response);
     }
 
