@@ -22,7 +22,7 @@ namespace net {
             : TCPIO()
     {}
 
-    std::string Client::communicate(string const &host, unsigned int port, std::string const &bytes)
+    std::string Client::communicate(string const &host, unsigned short port, std::string const &bytes)
     {
         Socket socket(service);
         socket.connect(tcp::endpoint(address::from_string(host), port));
@@ -35,7 +35,7 @@ namespace net {
         return receive(socket);
     }
 
-    std::string Client::communicate(unsigned int port, std::string const &message)
+    std::string Client::communicate(unsigned short port, std::string const &message)
     {
         return communicate(Defaults::HOST, port, message);
     }

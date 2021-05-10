@@ -24,9 +24,9 @@ namespace net {
         boost::asio::ip::tcp::acceptor getAcceptor();
         Socket getSocket();
     public:
-        Server(std::string const &host, unsigned int port);
+        Server(std::string const &host, unsigned short port);
         Server(std::string const &host);
-        Server(unsigned int port);
+        Server(unsigned short port);
         Server();
         virtual ~Server() = default;
 

@@ -13,7 +13,7 @@ using boost::asio::ip::tcp;
 #include "Server.h"
 
 namespace net {
-    Server::Server(string const &host, unsigned int port)
+    Server::Server(string const &host, unsigned short port)
             : TCPIO(), host(host), port(port)
     {}
 
@@ -21,7 +21,7 @@ namespace net {
             : Server(host, Defaults::PORT)
     {}
 
-    Server::Server(unsigned int port)
+    Server::Server(unsigned short port)
             : Server(Defaults::HOST, port)
     {}
 
