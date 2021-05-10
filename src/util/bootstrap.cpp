@@ -49,7 +49,7 @@ namespace bootstrap {
                 strY = items[1];
 
                 if (isNumber(strX) && isNumber(strY))
-                    return Coordinate(stoi(strX), stoi(strY));
+                    return Coordinate((unsigned short) stoul(strX), (unsigned short) stoul(strY));
             }
 
             cout << "Invalid coordinates! " << endl;
