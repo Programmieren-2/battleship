@@ -37,6 +37,7 @@ namespace proto {
         INVALID_REQUEST
     };
 
+#pragma pack(push, 1)
     typedef struct {
         unsigned long gameId;
         unsigned long playerId;
@@ -124,6 +125,8 @@ namespace proto {
     typedef struct invalidRequest {
         ResponseHeader header = {0, 0, ResponseType::INVALID_REQUEST};
     } InvalidRequest;
+
+#pragma pack(pop)
 
     /*
      * Convert a byte string into a packet.
