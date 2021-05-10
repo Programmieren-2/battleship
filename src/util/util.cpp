@@ -58,4 +58,14 @@ namespace util {
         const regex number("^\\d{1,6}$");
         return regex_match(str, number);
     }
+
+    int copyString(char *dest, string const &src, size_t size)
+    {
+#if defined(__linux__)
+        strncpy(dest, src.c_str(), size);
+        return 0;
+#else
+        return strncpy_s(dest, size, src.c_str(), src.size());
+#endif
+    }
 }

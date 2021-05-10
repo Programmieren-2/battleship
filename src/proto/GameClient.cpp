@@ -22,8 +22,10 @@ using net::Client;
 #include "Net.h"
 using net::Socket;
 
-#include "Packets.h"
+#include "util.h"
+using util::copyString;
 
+#include "Packets.h"
 #include "GameClient.h"
 
 namespace proto {
@@ -44,7 +46,7 @@ namespace proto {
         if (playerName.size() > maxPlayerNameSize)
             cerr << "Player name exceeds " << maxPlayerNameSize << " bytes, so it will be truncated." << endl;
 
-        strncpy(loginRequest.playerName, playerName.c_str(), maxPlayerNameSize);
+        copyString(loginRequest.playerName, playerName, maxPlayerNameSize);
         return loginRequest;
     }
 

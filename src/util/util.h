@@ -18,6 +18,7 @@ namespace util {
     std::vector <std::string> splitString(std::string const &str, std::string const &delimiter);
     std::string readWithPrompt(std::string const &prompt);
     bool isNumber(std::string const &str);
+    int copyString(char *dest, std::string const &src, size_t size);
 
     template <typename ElementType>
     bool contains(std::vector<ElementType> const &haystack, ElementType const &needle)

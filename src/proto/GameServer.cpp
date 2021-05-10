@@ -18,14 +18,16 @@ using std::string;
 #include <vector>
 using std::vector;
 
+#include "Constants.h"
+
 #include "Net.h"
 using net::Socket;
 
 #include "Server.h"
+
 #include "util.h"
 using util::contains;
-
-#include "Constants.h"
+using util::copyString;
 
 #include "Packets.h"
 #include "GameServer.h"
@@ -98,11 +100,7 @@ namespace proto {
     {
         for (auto &[name, size] : shipTypes) {
             ShipType shipType;
-#if defined(__linux__)
-            strncpy(shipType.name, name.c_str(), sizeof shipType.name);
-#else
-            strncpy_s(shipType.name, sizeof shipType.name, name.c_str(), name.size());
-#endif
+            copyString(shipType.name, name, sizeof shipType.name);
             shipType.size = size;
             buf += serialize(shipType);
         }
