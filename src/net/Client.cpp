@@ -25,6 +25,8 @@ namespace net {
         if (error)
             cerr << "Error while sending message to server: " << error.message() << endl;
 
-        return receive();
+        string response = receive();
+        socket.close();
+        return response;
     }
 }

@@ -29,24 +29,20 @@ using util::copyString;
 #include "GameClient.h"
 
 namespace proto {
-    GameClient::GameClient(string const &host, unsigned short port, unsigned long playerId)
-            : Client(host, port), playerId(playerId)
+    GameClient::GameClient(string const &host, unsigned short port)
+            : Client(host, port), playerId(0)
     {}
 
-    GameClient::GameClient(unsigned short port, unsigned long playerId)
-            : Client(port), playerId(playerId)
+    GameClient::GameClient(string const &host)
+            : Client(host), playerId(0)
     {}
 
-    GameClient::GameClient(string const &host, unsigned long playerId)
-            : Client(host), playerId(playerId)
-    {}
-
-    GameClient::GameClient(unsigned long playerId)
-            : Client(), playerId(playerId)
+    GameClient::GameClient(unsigned short port)
+            : Client(port), playerId(0)
     {}
 
     GameClient::GameClient()
-            : GameClient(0)
+            : Client(), playerId(0)
     {}
 
     LoginRequest GameClient::createLoginRequest(const std::string &playerName)

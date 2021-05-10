@@ -14,9 +14,9 @@
 namespace proto {
     class GameClient : public net::Client {
     private:
-        using net::Client::communicate;
+        unsigned long playerId;
 
-        const unsigned long playerId;
+        using net::Client::communicate;
 
         LoginRequest createLoginRequest(std::string const &playerName);
         ShipTypesRequest createShipTypesRequest();
@@ -25,10 +25,9 @@ namespace proto {
         void processLoginResponse(LoginResponse const &loginResponse);
         void processShipTypesResponse(std::string &buf);
     public:
-        GameClient(string const &host, unsigned short port, unsigned long playerId);
-        GameClient(unsigned short port, unsigned long playerId);
-        GameClient(string const &host, unsigned long playerId);
-        GameClient(unsigned long playerId);
+        GameClient(std::string const &host, unsigned short port);
+        GameClient(std::string const &host);
+        GameClient(unsigned short port);
         GameClient();
 
         bool sendLoginRequest(std::string const &name);

@@ -14,13 +14,13 @@ namespace net {
     private:
         using TCPService::receive;
         using TCPService::send;
-    protected:
+    public:
+        using TCPService::TCPService;
+
         /*
          * Sends a base64 encoded string to the server and returns a base64 encoded string as response.
          */
         std::string communicate(std::string const &message);
-    public:
-        using TCPService::TCPService;
     };
 }
 

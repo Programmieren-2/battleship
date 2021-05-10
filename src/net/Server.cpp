@@ -9,6 +9,7 @@ using std::string;
 using boost::asio::ip::address;
 using boost::asio::ip::tcp;
 
+#include "Net.h"
 #include "Server.h"
 
 namespace net {

@@ -1,19 +1,22 @@
-#include <map>
-using std::map;
+#include <iostream>
+using std::cerr;
+using std::endl;
 
 #include <string>
 using std::string;
 
-#include "Constants.h"
-
 #include "GameServer.h"
 using proto::GameServer;
 
-int main()
+int main(int argc, char *argv[])
 {
-    map<string, unsigned short> shipTypes = models::Constants::shipTypes;
-    shipTypes["Fishing Boat"] = 1;
-    GameServer server(shipTypes);
+    if (argc != 3) {
+        cerr << "Must specify hostname and port!" << endl;
+        return 2;
+    }
+
+    string host = argv[1];
+    string port = argv[2];
+    GameServer server(host, stoul(port));
     server.listen();
-    return 0;
 }
