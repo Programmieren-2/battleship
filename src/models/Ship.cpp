@@ -17,7 +17,7 @@ using std::string;
 #include "Ship.h"
 
 namespace models {
-    Ship::Ship(string &type, Coordinate const &anchorPoint, unsigned short length, Orientation orientation)
+    Ship::Ship(string const &type, Coordinate const &anchorPoint, unsigned short length, Orientation const orientation)
             : type(type), anchorPoint(anchorPoint), length(length), orientation(orientation), hitPoints(HitPoints())
     {
         for (unsigned short offset = 0; offset < length; offset++) {
@@ -50,7 +50,7 @@ namespace models {
         return hitPoints;
     }
 
-    bool Ship::collidesWith(const Ship &ship) const
+    bool Ship::collidesWith(Ship const &ship) const
     {
         for (HitPoint const &hitPoint : hitPoints) {
             for (HitPoint const &otherHitPoint : ship.getHitPoints()) {
@@ -84,12 +84,12 @@ namespace models {
         return type;
     }
 
-    bool Ship::operator==(const Ship &other) const
+    bool Ship::operator==(Ship const &other) const
     {
         return type == other.getType();
     }
 
-    bool Ship::operator!=(const Ship &other) const
+    bool Ship::operator!=(Ship const &other) const
     {
         return !(*this == other);
     }

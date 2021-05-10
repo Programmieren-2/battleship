@@ -21,7 +21,8 @@ namespace models {
         Orientation orientation;
         HitPoints hitPoints;
     public:
-        Ship(std::string &type, Coordinate const &anchorPoint, unsigned short length, Orientation orientation);
+        Ship(std::string const &type, Coordinate const &anchorPoint, unsigned short length,
+             Orientation const orientation);
 
         [[nodiscard]] Coordinate getAnchorPoint() const;
         [[nodiscard]] Coordinate getEndPoint() const;

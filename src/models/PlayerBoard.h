@@ -24,7 +24,7 @@ namespace models {
         [[nodiscard]] bool shipCollides(Ship const &ship) const;
         [[nodiscard]] std::string getSymbolAt(Coordinate const &coordinate, bool showShips) const;
     public:
-        PlayerBoard(std::string &name, unsigned short width, unsigned short height);
+        PlayerBoard(std::string const &name, unsigned short width, unsigned short height);
         explicit PlayerBoard(std::string &name);
 
         [[nodiscard]] std::string getName() const;

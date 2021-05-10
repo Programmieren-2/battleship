@@ -6,6 +6,7 @@
 #define BATTLESHIP_CONSTANTS_H
 
 #include <string>
+#include <map>
 #include <vector>
 
 #include "Ship.h"

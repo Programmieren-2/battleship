@@ -23,7 +23,7 @@ namespace models {
         return y;
     }
 
-    bool Coordinate::operator==(const Coordinate &coordinate) const
+    bool Coordinate::operator==(Coordinate const &coordinate) const
     {
         return x == coordinate.x && y == coordinate.y;
     }

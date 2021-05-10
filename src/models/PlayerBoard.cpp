@@ -14,7 +14,7 @@ using std::string;
 #include "Ship.h"
 
 namespace models {
-    PlayerBoard::PlayerBoard(string &name, unsigned short width, unsigned short height)
+    PlayerBoard::PlayerBoard(string const &name, unsigned short width, unsigned short height)
             : Board(width, height), name(name), ships(Ships()), misses(Coordinates())
     {}
 
@@ -27,17 +27,17 @@ namespace models {
         return name;
     }
 
-    bool PlayerBoard::coordinateOnBoard(const Coordinate &coordinate) const
+    bool PlayerBoard::coordinateOnBoard(Coordinate const &coordinate) const
     {
         return coordinate.getX() < getWidth() && coordinate.getY() < getHeight();
     }
 
-    bool PlayerBoard::shipOnBoard(const Ship &ship) const
+    bool PlayerBoard::shipOnBoard(Ship const &ship) const
     {
         return coordinateOnBoard(ship.getAnchorPoint()) && coordinateOnBoard(ship.getEndPoint());
     }
 
-    bool PlayerBoard::shipCollides(const Ship &ship) const
+    bool PlayerBoard::shipCollides(Ship const &ship) const
     {
         for (Ship const &existingShip : ships) {
             if (existingShip.collidesWith(ship))
@@ -47,7 +47,7 @@ namespace models {
         return false;
     }
 
-    string PlayerBoard::getSymbolAt(const Coordinate &coordinate, bool showShips) const
+    string PlayerBoard::getSymbolAt(Coordinate const &coordinate, bool showShips) const
     {
         for (Ship const &ship : ships) {
             for (HitPoint const &hitPoint : ship.getHitPoints()) {
@@ -93,7 +93,7 @@ namespace models {
         return toString(false);
     }
 
-    PlacementResult PlayerBoard::placeShip(const Ship &ship)
+    PlacementResult PlayerBoard::placeShip(Ship const &ship)
     {
         if (!shipOnBoard(ship))
             return PlacementResult::NOT_ON_BOARD;
@@ -105,7 +105,7 @@ namespace models {
         return PlacementResult::SUCCESS;
     }
 
-    HitResult PlayerBoard::fireAt(const Coordinate &coordinate)
+    HitResult PlayerBoard::fireAt(Coordinate const &coordinate)
     {
         for (Ship &ship : ships) {
             switch (ship.hitAt(coordinate)) {
