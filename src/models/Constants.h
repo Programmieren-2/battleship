@@ -17,11 +17,11 @@ namespace models {
         static const unsigned short width = 10;
         static const unsigned short height = 10;
         static const ShipTypes shipTypes = {
-                {"Speed boat", 2},
-                {"Destroyer", 3},
-                {"Submarine", 3},
-                {"Battleship", 4},
-                {"Aircraft Carrier", 5},
+                {"Speed boat", (unsigned short) 2},
+                {"Destroyer", (unsigned short) 3},
+                {"Submarine", (unsigned short) 3},
+                {"Battleship", (unsigned short) 4},
+                {"Aircraft Carrier", (unsigned short) 5},
         };
     }
 }
