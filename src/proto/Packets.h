@@ -49,21 +49,21 @@ namespace proto {
         ResponseType type;
     } ResponseHeader;
 
-    typedef struct {
+    typedef struct loginRequest {
         RequestHeader header = {0, 0, RequestType::LOGIN_REQUEST};
         char playerName[32] = "";
     } LoginRequest;
 
-    typedef struct {
+    typedef struct loginResponse {
         ResponseHeader header = {0, 0, ResponseType::LOGIN_RESPONSE};
         bool accepted = false;
     } LoginResponse;
 
-    typedef struct {
+    typedef struct shipTypesRequest {
         RequestHeader header = {0, 0, RequestType::SHIP_TYPES_REQUEST};
     } ShipTypesRequest;
 
-    typedef struct {
+    typedef struct shipTypesResponse {
         ResponseHeader header = {0, 0, ResponseType::SHIP_TYPES_RESPONSE};
         unsigned short ships = 0;
     } ShipTypesResponse;
@@ -71,22 +71,22 @@ namespace proto {
     /*
      * ShipType is a special appendix packet to ShipTypesResponse and thus does not need a header.
      */
-    typedef struct {
+    typedef struct shipType {
         char name[16] = "";
         unsigned short size = 0;
     } ShipType;
 
-    typedef struct {
+    typedef struct mapRequest{
         RequestHeader header = {0, 0, RequestType::MAP_REQUEST};
     } MapRequest;
 
-    typedef struct {
+    typedef struct mapResponse {
         ResponseHeader header = {0, 0, ResponseType::MAP_RESPONSE};
         unsigned short width = 0;
         unsigned short height = 0;
     } MapResponse;
 
-    typedef struct {
+    typedef struct shipPlacementRequest {
         RequestHeader header = {0, 0, RequestType::SHIP_PLACEMENT_REQUEST};
         char name[16] = "";
         unsigned short x = 0;
@@ -94,34 +94,34 @@ namespace proto {
         models::Orientation orientation = models::Orientation::X;
     } ShipPlacementRequest;
 
-    typedef struct {
+    typedef struct shipPlacementResponse {
         ResponseHeader header = {0, 0, ResponseType::SHIP_PLACEMENT_RESPONSE};
         models::PlacementResult result = models::PlacementResult::SUCCESS;
     } ShipPlacementResponse;
 
-    typedef struct {
+    typedef struct statusRequest {
         RequestHeader header = {0, 0, RequestType::STATUS_REQUEST};
     } StatusRequest;
 
-    typedef struct {
+    typedef struct statusResponse {
         ResponseHeader header = {0, 0, ResponseType::STATUS_RESPONSE};
         Status status = Status::WAITING_FOR_OPPONENT;
     } StatusResponse;
 
-    typedef struct {
+    typedef struct turnRequest {
         RequestHeader header = {0, 0, RequestType::TURN_REQUEST};
         unsigned short x = 0;
         unsigned short y = 0;
     } TurnRequest;
 
-    typedef struct {
+    typedef struct turnResponse {
         ResponseHeader header = {0, 0, ResponseType::TURN_RESPONSE};
         bool hit = false;
         bool gameOver = false;
         bool won = false;
     } TurnResponse;
 
-    typedef struct {
+    typedef struct invalidRequest {
         ResponseHeader header = {0, 0, ResponseType::INVALID_REQUEST};
     } InvalidRequest;
 
