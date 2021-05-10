@@ -12,14 +12,16 @@
 #include "Packets.h"
 
 namespace proto {
-    class GameClient : public net::Client{
+    class GameClient : public net::Client {
     private:
         unsigned long playerId;
 
         LoginRequest createLoginRequest(std::string const &playerName);
+        ShipTypesRequest createShipTypesRequest();
 
-        void processResponse(string &buf);
+        void processResponse(std::string &buf);
         void processLoginResponse(LoginResponse const &loginResponse);
+        void processShipTypesResponse(std::string &buf);
     protected:
         using net::Client::receive;
     public:
@@ -27,6 +29,7 @@ namespace proto {
         GameClient();
 
         bool sendLoginRequest(std::string const &name);
+        void sendShipTypesRequest();
     };
 }
 

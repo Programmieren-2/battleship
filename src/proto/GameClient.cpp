@@ -7,8 +7,14 @@ using std::cerr;
 using std::cout;
 using std::endl;
 
+#include <map>
+using std::map;
+
 #include <string>
 using std::string;
+
+#include <vector>
+using std::vector;
 
 #include "Client.h"
 using net::Client;
@@ -42,6 +48,34 @@ namespace proto {
         return loginRequest;
     }
 
+    ShipTypesRequest GameClient::createShipTypesRequest()
+    {
+        ShipTypesRequest shipTypesRequest;
+        return shipTypesRequest;
+    }
+
+    void GameClient::processShipTypesResponse(string &buf)
+    {
+        ShipTypesResponse shipTypesResponse = deserialize<ShipTypesResponse>(buf, true);
+        size_t offset = sizeof shipTypesResponse;
+        ShipType shipType;
+        size_t shipTypeSize = sizeof shipType;
+        map<string, unsigned short> shipTypes;
+        string shipTypeBuf;
+
+        for (unsigned short i = 0; i < shipTypesResponse.ships; i++) {
+            shipTypeBuf = buf.substr(offset, shipTypeSize);
+            shipType = deserialize<ShipType>(shipTypeBuf, true);
+            shipTypes[shipType.name] = shipType.size;
+            offset += shipTypeSize;
+        }
+
+        cout << "The server has the following ship types:" << endl;
+
+        for (auto &[name, size] : shipTypes)
+            cout << "* " << name << " (" << size << ")" << endl;
+    }
+
     void GameClient::processResponse(string &buf)
     {
         ResponseHeader header = deserialize<ResponseHeader>(buf, true);
@@ -49,6 +83,10 @@ namespace proto {
         switch (header.type) {
             case ResponseType::LOGIN_RESPONSE:
                 processLoginResponse(deserialize<LoginResponse>(buf));
+                break;
+            case ResponseType::SHIP_TYPES_RESPONSE:
+                processShipTypesResponse(buf);
+                break;
         }
     }
 
@@ -66,5 +104,12 @@ namespace proto {
         string response = communicate(serialize(loginRequest));
         processResponse(response);
         return true;
+    }
+
+    void GameClient::sendShipTypesRequest()
+    {
+        ShipTypesRequest shipTypesRequest = createShipTypesRequest();
+        string response = communicate(serialize(shipTypesRequest));
+        processResponse(response);
     }
 }

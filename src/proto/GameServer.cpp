@@ -58,8 +58,9 @@ namespace proto {
 
     string GameServer::processShipTypesRequest(ShipTypesRequest const &shipTypesRequest)
     {
-        ShipTypesResponse response;
-        string buf = serialize(response);
+        ShipTypesResponse shipTypesResponse;
+        shipTypesResponse.ships = models::Constants::shipTypes.size();
+        string buf = serialize(shipTypesResponse);
         appendShipTypes(buf);
         return buf;
     }

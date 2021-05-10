@@ -15,6 +15,11 @@ int main()
     cout << "Enter your name: ";
     string name;
     cin >> name;
-    client.sendLoginRequest(name);
+
+    if (name == "ships")
+        client.sendShipTypesRequest();
+    else
+        client.sendLoginRequest(name);
+
     return 0;
 }
