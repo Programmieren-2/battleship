@@ -78,8 +78,8 @@ namespace models {
     {
         string result;
 
-        for (unsigned int y = 0; y < getHeight(); y++) {
-            for (unsigned int x = 0; x < getWidth(); x++)
+        for (unsigned short y = 0; y < getHeight(); y++) {
+            for (unsigned short x = 0; x < getWidth(); x++)
                 result += getSymbolAt(Coordinate(x, y), showShips);
 
             result += "\n";
