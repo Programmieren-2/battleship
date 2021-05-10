@@ -9,7 +9,9 @@
 
 namespace bootstrap {
     models::Coordinate readCoordinate(std::string const &prompt);
+    models::Coordinate readCoordinate();
     models::Orientation readOrientation(string const &prompt);
+    models::Orientation readOrientation();
     models::PlayerBoard readPlayerBoard();
 }
 

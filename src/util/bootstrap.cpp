@@ -56,6 +56,11 @@ namespace bootstrap {
         }
     }
 
+    Coordinate readCoordinate()
+    {
+        return readCoordinate("Coordinates (<x>,<y>): ");
+    }
+
     Orientation readOrientation(string const &prompt) {
         string input;
 
@@ -72,9 +77,14 @@ namespace bootstrap {
         }
     }
 
+    Orientation readOrientation()
+    {
+        return readOrientation("Orientation (x or y): ");
+    }
+
     static void readShip(PlayerBoard &playerBoard, string type, unsigned short length) {
-        Coordinate anchorPoint = readCoordinate("Coordinates (<x>,<y>): ");
-        Orientation orientation = readOrientation("Orientation (x or y): ");
+        Coordinate anchorPoint = readCoordinate();
+        Orientation orientation = readOrientation();
 
         Ship ship(type, anchorPoint, length, orientation);
 
