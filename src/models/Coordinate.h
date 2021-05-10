@@ -5,6 +5,7 @@
 #ifndef BATTLESHIP_COORDINATE_H
 #define BATTLESHIP_COORDINATE_H
 
+#include <map>
 #include <string>
 #include <vector>
 
