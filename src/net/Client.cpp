@@ -14,39 +14,17 @@ using boost::asio::ip::address;
 using boost::asio::ip::tcp;
 using boost::system::error_code;
 
-#include "Net.h"
 #include "Client.h"
 
 namespace net {
-    Client::Client()
-            : TCPIO()
-    {}
-
-    std::string Client::communicate(string const &host, unsigned short port, std::string const &bytes)
+    std::string Client::communicate(std::string const &bytes)
     {
-        Socket socket(service);
-        socket.connect(tcp::endpoint(address::from_string(host), port));
-
-        error_code error = send(socket, bytes);
+        socket.connect(tcp::endpoint(address::from_string(getHost()), getPort()));
+        error_code error = send(bytes);
 
         if (error)
             cerr << "Error while sending message to server: " << error.message() << endl;
 
-        return receive(socket);
-    }
-
-    std::string Client::communicate(unsigned short port, std::string const &message)
-    {
-        return communicate(Defaults::HOST, port, message);
-    }
-
-    std::string Client::communicate(string const &host, std::string const &message)
-    {
-        return communicate(host, Defaults::PORT, message);
-    }
-
-    std::string Client::communicate(std::string const &message)
-    {
-        return communicate(Defaults::HOST, Defaults::PORT, message);
+        return receive();
     }
 }

@@ -9,46 +9,24 @@ using std::string;
 using boost::asio::ip::address;
 using boost::asio::ip::tcp;
 
-#include "Net.h"
 #include "Server.h"
 
 namespace net {
-    Server::Server(string const &host, unsigned short port)
-            : TCPIO(), host(host), port(port)
-    {}
-
-    Server::Server(string const &host)
-            : Server(host, Defaults::PORT)
-    {}
-
-    Server::Server(unsigned short port)
-            : Server(Defaults::HOST, port)
-    {}
-
-    Server::Server()
-            : Server(Defaults::HOST, Defaults::PORT)
-    {}
-
     tcp::acceptor Server::getAcceptor()
     {
-        return tcp::acceptor(service, tcp::endpoint(address::from_string(host), port));
+        return tcp::acceptor(service, tcp::endpoint(address::from_string(getHost()), getPort()));
     }
 
-    Socket Server::getSocket()
+    void Server::listen()
     {
-        Socket socket(service);
         tcp::acceptor acceptor = getAcceptor();
-        acceptor.accept(socket);
-        return socket;
-    }
+        string buf;
 
-    string Server::getHost() const
-    {
-        return host;
-    }
-
-    unsigned int Server::getPort() const
-    {
-        return port;
+        while (true) {
+            acceptor.accept(socket);
+            buf = receive();
+            send(handleRequest(buf));
+            socket.close();
+        }
     }
 }

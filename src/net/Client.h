@@ -7,23 +7,20 @@
 
 #include <string>
 
-#include "TCPIO.h"
+#include "TCPService.h"
 
 namespace net {
-    class Client : public TCPIO {
+    class Client : public TCPService {
+    private:
+        using TCPService::receive;
+        using TCPService::send;
     protected:
-        using TCPIO::receive;
-        using TCPIO::send;
-    public:
-        Client();
-
         /*
          * Sends a base64 encoded string to the server and returns a base64 encoded string as response.
          */
-        std::string communicate(std::string const &host, unsigned short port, std::string const &message);
-        std::string communicate(unsigned short port, std::string const &message);
-        std::string communicate(std::string const &host, std::string const &message);
         std::string communicate(std::string const &message);
+    public:
+        using TCPService::TCPService;
     };
 }
 

@@ -18,8 +18,8 @@ namespace proto {
         std::map<std::string, unsigned short> shipTypes;
 
         LoginResponse createLoginResponse(bool accepted);
-
-        std::string processRequest(net::Socket &socket);
+    protected:
+        std::string handleRequest(std::string &buf) override;
         std::string processLoginRequest(LoginRequest const &loginRequest);
         std::string processShipTypesRequest(ShipTypesRequest const &shipTypesRequest);
         std::string processMapRequest (MapRequest const &mapRequest);
@@ -27,13 +27,15 @@ namespace proto {
         std::string processStatusRequest(StatusRequest const &statusRequest);
         std::string processTurnRequest(TurnRequest const &turnRequest);
         void appendShipTypes(std::string &buf);
-    protected:
-        using net::Server::getAcceptor;
-        using net::Server::getSocket;
     public:
+        GameServer(string const &host, unsigned short port, std::map<std::string, unsigned short> shipTypes);
+        GameServer(unsigned short port, std::map<std::string, unsigned short> shipTypes);
+        GameServer(string const &host, std::map<std::string, unsigned short> shipTypes);
         GameServer(std::map<std::string, unsigned short> shipTypes);
+        GameServer(string const &host, unsigned short port);
+        GameServer(unsigned short port);
+        GameServer(string const &host);
         GameServer();
-        [[noreturn]] void listen() override;
     };
 }
 

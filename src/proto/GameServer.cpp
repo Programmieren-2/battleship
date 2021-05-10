@@ -33,8 +33,32 @@ using util::copyString;
 #include "GameServer.h"
 
 namespace proto {
+    GameServer::GameServer(string const &host, unsigned short port, map<string, unsigned short> shipTypes)
+            : Server(host, port), shipTypes(shipTypes)
+    {}
+
+    GameServer::GameServer(unsigned short port, map<string, unsigned short> shipTypes)
+            : Server(port), shipTypes(shipTypes)
+    {}
+
+    GameServer::GameServer(string const &host, map<string, unsigned short> shipTypes)
+            : Server(host), shipTypes(shipTypes)
+    {}
+
     GameServer::GameServer(map<string, unsigned short> shipTypes)
             : Server(), shipTypes(shipTypes)
+    {}
+
+    GameServer::GameServer(string const &host, unsigned short port)
+            : GameServer(host, port, models::Constants::shipTypes)
+    {}
+
+    GameServer::GameServer(unsigned short port)
+            : GameServer(port, models::Constants::shipTypes)
+    {}
+
+    GameServer::GameServer(string const &host)
+            : GameServer(host, models::Constants::shipTypes)
     {}
 
     GameServer::GameServer()
@@ -106,9 +130,8 @@ namespace proto {
         }
     }
 
-    string GameServer::processRequest(net::Socket &socket)
+    string GameServer::handleRequest(string &buf)
     {
-        string buf = receive(socket);
         RequestHeader header = deserialize<RequestHeader>(buf, true);
         InvalidRequest invalidRequest;
 
@@ -127,17 +150,6 @@ namespace proto {
                 return processTurnRequest(deserialize<TurnRequest>(buf));
             default:
                 return serialize(invalidRequest);
-        }
-    }
-
-    void GameServer::listen()
-    {
-        string response;
-
-        while (true) {
-            Socket socket = getSocket();
-            response = processRequest(socket);
-            send(socket, response);
         }
     }
 }
