@@ -1,19 +1,15 @@
-cmake_minimum_required(VERSION 3.17)
+cmake_minimum_required(VERSION 3.18)
 project(battleship)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
-if(MSVC)
+if (MSVC)
     add_compile_options(/W4)
-    set(Boost_USE_STATIC_LIBS        ON)  # only find static libs
-    set(Boost_USE_DEBUG_LIBS        OFF)  # ignore debug libs and
-    set(Boost_USE_RELEASE_LIBS       ON)  # only find release libs
-    set(Boost_USE_MULTITHREADED      ON)
-    set(Boost_USE_STATIC_RUNTIME    OFF)
-    FIND_PACKAGE(Boost)
-    IF (Boost_FOUND)
-        INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
-    ENDIF()
+    set(Boost_USE_STATIC_LIBS ON)
+    find_package(Boost 1.76.0 REQUIRED COMPONENTS date_time)
+    if (Boost_FOUND)
+        include_directories(${Boost_INCLUDE_DIRS})
+    endif()
 else()
     add_compile_options(-Wall -Wextra -pedantic)
     set(CMAKE_CXX_FLAGS -pthread)
