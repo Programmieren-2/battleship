@@ -39,14 +39,14 @@ namespace proto {
 
 #pragma pack(push, 1)
     typedef struct {
-        unsigned long gameId;
-        unsigned long playerId;
+        uint32_t gameId;
+        uint32_t playerId;
         RequestType type;
     } RequestHeader;
 
     typedef struct {
-        unsigned long gameId;
-        unsigned long playerId;
+        uint32_t gameId;
+        uint32_t playerId;
         ResponseType type;
     } ResponseHeader;
 
@@ -66,7 +66,7 @@ namespace proto {
 
     typedef struct shipTypesResponse {
         ResponseHeader header = {0, 0, ResponseType::SHIP_TYPES_RESPONSE};
-        unsigned short ships = 0;
+        uint8_t ships = 0;
     } ShipTypesResponse;
 
     /*
@@ -74,7 +74,7 @@ namespace proto {
      */
     typedef struct shipType {
         char name[32] = "";
-        unsigned short size = 0;
+        uint8_t size = 0;
     } ShipType;
 
     typedef struct mapRequest{
@@ -83,15 +83,15 @@ namespace proto {
 
     typedef struct mapResponse {
         ResponseHeader header = {0, 0, ResponseType::MAP_RESPONSE};
-        unsigned short width = 0;
-        unsigned short height = 0;
+        uint8_t width = 0;
+        uint8_t height = 0;
     } MapResponse;
 
     typedef struct shipPlacementRequest {
         RequestHeader header = {0, 0, RequestType::SHIP_PLACEMENT_REQUEST};
         char name[32] = "";
-        unsigned short x = 0;
-        unsigned short y = 0;
+        uint8_t x = 0;
+        uint8_t y = 0;
         models::Orientation orientation = models::Orientation::X;
     } ShipPlacementRequest;
 
@@ -111,8 +111,8 @@ namespace proto {
 
     typedef struct turnRequest {
         RequestHeader header = {0, 0, RequestType::TURN_REQUEST};
-        unsigned short x = 0;
-        unsigned short y = 0;
+        uint8_t x = 0;
+        uint8_t y = 0;
     } TurnRequest;
 
     typedef struct turnResponse {
