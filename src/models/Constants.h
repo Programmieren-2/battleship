@@ -5,8 +5,8 @@
 #ifndef BATTLESHIP_CONSTANTS_H
 #define BATTLESHIP_CONSTANTS_H
 
-#include <string>
 #include <map>
+#include <string>
 #include <vector>
 
 #include "Ship.h"
