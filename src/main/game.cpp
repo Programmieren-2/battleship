@@ -34,7 +34,7 @@ namespace game {
         PlayerBoard &targetBoard = playerBoards[(player + 1) % 2];
         cout << "It's " << playerBoard.getName() << "'s turn." << endl;
         cout << targetBoard.toString();
-        Coordinate target = readCoordinate("Specify your target (<x>,<y>): ");
+        Coordinate target = readCoordinate();
 
         switch (targetBoard.fireAt(target)) {
             case HitResult::HIT:
