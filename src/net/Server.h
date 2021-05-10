@@ -16,7 +16,7 @@ namespace net {
     class Server : public TCPIO {
     private:
         std::string host;
-        unsigned int port;
+        unsigned short port;
     protected:
         using TCPIO::receive;
         using TCPIO::send;
