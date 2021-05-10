@@ -56,7 +56,7 @@ namespace models {
                         return "x";
 
                     if (showShips)
-                        return "█";
+                        return "#";
                 }
             }
         }
