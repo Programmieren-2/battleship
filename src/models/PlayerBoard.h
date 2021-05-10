@@ -22,7 +22,7 @@ namespace models {
         [[nodiscard]] bool coordinateOnBoard(Coordinate const &coordinate) const;
         [[nodiscard]] bool shipOnBoard(Ship const &ship) const;
         [[nodiscard]] bool shipCollides(Ship const &ship) const;
-        [[nodiscard]] std::string getCharAt(Coordinate const &coordinate, bool showShips) const;
+        [[nodiscard]] std::string getSymbolAt(Coordinate const &coordinate, bool showShips) const;
     public:
         PlayerBoard(std::string const &name, unsigned short width, unsigned short height);
         explicit PlayerBoard(std::string const &name);
