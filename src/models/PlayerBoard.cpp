@@ -47,7 +47,7 @@ namespace models {
         return false;
     }
 
-    string PlayerBoard::getCharAt(const Coordinate &coordinate, bool showShips) const
+    string PlayerBoard::getSymbolAt(const Coordinate &coordinate, bool showShips) const
     {
         for (Ship const &ship : ships) {
             for (HitPoint const &hitPoint : ship.getHitPoints()) {
@@ -80,7 +80,7 @@ namespace models {
 
         for (unsigned int y = 0; y < getHeight(); y++) {
             for (unsigned int x = 0; x < getWidth(); x++) {
-                result += getCharAt(Coordinate(x, y), showShips);
+                result += getSymbolAt(Coordinate(x, y), showShips);
             }
 
             result += "\n";
