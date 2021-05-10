@@ -20,7 +20,7 @@ namespace models {
         [[nodiscard]] unsigned short getX() const;
         [[nodiscard]] unsigned short getY() const;
 
-        bool operator==(Coordinate const & coordinate) const;
+        bool operator==(Coordinate const &coordinate) const;
     };
 
     typedef std::vector<Coordinate> Coordinates;
