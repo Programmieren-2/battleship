@@ -109,9 +109,7 @@ namespace proto {
     string GameServer::processRequest(net::Socket &socket)
     {
         string buf = receive(socket);
-        cerr << "Bytes received: " << buf.size() << endl;
         RequestHeader header = deserialize<RequestHeader>(buf, true);
-        cerr << "Received request " << header.type << " from player " << header.playerId << "." << endl;
         InvalidRequest invalidRequest;
 
         switch (header.type) {
