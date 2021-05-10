@@ -12,6 +12,9 @@ using std::endl;
 #include <string>
 using std::string;
 
+#include <vector>
+using std::vector;
+
 #include "Net.h"
 using net::Socket;
 
@@ -19,14 +22,12 @@ using net::Socket;
 #include "util.h"
 using util::contains;
 
+#include "Constants.h"
+
 #include "Packets.h"
 #include "GameServer.h"
 
 namespace proto {
-    namespace Constants {
-        static const std::vector<std::string> VALID_PLAYER_NAMES = {"Richard", "Steve"};
-    }
-
     GameServer::GameServer()
             : Server()
     {}
@@ -44,7 +45,7 @@ namespace proto {
         string playerName = loginRequest.playerName;
         cerr << "Player '" << playerName << "' wants to log in." << endl;
 
-        if (contains(Constants::VALID_PLAYER_NAMES, playerName)) {
+        if (contains(models::Constants::VALID_PLAYER_NAMES, playerName)) {
             cerr << "Player name is whitelisted. Allowing login." << endl;
             response.accepted = true;
         } else {
@@ -89,7 +90,12 @@ namespace proto {
 
     void GameServer::appendShipTypes(string &buf)
     {
-        return;
+        for (auto &[name, size] : models::Constants::shipTypes) {
+            ShipType shipType;
+            strncpy(shipType.name, name.c_str(), sizeof shipType.name);
+            shipType.size = size;
+            buf += serialize(shipType);
+        }
     }
 
     string GameServer::processRequest(net::Socket &socket)

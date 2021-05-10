@@ -5,6 +5,9 @@
 #ifndef BATTLESHIP_CONSTANTS_H
 #define BATTLESHIP_CONSTANTS_H
 
+#include <string>
+#include <vector>
+
 #include "Ship.h"
 
 namespace models {
@@ -20,6 +23,7 @@ namespace models {
                 {"Battleship", 4},
                 {"Aircraft Carrier", 5},
         };
+        static const std::vector<std::string> VALID_PLAYER_NAMES = {"Richard", "Steve"};
     }
 }
 #endif //BATTLESHIP_CONSTANTS_H
