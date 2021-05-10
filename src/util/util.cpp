@@ -3,8 +3,10 @@
 //
 
 #include <iostream>
+using std::cerr;
 using std::cin;
 using std::cout;
+using std::endl;
 
 #include <regex>
 using std::regex;
@@ -61,11 +63,16 @@ namespace util {
 
     int copyString(char *dest, string const &src, size_t size)
     {
+        size_t maxSize = size - 1;
+
+        if (src.size() > maxSize)
+            cerr << "String exceeds " << maxSize << " bytes, so it will be truncated." << endl;
+
 #if defined(__linux__)
-        strncpy(dest, src.c_str(), size);
+        strncpy(dest, src.c_str(), maxSize);
         return 0;
 #else
-        return strncpy_s(dest, size, src.c_str(), src.size());
+        return strncpy_s(dest, size, src.c_str(), maxSize);
 #endif
     }
 }

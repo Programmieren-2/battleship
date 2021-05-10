@@ -73,7 +73,7 @@ namespace proto {
      * ShipType is a special appendix packet to ShipTypesResponse and thus does not need a header.
      */
     typedef struct shipType {
-        char name[16] = "";
+        char name[32] = "";
         unsigned short size = 0;
     } ShipType;
 
@@ -89,7 +89,7 @@ namespace proto {
 
     typedef struct shipPlacementRequest {
         RequestHeader header = {0, 0, RequestType::SHIP_PLACEMENT_REQUEST};
-        char name[16] = "";
+        char name[32] = "";
         unsigned short x = 0;
         unsigned short y = 0;
         models::Orientation orientation = models::Orientation::X;
