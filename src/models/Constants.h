@@ -5,6 +5,9 @@
 #ifndef BATTLESHIP_CONSTANTS_H
 #define BATTLESHIP_CONSTANTS_H
 
+#include <map>
+#include <string>
+
 #include "Ship.h"
 
 namespace models {
