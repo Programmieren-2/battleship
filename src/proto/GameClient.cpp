@@ -33,11 +33,12 @@ namespace proto {
     {
         LoginRequest loginRequest;
         loginRequest.header.playerId = playerId;
+        size_t maxPlayerNameSize = sizeof loginRequest.playerName;
 
-        if (playerName.size() > 32)
-            cerr << "Player name exceeds 32 bytes, so it will be truncated." << endl;
+        if (playerName.size() > maxPlayerNameSize)
+            cerr << "Player name exceeds " << maxPlayerNameSize << " bytes, so it will be truncated." << endl;
 
-        strncpy(loginRequest.playerName, playerName.c_str(), 32);
+        strncpy(loginRequest.playerName, playerName.c_str(), maxPlayerNameSize);
         return loginRequest;
     }
 
