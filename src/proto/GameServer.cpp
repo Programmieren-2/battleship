@@ -90,7 +90,7 @@ namespace proto {
     string GameServer::processShipTypesRequest(ShipTypesRequest const &shipTypesRequest)
     {
         ShipTypesResponse shipTypesResponse;
-        shipTypesResponse.ships = (unsigned short) shipTypes.size();
+        shipTypesResponse.ships = (uint8_t) shipTypes.size();
         string buf = serialize(shipTypesResponse);
         appendShipTypes(buf);
         return buf;
@@ -125,7 +125,7 @@ namespace proto {
         for (auto &[name, size] : shipTypes) {
             ShipType shipType;
             copyString(shipType.name, name, sizeof shipType.name);
-            shipType.size = size;
+            shipType.size = (uint8_t) size;
             buf += serialize(shipType);
         }
     }
