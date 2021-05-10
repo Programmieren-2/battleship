@@ -22,7 +22,7 @@ namespace util {
     template <typename ElementType>
     bool contains(std::vector<ElementType> const &haystack, ElementType const &needle)
     {
-        return *std::find(haystack.begin(), haystack.end(), needle) == needle;
+        return std::find(haystack.begin(), haystack.end(), needle) != haystack.end();
     }
 }
 
