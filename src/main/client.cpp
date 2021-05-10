@@ -16,6 +16,14 @@ using util::splitString;
 #include "GameClient.h"
 using proto::GameClient;
 
+static bool checkExit(string const &command)
+{
+    if (cin.eof())
+        cout << endl;
+
+    return cin.eof() || command == "exit" || command == "quit";
+}
+
 int main(int argc, char *argv[])
 {
     if (argc != 3) {
@@ -34,7 +42,7 @@ int main(int argc, char *argv[])
         string command;
         cin >> command;
 
-        if (command == "exit")
+        if (checkExit(command))
             return 0;
 
         if (command == "ships")
