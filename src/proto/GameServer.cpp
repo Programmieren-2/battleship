@@ -2,12 +2,8 @@
 // Created by rne on 08.05.21.
 //
 
-#include <algorithm>
-using std::find;
-
 #include <iostream>
 using std::cerr;
-using std::endl;
 
 #include <map>
 using std::map;
@@ -19,10 +15,6 @@ using std::string;
 using std::vector;
 
 #include "Constants.h"
-
-#include "Net.h"
-using net::Socket;
-
 #include "Server.h"
 
 #include "util.h"
@@ -78,10 +70,10 @@ namespace proto {
         string playerName = loginRequest.playerName;
 
         if (contains(models::Constants::VALID_PLAYER_NAMES, playerName)) {
-            cerr << "Player name is whitelisted. Allowing login." << endl;
+            cerr << "Player name is whitelisted. Allowing login.\n";
             response.accepted = true;
         } else {
-            cerr << "Player name is not whitelisted. Denying login." << endl;
+            cerr << "Player name is not whitelisted. Denying login.\n";
         }
 
         return serialize(response);
