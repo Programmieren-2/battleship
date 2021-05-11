@@ -29,7 +29,7 @@ using net::Socket;
 using util::contains;
 using util::copyString;
 
-#include "Packets.h"
+#include "Messages.h"
 #include "GameServer.h"
 
 namespace proto {

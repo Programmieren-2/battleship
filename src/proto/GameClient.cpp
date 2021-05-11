@@ -25,7 +25,7 @@ using net::Socket;
 #include "util.h"
 using util::copyString;
 
-#include "Packets.h"
+#include "Messages.h"
 #include "GameClient.h"
 
 namespace proto {

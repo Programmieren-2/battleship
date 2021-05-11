@@ -9,7 +9,7 @@
 #include <string>
 
 #include "Net.h"
-#include "Packets.h"
+#include "Messages.h"
 #include "Server.h"
 
 namespace proto {

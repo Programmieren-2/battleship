@@ -2,8 +2,8 @@
 // Created by rne on 08.05.21.
 //
 
-#ifndef BATTLESHIP_PACKETS_H
-#define BATTLESHIP_PACKETS_H
+#ifndef BATTLESHIP_MESSAGES_H
+#define BATTLESHIP_MESSAGES_H
 
 #include <iostream>
 
@@ -129,35 +129,35 @@ namespace proto {
 #pragma pack(pop)
 
     /*
-     * Convert a byte string into a packet.
+     * Convert a byte string into a message struct.
      */
-    template <typename PacketType>
-    PacketType deserialize(std::string &buf, bool partialProcessing = false)
+    template <typename Message>
+    Message deserialize(std::string &buf, bool partialProcessing = false)
     {
-        PacketType packet;
+        Message msg;
         size_t bufSize = buf.length();
-        size_t packetSize = sizeof packet;
+        size_t msgSize = sizeof msg;
 
-        if (packetSize > bufSize)
-            std::cerr << "Packet larger than buffer size. Partial read: " << (packetSize - bufSize) << std::endl;
+        if (msgSize > bufSize)
+            std::cerr << "Packet larger than buffer size. Partial read: " << (msgSize - bufSize) << std::endl;
 
-        if (packetSize < bufSize && !partialProcessing)
-            std::cerr << "Packet smaller than buffer size. Bytes unprocessed: " << (bufSize - packetSize) << std::endl;
+        if (msgSize < bufSize && !partialProcessing)
+            std::cerr << "Packet smaller than buffer size. Bytes unprocessed: " << (bufSize - msgSize) << std::endl;
 
         auto ptr = reinterpret_cast<char*>(&buf[0]);
-        memcpy(&packet, ptr, (packetSize < bufSize) ? packetSize : bufSize);
-        return packet;
+        memcpy(&msg, ptr, (msgSize < bufSize) ? msgSize : bufSize);
+        return msg;
     }
 
     /*
-     * Convert a packet into a byte string.
+     * Convert a message struct into a byte string.
      */
-    template <typename PacketType>
-    std::string serialize(PacketType &packet)
+    template <typename Message>
+    std::string serialize(Message &msg)
     {
-        auto ptr = reinterpret_cast<char*>(&packet);
-        return std::string(ptr, ptr + sizeof packet);
+        auto ptr = reinterpret_cast<char*>(&msg);
+        return std::string(ptr, ptr + sizeof msg);
     }
 }
 
-#endif //BATTLESHIP_PACKETS_H
+#endif //BATTLESHIP_MESSAGES_H

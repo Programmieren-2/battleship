@@ -9,7 +9,7 @@
 
 #include "Net.h"
 #include "Client.h"
-#include "Packets.h"
+#include "Messages.h"
 
 namespace proto {
     class GameClient : public net::Client {
