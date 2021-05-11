@@ -19,7 +19,7 @@ namespace proto {
 
         LoginResponse createLoginResponse(bool accepted);
     protected:
-        std::string handleRequest(std::string &buf) override;
+        std::string handleRequest(std::string const &buf) override;
         std::string processLoginRequest(LoginRequest const &loginRequest);
         std::string processShipTypesRequest(ShipTypesRequest const &shipTypesRequest);
         std::string processMapRequest (MapRequest const &mapRequest);

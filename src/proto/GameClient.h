@@ -21,9 +21,9 @@ namespace proto {
         LoginRequest createLoginRequest(std::string const &playerName);
         ShipTypesRequest createShipTypesRequest();
 
-        void processResponse(std::string &buf);
+        void processResponse(std::string const &buf);
         void processLoginResponse(LoginResponse const &loginResponse);
-        void processShipTypesResponse(std::string &buf);
+        void processShipTypesResponse(std::string const &buf);
     public:
         GameClient(std::string const &host, unsigned short port);
         GameClient(std::string const &host);

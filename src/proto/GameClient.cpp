@@ -64,7 +64,7 @@ namespace proto {
         return shipTypesRequest;
     }
 
-    void GameClient::processShipTypesResponse(string &buf)
+    void GameClient::processShipTypesResponse(string const &buf)
     {
         ShipTypesResponse shipTypesResponse = deserialize<ShipTypesResponse>(buf, true);
         size_t offset = sizeof shipTypesResponse;
@@ -86,7 +86,7 @@ namespace proto {
             cout << "* " << name << " (" << size << ")" << endl;
     }
 
-    void GameClient::processResponse(string &buf)
+    void GameClient::processResponse(string const &buf)
     {
         ResponseHeader header = deserialize<ResponseHeader>(buf, true);
 
