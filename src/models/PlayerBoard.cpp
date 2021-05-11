@@ -39,12 +39,9 @@ namespace models {
 
     bool PlayerBoard::shipCollides(Ship const &ship) const
     {
-        for (Ship const &existingShip : ships) {
-            if (existingShip.collidesWith(ship))
-                return true;
-        }
-
-        return false;
+        return any_of(ships.begin(), ships.end(), [ship](Ship const &other) {
+            return ship.collidesWith(other);
+        });
     }
 
     string PlayerBoard::getSymbolAt(Coordinate const &coordinate, bool showShips) const
