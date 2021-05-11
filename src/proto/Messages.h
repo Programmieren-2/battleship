@@ -5,7 +5,9 @@
 #ifndef BATTLESHIP_MESSAGES_H
 #define BATTLESHIP_MESSAGES_H
 
+#include <cstring>
 #include <iostream>
+#include <string>
 
 #include <boost/asio.hpp>
 
