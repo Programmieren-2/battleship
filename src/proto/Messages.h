@@ -134,7 +134,7 @@ namespace proto {
      * Convert a byte string into a message struct.
      */
     template <typename Message>
-    Message deserialize(std::string &buf, bool partialProcessing = false)
+    Message deserialize(std::string const &buf, bool partialProcessing = false)
     {
         Message msg;
         size_t bufSize = buf.length();
@@ -154,9 +154,9 @@ namespace proto {
      * Convert a message struct into a byte string.
      */
     template <typename Message>
-    std::string serialize(Message &msg)
+    std::string serialize(Message const &msg)
     {
-        auto ptr = reinterpret_cast<char*>(&msg);
+        auto ptr = reinterpret_cast<const char*>(&msg);
         return std::string(ptr, ptr + sizeof msg);
     }
 }
