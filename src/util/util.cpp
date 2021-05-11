@@ -6,7 +6,6 @@
 using std::cerr;
 using std::cin;
 using std::cout;
-using std::endl;
 
 #include <regex>
 using std::regex;
@@ -66,7 +65,7 @@ namespace util {
         size_t maxSize = size - 1;
 
         if (src.size() > maxSize)
-            cerr << "String exceeds " << maxSize << " bytes, so it will be truncated." << endl;
+            cerr << "String exceeds " << maxSize << " bytes, so it will be truncated.\n";
 
 #if defined(__linux__)
         strncpy(dest, src.c_str(), maxSize);

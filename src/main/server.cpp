@@ -1,6 +1,5 @@
 #include <iostream>
 using std::cerr;
-using std::endl;
 
 #include <string>
 using std::string;
@@ -11,7 +10,7 @@ using proto::GameServer;
 int main(int argc, char *argv[])
 {
     if (argc != 3) {
-        cerr << "Must specify hostname and port!" << endl;
+        cerr << "Must specify hostname and port!\n";
         return 2;
     }
 

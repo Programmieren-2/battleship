@@ -5,7 +5,6 @@
 #include <iostream>
 using std::cerr;
 using std::cout;
-using std::endl;
 
 #include <map>
 using std::map;
@@ -18,9 +17,6 @@ using std::vector;
 
 #include "Client.h"
 using net::Client;
-
-#include "Net.h"
-using net::Socket;
 
 #include "util.h"
 using util::copyString;
@@ -52,7 +48,7 @@ namespace proto {
         size_t maxPlayerNameSize = sizeof loginRequest.playerName;
 
         if (playerName.size() > maxPlayerNameSize)
-            cerr << "Player name exceeds " << maxPlayerNameSize << " bytes, so it will be truncated." << endl;
+            cerr << "Player name exceeds " << maxPlayerNameSize << " bytes, so it will be truncated.\n";
 
         copyString(loginRequest.playerName, playerName, maxPlayerNameSize);
         return loginRequest;
@@ -80,10 +76,10 @@ namespace proto {
             offset += shipTypeSize;
         }
 
-        cout << "The server has the following ship types:" << endl;
+        cout << "The server has the following ship types:\n";
 
         for (auto &[name, size] : shipTypes)
-            cout << "* " << name << " (" << size << ")" << endl;
+            cout << "* " << name << " (" << size << ")\n";
     }
 
     void GameClient::processResponse(string const &buf)
@@ -103,9 +99,9 @@ namespace proto {
     void GameClient::processLoginResponse(LoginResponse const &loginResponse)
     {
         if (loginResponse.accepted)
-            cout << "Server allowed us to login. Yay!" << endl;
+            cout << "Server allowed us to login. Yay!\n";
         else
-            cerr << "Server denied us to login. Darn it!" << endl;
+            cerr << "Server denied us to login. Darn it!\n";
     }
 
     bool GameClient::sendLoginRequest(string const &name)

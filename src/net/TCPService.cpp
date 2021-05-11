@@ -4,7 +4,6 @@
 
 #include <iostream>
 using std::cerr;
-using std::endl;
 
 #include <string>
 using std::string;
@@ -58,7 +57,7 @@ namespace net {
         read_until(socket, buf, terminator, error);
 
         if (error == eof)
-            cerr << "Reached EOF while reading message." << endl;
+            cerr << "Reached EOF while reading message.\n";
 
         string raw = buffer_cast<const char*>(buf.data());
         raw = raw.substr(0, raw.size() - terminator.size());

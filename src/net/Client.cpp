@@ -4,7 +4,6 @@
 
 #include <iostream>
 using std::cerr;
-using std::endl;
 
 #include <string>
 using std::string;
@@ -23,7 +22,7 @@ namespace net {
         error_code error = send(bytes);
 
         if (error)
-            cerr << "Error while sending message to server: " << error.message() << endl;
+            cerr << "Error while sending message to server: " << error.message() << "\n";
 
         string response = receive();
         socket.close();

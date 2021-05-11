@@ -2,7 +2,6 @@
 using std::cerr;
 using std::cin;
 using std::cout;
-using std::endl;
 
 #include <string>
 using std::string;
@@ -19,7 +18,7 @@ using proto::GameClient;
 static bool checkExit(string const &command)
 {
     if (cin.eof())
-        cout << endl;
+        cout << "\n";
 
     return cin.eof() || command == "exit" || command == "quit";
 }
@@ -27,7 +26,7 @@ static bool checkExit(string const &command)
 int main(int argc, char *argv[])
 {
     if (argc != 3) {
-        cerr << "Must specify hostname and port!" << endl;
+        cerr << "Must specify hostname and port!\n";
         return 2;
     }
 
@@ -35,7 +34,7 @@ int main(int argc, char *argv[])
     string port = argv[2];
 
     GameClient client(host, stoul(port));
-    cout << "Enter your name to login or 'ships' to list the ships or 'exit' to exit." << endl;
+    cout << "Enter your name to login or 'ships' to list the ships or 'exit' to exit.\n";
 
     while (true) {
         cout << "% ";
