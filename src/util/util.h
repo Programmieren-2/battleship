@@ -5,14 +5,8 @@
 #ifndef BATTLESHIP_UTIL_H
 #define BATTLESHIP_UTIL_H
 
-#include <algorithm>
-#include <regex>
 #include <string>
 #include <vector>
-
-#include "Coordinate.h"
-#include "PlayerBoard.h"
-#include "Ship.h"
 
 namespace util {
     std::vector <std::string> splitString(std::string const &str, std::string const &delimiter);
