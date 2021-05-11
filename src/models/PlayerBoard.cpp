@@ -110,7 +110,7 @@ namespace models {
         for (Ship &ship : ships) {
             switch (ship.hitAt(coordinate)) {
                 case HitResult::MISSED:
-                    break;
+                    continue;
                 case HitResult::ALREADY_HIT:
                     return HitResult::ALREADY_HIT;
                 case HitResult::HIT:
