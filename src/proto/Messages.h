@@ -28,15 +28,17 @@ namespace proto {
     };
 
     enum RequestType {
+        NOOP,
         LOGIN_REQUEST,
         SHIP_TYPES_REQUEST,
         MAP_REQUEST,
         SHIP_PLACEMENT_REQUEST,
         STATUS_REQUEST,
-        TURN_REQUEST
+        TURN_REQUEST,
     };
 
     enum ResponseType {
+        INVALID_REQUEST,
         LOGIN_RESPONSE,
         SHIP_TYPES_RESPONSE,
         SHIP_TYPE,
@@ -44,22 +46,47 @@ namespace proto {
         SHIP_PLACEMENT_RESPONSE,
         STATUS_RESPONSE,
         TURN_RESPONSE,
-        INVALID_REQUEST
     };
 
 #pragma pack(push, 1)
 
-    typedef struct {
-        RequestType type;
+    struct RequestHeader {
+        uint8_t type;
         uint32_t gameId = 0;
         uint32_t playerId = 0;
-    } RequestHeader;
 
-    typedef struct {
-        ResponseType type;
-        uint32_t gameId = 0;
-        uint32_t playerId = 0;
-    } ResponseHeader;
+        RequestHeader(RequestType type, unsigned int gameId, unsigned int playerId)
+            : type(static_cast<uint8_t>(type)), gameId(static_cast<uint32_t>(gameId)),
+            playerId(static_cast<uint32_t>(playerId))
+        {}
+
+        RequestHeader(RequestType type)
+                : RequestHeader(type, 0, 0)
+        {}
+
+        RequestHeader()
+                : RequestHeader(RequestType::NOOP)
+        {}
+    };
+
+    struct ResponseHeader {
+        uint8_t type;
+        uint32_t gameId;
+        uint32_t playerId;
+
+        ResponseHeader(ResponseType type, unsigned int gameId, unsigned int playerId)
+            : type(static_cast<uint8_t>(type)), gameId(static_cast<uint32_t>(gameId)),
+            playerId(static_cast<uint32_t>(playerId))
+        {}
+
+        ResponseHeader(ResponseType type)
+        : ResponseHeader(type, 0, 0)
+        {}
+
+        ResponseHeader()
+                : ResponseHeader(ResponseType::INVALID_REQUEST)
+        {}
+    };
 
     typedef struct loginRequest {
         RequestHeader header = {RequestType::LOGIN_REQUEST};
