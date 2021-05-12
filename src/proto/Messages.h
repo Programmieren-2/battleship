@@ -16,7 +16,7 @@
 #include "Net.h"
 #include "PlayerBoard.h"
 
-#include "exceptions.h"
+#include "BufferSizeMismatch.h"
 
 namespace proto {
     enum Status {

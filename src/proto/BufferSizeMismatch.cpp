@@ -6,7 +6,7 @@
 using std::string;
 using std::to_string;
 
-#include "exceptions.h"
+#include "BufferSizeMismatch.h"
 
 namespace proto {
     BufferSizeMismatch::BufferSizeMismatch(const char *reason)

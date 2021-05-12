@@ -2,8 +2,8 @@
 // Created by rne on 12.05.21.
 //
 
-#ifndef BATTLESHIP_EXCEPTIONS_H
-#define BATTLESHIP_EXCEPTIONS_H
+#ifndef BATTLESHIP_BUFFERSIZEMISMATCH_H
+#define BATTLESHIP_BUFFERSIZEMISMATCH_H
 
 #include <exception>
 #include <string>
@@ -18,4 +18,4 @@ namespace proto {
     };
 }
 
-#endif //BATTLESHIP_EXCEPTIONS_H
+#endif //BATTLESHIP_BUFFERSIZEMISMATCH_H
