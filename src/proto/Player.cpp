@@ -18,10 +18,6 @@ namespace proto {
             : id(id), name(name), keepalive(system_clock::now()), board(PlayerBoard(name))
     {}
 
-    Player::Player()
-            : Player(0, "")
-    {}
-
     unsigned long Player::getId() const
     {
         return id;

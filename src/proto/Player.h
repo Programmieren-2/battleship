@@ -22,7 +22,6 @@ namespace proto {
         models::PlayerBoard board;
     public:
         Player(unsigned long id, std::string const &name);
-        Player();
 
         [[nodiscard]] unsigned long getId() const;
         [[nodiscard]] std::string getName() const;

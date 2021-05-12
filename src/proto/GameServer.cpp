@@ -5,6 +5,9 @@
 #include <memory>
 using std::unique_ptr;
 
+#include <optional>
+using std::optional;
+
 #include <stdexcept>
 using std::out_of_range;
 
@@ -102,7 +105,7 @@ namespace proto {
         MapResponse response;
         response.header.playerId = request.header.playerId;
         auto playerId = static_cast<unsigned long>(request.header.playerId);
-        Player otherPlayer;
+        optional<Player> otherPlayer;
 
         try {
             otherPlayer = Player(getPlayer(playerId));
@@ -110,7 +113,7 @@ namespace proto {
             return serialize(InvalidRequest());
         }
 
-        PlayerBoard targetBoard = otherPlayer.getBoard();
+        PlayerBoard targetBoard = otherPlayer.value().getBoard();
         response.width = targetBoard.getWidth();
         response.height = targetBoard.getHeight();
         string targetBoardMap = targetBoard.toString();
