@@ -41,7 +41,6 @@ namespace proto {
         INVALID_REQUEST,
         LOGIN_RESPONSE,
         SHIP_TYPES_RESPONSE,
-        SHIP_TYPE,
         MAP_RESPONSE,
         SHIP_PLACEMENT_RESPONSE,
         STATUS_RESPONSE,
