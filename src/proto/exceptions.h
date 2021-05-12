@@ -11,13 +11,9 @@
 namespace proto {
     class BufferSizeMismatch : public std::exception {
     private:
-        size_t actualSize;
-        size_t expectedSize;
+        const char *reason;
     public:
-        BufferSizeMismatch(size_t actualSize, size_t expectedSize);
-        [[nodiscard]] size_t getActualSize() const;
-        [[nodiscard]] size_t getExpectedSize() const;
-        [[nodiscard]] string getMessage() const;
+        explicit BufferSizeMismatch(const char *reason);
         [[nodiscard]] const char *what () const noexcept override;
     };
 }

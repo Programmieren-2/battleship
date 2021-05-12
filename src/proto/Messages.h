@@ -143,10 +143,10 @@ namespace proto {
         size_t msgSize = sizeof msg;
 
         if (msgSize > bufSize)
-            throw BufferSizeMismatch(bufSize, msgSize);
+            throw BufferSizeMismatch("Message size exceeds buffer size.");
 
         if (msgSize < bufSize && !partialProcessing)
-            throw BufferSizeMismatch(bufSize, msgSize);
+            throw BufferSizeMismatch("Buffer size exceeds message size.");
 
         std::memcpy(&msg, &buf[0], (msgSize < bufSize) ? msgSize : bufSize);
         return msg;
