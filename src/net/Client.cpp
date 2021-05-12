@@ -22,7 +22,7 @@ namespace net {
         error_code error = send(bytes);
 
         if (error)
-            cerr << "Error while sending message to server: " << error.message() << "\n";
+            throw error;
 
         string response = receive();
         socket.close();
