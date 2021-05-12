@@ -34,7 +34,7 @@ namespace proto {
         return "Packet sizes match. Possibly invalid use of exception or a race condition.";
     }
 
-    const char *BufferSizeMismatch::what () const throw()
+    const char *BufferSizeMismatch::what () const noexcept
     {
         return getMessage().c_str();
     }
