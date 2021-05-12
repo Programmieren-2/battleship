@@ -51,13 +51,12 @@ namespace proto {
 #pragma pack(push, 1)
 
     struct RequestHeader {
-        uint8_t type;
-        uint32_t gameId = 0;
-        uint32_t playerId = 0;
+        RequestType type;
+        uint32_t gameId;
+        uint32_t playerId;
 
         RequestHeader(RequestType type, unsigned int gameId, unsigned int playerId)
-            : type(static_cast<uint8_t>(type)), gameId(static_cast<uint32_t>(gameId)),
-            playerId(static_cast<uint32_t>(playerId))
+            : type(type), gameId(static_cast<uint32_t>(gameId)), playerId(static_cast<uint32_t>(playerId))
         {}
 
         RequestHeader(RequestType type)
@@ -70,13 +69,12 @@ namespace proto {
     };
 
     struct ResponseHeader {
-        uint8_t type;
+        ResponseType type;
         uint32_t gameId;
         uint32_t playerId;
 
         ResponseHeader(ResponseType type, unsigned int gameId, unsigned int playerId)
-            : type(static_cast<uint8_t>(type)), gameId(static_cast<uint32_t>(gameId)),
-            playerId(static_cast<uint32_t>(playerId))
+            : type(type), gameId(static_cast<uint32_t>(gameId)), playerId(static_cast<uint32_t>(playerId))
         {}
 
         ResponseHeader(ResponseType type)
