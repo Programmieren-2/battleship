@@ -100,9 +100,6 @@ namespace bootstrap {
             case PlacementResult::SUCCESS:
                 return;
         }
-
-        cerr << "Something went awry. Try again.\n";
-        readShip(playerBoard, type, length);
     }
 
     static void readShips(PlayerBoard &playerBoard) {
