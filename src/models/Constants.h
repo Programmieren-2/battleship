@@ -15,9 +15,9 @@ namespace models {
     typedef std::map<std::string, unsigned short> ShipTypes;
 
     namespace Constants {
-        static const unsigned short width = 10;
-        static const unsigned short height = 10;
-        static const ShipTypes shipTypes = {
+        static const unsigned short WIDTH = 10;
+        static const unsigned short HEIGHT = 10;
+        static const ShipTypes SHIP_TYPES = {
                 {"Speed boat", static_cast<unsigned short>(2)},
                 {"Destroyer", static_cast<unsigned short>(3)},
                 {"Submarine", static_cast<unsigned short>(3)},

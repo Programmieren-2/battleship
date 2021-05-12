@@ -44,7 +44,7 @@ namespace proto {
     {}
 
     GameServer::GameServer(string const &host, unsigned short port)
-            : GameServer(host, port, models::Constants::shipTypes)
+            : GameServer(host, port, models::Constants::SHIP_TYPES)
     {}
 
     GameServer::GameServer(ShipTypes shipTypes)
@@ -52,7 +52,7 @@ namespace proto {
     {}
 
     GameServer::GameServer()
-            : GameServer(models::Constants::shipTypes)
+            : GameServer(models::Constants::SHIP_TYPES)
     {}
 
     Player GameServer::getPlayer(unsigned long playerId) const

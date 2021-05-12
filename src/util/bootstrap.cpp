@@ -107,7 +107,7 @@ namespace bootstrap {
     }
 
     static void readShips(PlayerBoard &playerBoard) {
-        for (auto const &[type, length] : models::Constants::shipTypes) {
+        for (auto const &[type, length] : models::Constants::SHIP_TYPES) {
             cout << "Place your " << type << " (size " << length << ").\n";
             readShip(playerBoard, type, length);
             cout << playerBoard.toString(true);

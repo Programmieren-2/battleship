@@ -20,7 +20,7 @@ namespace models {
     {}
 
     PlayerBoard::PlayerBoard(string const &name)
-            : PlayerBoard(name, Constants::width, Constants::height)
+            : PlayerBoard(name, Constants::WIDTH, Constants::HEIGHT)
     {}
 
     string PlayerBoard::getName() const
