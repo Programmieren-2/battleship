@@ -20,6 +20,7 @@ using boost::system::error_code;
 #include "base64.h"
 
 #include "Net.h"
+#include "SocketError.h"
 #include "TCPService.h"
 
 namespace net {
@@ -53,7 +54,7 @@ namespace net {
         read_until(socket, buf, terminator, error);
 
         if (error && error != eof)
-            throw error;
+            throw SocketError(error);
 
         string raw = buffer_cast<const char*>(buf.data());
         return raw.substr(0, raw.size() - terminator.size());
@@ -70,7 +71,7 @@ namespace net {
         write(socket, buffer(message + terminator), error);
 
         if (error)
-            throw error;
+            throw SocketError(error);
     }
 
     void TCPService::send(string const &message)
