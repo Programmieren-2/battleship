@@ -2,17 +2,14 @@
 // Created by rne on 08.05.21.
 //
 
-#include <iostream>
-using std::cerr;
-
-#include <map>
-using std::map;
-
 #include <string>
 using std::string;
 
 #include <vector>
 using std::vector;
+
+#include "Ship.h"
+using models::ShipTypes;
 
 #include "Constants.h"
 #include "Server.h"
@@ -25,94 +22,73 @@ using util::copyString;
 #include "GameServer.h"
 
 namespace proto {
-    GameServer::GameServer(string const &host, unsigned short port, map<string, unsigned short> shipTypes)
+    GameServer::GameServer(string const &host, unsigned short port, ShipTypes shipTypes)
             : Server(host, port), shipTypes(shipTypes)
-    {}
-
-    GameServer::GameServer(unsigned short port, map<string, unsigned short> shipTypes)
-            : Server(port), shipTypes(shipTypes)
-    {}
-
-    GameServer::GameServer(string const &host, map<string, unsigned short> shipTypes)
-            : Server(host), shipTypes(shipTypes)
-    {}
-
-    GameServer::GameServer(map<string, unsigned short> shipTypes)
-            : Server(), shipTypes(shipTypes)
     {}
 
     GameServer::GameServer(string const &host, unsigned short port)
             : GameServer(host, port, models::Constants::shipTypes)
     {}
 
-    GameServer::GameServer(unsigned short port)
-            : GameServer(port, models::Constants::shipTypes)
-    {}
-
-    GameServer::GameServer(string const &host)
-            : GameServer(host, models::Constants::shipTypes)
+    GameServer::GameServer(ShipTypes shipTypes)
+            : Server(), shipTypes(shipTypes)
     {}
 
     GameServer::GameServer()
             : GameServer(models::Constants::shipTypes)
     {}
 
-    LoginResponse GameServer::createLoginResponse(bool accepted)
+    LoginResponse GameServer::createLoginResponse(bool accepted) const
     {
         LoginResponse loginResponse;
         loginResponse.accepted = accepted;
         return loginResponse;
     }
 
-    string GameServer::processLoginRequest(LoginRequest const &loginRequest)
+    string GameServer::processLoginRequest(LoginRequest const &loginRequest) const
     {
-        LoginResponse response;
         string playerName = loginRequest.playerName;
 
-        if (contains(models::Constants::VALID_PLAYER_NAMES, playerName)) {
-            cerr << "Player name is whitelisted. Allowing login.\n";
-            response.accepted = true;
-        } else {
-            cerr << "Player name is not whitelisted. Denying login.\n";
-        }
+        if (contains(models::Constants::VALID_PLAYER_NAMES, playerName))
+            return serialize(createLoginResponse(true));
 
-        return serialize(response);
+        return serialize(createLoginResponse(false));
     }
 
-    string GameServer::processShipTypesRequest(ShipTypesRequest const &shipTypesRequest)
+    string GameServer::processShipTypesRequest(ShipTypesRequest const &shipTypesRequest) const
     {
         ShipTypesResponse shipTypesResponse;
-        shipTypesResponse.ships = (uint8_t) shipTypes.size();
+        shipTypesResponse.ships = static_cast<uint8_t>(shipTypes.size());
         string buf = serialize(shipTypesResponse);
         appendShipTypes(buf);
         return buf;
     }
 
-    string GameServer::processMapRequest(MapRequest const &mapRequest)
+    string GameServer::processMapRequest(MapRequest const &mapRequest) const
     {
         MapResponse response;
         return serialize(response);
     }
 
-    string GameServer::processShipPlacementRequest(ShipPlacementRequest const &shipPlacementRequest)
+    string GameServer::processShipPlacementRequest(ShipPlacementRequest const &shipPlacementRequest) const
     {
         ShipPlacementResponse response;
         return serialize(response);
     }
 
-    string GameServer::processStatusRequest(StatusRequest const &statusRequest)
+    string GameServer::processStatusRequest(StatusRequest const &statusRequest) const
     {
         StatusResponse response;
         return serialize(response);
     }
 
-    string GameServer::processTurnRequest(TurnRequest const &turnRequest)
+    string GameServer::processTurnRequest(TurnRequest const &turnRequest) const
     {
         TurnResponse response;
         return serialize(response);
     }
 
-    void GameServer::appendShipTypes(string &buf)
+    void GameServer::appendShipTypes(string &buf) const
     {
         for (auto &[name, size] : shipTypes) {
             ShipType shipType;
@@ -122,7 +98,7 @@ namespace proto {
         }
     }
 
-    string GameServer::handleRequest(string const &buf)
+    string GameServer::handleRequest(string const &buf) const
     {
         RequestHeader header = deserialize<RequestHeader>(buf, true);
         InvalidRequest invalidRequest;

@@ -6,16 +6,14 @@
 using std::string;
 
 #include <boost/asio.hpp>
-using boost::asio::ip::address;
 using boost::asio::ip::tcp;
 
-#include "Net.h"
 #include "Server.h"
 
 namespace net {
     tcp::acceptor Server::getAcceptor()
     {
-        return tcp::acceptor(service, tcp::endpoint(address::from_string(getHost()), getPort()));
+        return tcp::acceptor(service, getEndpoint());
     }
 
     void Server::listen()
@@ -25,8 +23,7 @@ namespace net {
 
         while (true) {
             acceptor.accept(socket);
-            buf = receive();
-            send(handleRequest(buf));
+            send(handleRequest(receive()));
             socket.close();
         }
     }

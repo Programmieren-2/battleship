@@ -9,6 +9,9 @@ using std::string;
 #include <vector>
 using std::vector;
 
+#include "Ship.h"
+using models::ShipTypes;
+
 #include "util.h"
 using util::splitString;
 
@@ -21,6 +24,22 @@ static bool checkExit(string const &command)
         cout << "\n";
 
     return cin.eof() || command == "exit" || command == "quit";
+}
+
+static void printShipTypes(ShipTypes shipTypes)
+{
+    cout << "The server has the following ship types:\n";
+
+    for (auto const &[name, size] : shipTypes)
+        cout << "* " << name << " (" << size << ")\n";
+}
+
+static void printLoginResult(bool accepted)
+{
+    if (accepted)
+        cout << "Server allowed us to login. Yay!\n";
+    else
+        cerr << "Server denied us to login. Darn it!\n";
 }
 
 int main(int argc, char *argv[])
@@ -38,15 +57,15 @@ int main(int argc, char *argv[])
 
     while (true) {
         cout << "% ";
-        string command;
-        cin >> command;
+        string input;
+        cin >> input;
 
-        if (checkExit(command))
+        if (checkExit(input))
             return 0;
 
-        if (command == "ships")
-            client.sendShipTypesRequest();
+        if (input == "ships")
+            printShipTypes(client.getShipTypes());
         else
-            client.sendLoginRequest(command);
+            printLoginResult(client.login(input));
     }
 }

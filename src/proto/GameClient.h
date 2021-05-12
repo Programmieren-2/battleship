@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "Ship.h"
 #include "Net.h"
 #include "Client.h"
 #include "Messages.h"
@@ -18,20 +19,18 @@ namespace proto {
 
         using net::Client::communicate;
 
-        LoginRequest createLoginRequest(std::string const &playerName);
-        ShipTypesRequest createShipTypesRequest();
-
-        void processResponse(std::string const &buf);
-        void processLoginResponse(LoginResponse const &loginResponse);
-        void processShipTypesResponse(std::string const &buf);
+        template <typename RequestType, typename ResponseType>
+        ResponseType communicate(RequestType const &request)
+        {
+            std::string buf = communicate(serialize(request));
+            return deserialize<ResponseType>(buf);
+        }
     public:
         GameClient(std::string const &host, unsigned short port);
-        GameClient(std::string const &host);
-        GameClient(unsigned short port);
         GameClient();
 
-        bool sendLoginRequest(std::string const &name);
-        void sendShipTypesRequest();
+        bool login(std::string const &name);
+        models::ShipTypes getShipTypes();
     };
 }
 

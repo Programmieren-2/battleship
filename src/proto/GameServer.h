@@ -5,9 +5,9 @@
 #ifndef BATTLESHIP_GAMESERVER_H
 #define BATTLESHIP_GAMESERVER_H
 
-#include <map>
 #include <string>
 
+#include "Ship.h"
 #include "Net.h"
 #include "Messages.h"
 #include "Server.h"
@@ -17,24 +17,20 @@ namespace proto {
     private:
         std::map<std::string, unsigned short> shipTypes;
 
-        LoginResponse createLoginResponse(bool accepted);
+        [[nodiscard]] LoginResponse createLoginResponse(bool accepted) const;
     protected:
-        std::string handleRequest(std::string const &buf) override;
-        std::string processLoginRequest(LoginRequest const &loginRequest);
-        std::string processShipTypesRequest(ShipTypesRequest const &shipTypesRequest);
-        std::string processMapRequest (MapRequest const &mapRequest);
-        std::string processShipPlacementRequest(ShipPlacementRequest const &shipPlacementRequest);
-        std::string processStatusRequest(StatusRequest const &statusRequest);
-        std::string processTurnRequest(TurnRequest const &turnRequest);
-        void appendShipTypes(std::string &buf);
+        [[nodiscard]] std::string handleRequest(std::string const &buf) const override;
+        [[nodiscard]] std::string processLoginRequest(LoginRequest const &loginRequest) const;
+        [[nodiscard]] std::string processShipTypesRequest(ShipTypesRequest const &shipTypesRequest) const;
+        [[nodiscard]] std::string processMapRequest (MapRequest const &mapRequest) const;
+        [[nodiscard]] std::string processShipPlacementRequest(ShipPlacementRequest const &shipPlacementRequest) const;
+        [[nodiscard]] std::string processStatusRequest(StatusRequest const &statusRequest) const;
+        [[nodiscard]] std::string processTurnRequest(TurnRequest const &turnRequest) const;
+        void appendShipTypes(std::string &buf) const;
     public:
-        GameServer(string const &host, unsigned short port, std::map<std::string, unsigned short> shipTypes);
-        GameServer(unsigned short port, std::map<std::string, unsigned short> shipTypes);
-        GameServer(string const &host, std::map<std::string, unsigned short> shipTypes);
-        GameServer(std::map<std::string, unsigned short> shipTypes);
+        GameServer(string const &host, unsigned short port, models::ShipTypes shipTypes);
         GameServer(string const &host, unsigned short port);
-        GameServer(unsigned short port);
-        GameServer(string const &host);
+        GameServer(models::ShipTypes shipTypes);
         GameServer();
     };
 }

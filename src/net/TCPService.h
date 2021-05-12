@@ -19,19 +19,18 @@ namespace net {
     protected:
         boost::asio::io_service service;
         Socket socket;
+        [[nodiscard]] boost::asio::ip::tcp::endpoint getEndpoint() const;
     public:
         TCPService(std::string const &host, unsigned short port);
-        TCPService(std::string const &host);
-        TCPService(unsigned short port);
         TCPService();
 
-        std::string getHost() const;
-        unsigned int getPort() const;
+        [[nodiscard]] std::string getHost() const;
+        [[nodiscard]] unsigned int getPort() const;
 
-        std::string receive(string const &terminator);
-        std::string receive();
-        boost::system::error_code send(string const &message, string const &terminator);
-        boost::system::error_code send(string const &message);
+        [[nodiscard]] std::string receive(string const &terminator);
+        [[nodiscard]] std::string receive();
+        void send(string const &message, string const &terminator);
+        void send(string const &message);
     };
 }
 
