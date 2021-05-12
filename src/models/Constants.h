@@ -24,7 +24,6 @@ namespace models {
                 {"Battleship", static_cast<unsigned short>(4)},
                 {"Aircraft Carrier", static_cast<unsigned short>(5)},
         };
-        static const std::vector<std::string> VALID_PLAYER_NAMES = {"Richard", "Steve"};
     }
 }
 #endif //BATTLESHIP_CONSTANTS_H
