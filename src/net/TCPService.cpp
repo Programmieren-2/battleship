@@ -56,8 +56,8 @@ namespace net {
         error_code error;
         read_until(socket, buf, terminator, error);
 
-        if (error == eof)
-            cerr << "Reached EOF while reading message.\n";
+        if (error && error != eof)
+            throw error;
 
         string raw = buffer_cast<const char*>(buf.data());
         raw = raw.substr(0, raw.size() - terminator.size());
