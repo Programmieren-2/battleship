@@ -15,10 +15,10 @@ namespace proto {
         size_t expectedSize;
     public:
         BufferSizeMismatch(size_t actualSize, size_t expectedSize);
-        size_t getActualSize() const;
-        size_t getExpectedSize() const;
-        string getMessage() const;
-        const char *what () const throw();
+        [[nodiscard]] size_t getActualSize() const;
+        [[nodiscard]] size_t getExpectedSize() const;
+        [[nodiscard]] string getMessage() const;
+        [[nodiscard]] const char *what () const noexcept override;
     };
 }
 
