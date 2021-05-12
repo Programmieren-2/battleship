@@ -5,25 +5,27 @@
 #include <string>
 using std::string;
 
+#include <utility>
+using std::move;
+
 #include <vector>
 using std::vector;
 
 #include "Ship.h"
 using models::ShipTypes;
 
-#include "Constants.h"
-#include "Server.h"
-
 #include "util.h"
 using util::contains;
 using util::copyString;
 
+#include "Constants.h"
+#include "Server.h"
 #include "Messages.h"
 #include "GameServer.h"
 
 namespace proto {
     GameServer::GameServer(string const &host, unsigned short port, ShipTypes shipTypes)
-            : Server(host, port), shipTypes(shipTypes)
+            : Server(host, port), shipTypes(move(shipTypes))
     {}
 
     GameServer::GameServer(string const &host, unsigned short port)
@@ -31,28 +33,19 @@ namespace proto {
     {}
 
     GameServer::GameServer(ShipTypes shipTypes)
-            : Server(), shipTypes(shipTypes)
+            : Server(), shipTypes(move(shipTypes))
     {}
 
     GameServer::GameServer()
             : GameServer(models::Constants::shipTypes)
     {}
 
-    LoginResponse GameServer::createLoginResponse(bool accepted) const
-    {
-        LoginResponse loginResponse;
-        loginResponse.accepted = accepted;
-        return loginResponse;
-    }
-
     string GameServer::processLoginRequest(LoginRequest const &loginRequest) const
     {
+        LoginResponse loginResponse;
         string playerName = loginRequest.playerName;
-
-        if (contains(models::Constants::VALID_PLAYER_NAMES, playerName))
-            return serialize(createLoginResponse(true));
-
-        return serialize(createLoginResponse(false));
+        loginResponse.accepted = contains(models::Constants::VALID_PLAYER_NAMES, playerName);
+        return serialize(loginResponse);
     }
 
     string GameServer::processShipTypesRequest(ShipTypesRequest const &shipTypesRequest) const

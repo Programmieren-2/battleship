@@ -43,7 +43,7 @@ namespace proto {
         ShipTypesRequest request;
         request.header.playerId = playerId;
         string buf = communicate(serialize(request));
-        ShipTypesResponse response = deserialize<ShipTypesResponse>(buf, true);
+        auto response = deserialize<ShipTypesResponse>(buf, true);
         ShipTypes shipTypes;
         ShipType shipType;
         size_t offset;

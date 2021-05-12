@@ -21,7 +21,7 @@ namespace net {
         Socket socket;
         [[nodiscard]] boost::asio::ip::tcp::endpoint getEndpoint() const;
     public:
-        TCPService(std::string const &host, unsigned short port);
+        TCPService(std::string host, unsigned short port);
         TCPService();
 
         [[nodiscard]] std::string getHost() const;

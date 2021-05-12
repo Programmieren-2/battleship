@@ -5,6 +5,9 @@
 #include <string>
 using std::string;
 
+#include <utility>
+using std::move;
+
 #include <boost/asio.hpp>
 using boost::asio::buffer;
 using boost::asio::buffer_cast;
@@ -24,8 +27,8 @@ using boost::system::error_code;
 #include "TCPService.h"
 
 namespace net {
-    TCPService::TCPService(string const &host, unsigned short port)
-            : host(host), port(port), service(io_service()), socket(Socket(service))
+    TCPService::TCPService(string host, unsigned short port)
+            : host(move(host)), port(port), service(io_service()), socket(Socket(service))
     {}
 
     TCPService::TCPService()
