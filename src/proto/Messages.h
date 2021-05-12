@@ -19,9 +19,14 @@
 #include "BufferSizeMismatch.h"
 
 namespace proto {
-    enum Status {
-        WAITING_FOR_OPPONENT, WAITING_FOR_YOU
+    enum GameState {
+        WAITING_FOR_PLAYERS,
+        WAITING_FOR_YOUR_SHIP_PLACEMENTS,
+        WAITING_FOR_OPPONENTS_SHIP_PLACEMENTS,
+        WAITING_FOR_YOUR_TURN,
+        WAITING_FOR_OPPONENTS_TURN,
     };
+
     enum RequestType {
         LOGIN_REQUEST,
         SHIP_TYPES_REQUEST,
@@ -30,6 +35,7 @@ namespace proto {
         STATUS_REQUEST,
         TURN_REQUEST
     };
+
     enum ResponseType {
         LOGIN_RESPONSE,
         SHIP_TYPES_RESPONSE,
@@ -42,34 +48,35 @@ namespace proto {
     };
 
 #pragma pack(push, 1)
+
     typedef struct {
-        uint32_t gameId;
-        uint32_t playerId;
         RequestType type;
+        uint32_t gameId = 0;
+        uint32_t playerId = 0;
     } RequestHeader;
 
     typedef struct {
-        uint32_t gameId;
-        uint32_t playerId;
         ResponseType type;
+        uint32_t gameId = 0;
+        uint32_t playerId = 0;
     } ResponseHeader;
 
     typedef struct loginRequest {
-        RequestHeader header = {0, 0, RequestType::LOGIN_REQUEST};
+        RequestHeader header = {RequestType::LOGIN_REQUEST};
         char playerName[32] = "";
     } LoginRequest;
 
     typedef struct loginResponse {
-        ResponseHeader header = {0, 0, ResponseType::LOGIN_RESPONSE};
+        ResponseHeader header = {ResponseType::LOGIN_RESPONSE};
         bool accepted = false;
     } LoginResponse;
 
     typedef struct shipTypesRequest {
-        RequestHeader header = {0, 0, RequestType::SHIP_TYPES_REQUEST};
+        RequestHeader header = {RequestType::SHIP_TYPES_REQUEST};
     } ShipTypesRequest;
 
     typedef struct shipTypesResponse {
-        ResponseHeader header = {0, 0, ResponseType::SHIP_TYPES_RESPONSE};
+        ResponseHeader header = {ResponseType::SHIP_TYPES_RESPONSE};
         uint8_t ships = 0;
     } ShipTypesResponse;
 
@@ -82,17 +89,18 @@ namespace proto {
     } ShipType;
 
     typedef struct mapRequest{
-        RequestHeader header = {0, 0, RequestType::MAP_REQUEST};
+        RequestHeader header = {RequestType::MAP_REQUEST};
     } MapRequest;
 
     typedef struct mapResponse {
-        ResponseHeader header = {0, 0, ResponseType::MAP_RESPONSE};
+        ResponseHeader header = {ResponseType::MAP_RESPONSE};
         uint8_t width = 0;
         uint8_t height = 0;
+        uint32_t size = 0;  // Followed by so many ASCII chars for ASCII representation of the map
     } MapResponse;
 
     typedef struct shipPlacementRequest {
-        RequestHeader header = {0, 0, RequestType::SHIP_PLACEMENT_REQUEST};
+        RequestHeader header = {RequestType::SHIP_PLACEMENT_REQUEST};
         char name[32] = "";
         uint8_t x = 0;
         uint8_t y = 0;
@@ -100,34 +108,34 @@ namespace proto {
     } ShipPlacementRequest;
 
     typedef struct shipPlacementResponse {
-        ResponseHeader header = {0, 0, ResponseType::SHIP_PLACEMENT_RESPONSE};
+        ResponseHeader header = {ResponseType::SHIP_PLACEMENT_RESPONSE};
         models::PlacementResult result = models::PlacementResult::SUCCESS;
     } ShipPlacementResponse;
 
     typedef struct statusRequest {
-        RequestHeader header = {0, 0, RequestType::STATUS_REQUEST};
+        RequestHeader header = {RequestType::STATUS_REQUEST};
     } StatusRequest;
 
     typedef struct statusResponse {
-        ResponseHeader header = {0, 0, ResponseType::STATUS_RESPONSE};
-        Status status = Status::WAITING_FOR_OPPONENT;
+        ResponseHeader header = {ResponseType::STATUS_RESPONSE};
+        GameState status = GameState::WAITING_FOR_PLAYERS;
     } StatusResponse;
 
     typedef struct turnRequest {
-        RequestHeader header = {0, 0, RequestType::TURN_REQUEST};
+        RequestHeader header = {RequestType::TURN_REQUEST};
         uint8_t x = 0;
         uint8_t y = 0;
     } TurnRequest;
 
     typedef struct turnResponse {
-        ResponseHeader header = {0, 0, ResponseType::TURN_RESPONSE};
+        ResponseHeader header = {ResponseType::TURN_RESPONSE};
         bool hit = false;
         bool gameOver = false;
         bool won = false;
     } TurnResponse;
 
     typedef struct invalidRequest {
-        ResponseHeader header = {0, 0, ResponseType::INVALID_REQUEST};
+        ResponseHeader header = {ResponseType::INVALID_REQUEST};
     } InvalidRequest;
 
 #pragma pack(pop)

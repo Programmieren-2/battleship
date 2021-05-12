@@ -40,9 +40,9 @@ namespace proto {
 
     ShipTypes GameClient::getShipTypes()
     {
-        ShipTypesRequest request;
-        request.header.playerId = playerId;
-        string buf = communicate(serialize(request));
+        RequestHeader header;
+        header.playerId = playerId;
+        string buf = communicate(serialize(header));
         auto response = deserialize<ShipTypesResponse>(buf, true);
         ShipTypes shipTypes;
         ShipType shipType;

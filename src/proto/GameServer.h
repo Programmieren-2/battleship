@@ -8,23 +8,29 @@
 #include <string>
 
 #include "Ship.h"
+
 #include "Net.h"
+
 #include "Messages.h"
+#include "Player.h"
 #include "Server.h"
 
 namespace proto {
     class GameServer : public net::Server {
     private:
+        Players players;
         models::ShipTypes shipTypes;
+        GameState state;
 
-        [[nodiscard]] std::string processLoginRequest(LoginRequest const &loginRequest) const;
-        [[nodiscard]] std::string processShipTypesRequest(ShipTypesRequest const &shipTypesRequest) const;
-        [[nodiscard]] std::string processMapRequest (MapRequest const &mapRequest) const;
-        [[nodiscard]] std::string processShipPlacementRequest(ShipPlacementRequest const &shipPlacementRequest) const;
-        [[nodiscard]] std::string processStatusRequest(StatusRequest const &statusRequest) const;
-        [[nodiscard]] std::string processTurnRequest(TurnRequest const &turnRequest) const;
+        [[nodiscard]] Player getPlayer(unsigned long playerId) const;
+        [[nodiscard]] std::string processLoginRequest(LoginRequest const &request);
+        [[nodiscard]] std::string processShipTypesRequest(ShipTypesRequest const &request) const;
+        [[nodiscard]] std::string processMapRequest (MapRequest const &request) const;
+        [[nodiscard]] std::string processShipPlacementRequest(ShipPlacementRequest const &request) const;
+        [[nodiscard]] std::string processStatusRequest(StatusRequest const &request) const;
+        [[nodiscard]] std::string processTurnRequest(TurnRequest const &request) const;
     protected:
-        [[nodiscard]] std::string handleRequest(std::string const &buf) const override;
+        [[nodiscard]] std::string handleRequest(std::string const &buf) override;
     public:
         GameServer(string const &host, unsigned short port, models::ShipTypes shipTypes);
         GameServer(string const &host, unsigned short port);

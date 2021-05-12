@@ -2,6 +2,12 @@
 // Created by rne on 08.05.21.
 //
 
+#include <memory>
+using std::unique_ptr;
+
+#include <stdexcept>
+using std::out_of_range;
+
 #include <string>
 using std::string;
 
@@ -18,14 +24,23 @@ using models::ShipTypes;
 using util::contains;
 using util::copyString;
 
+#include "PlayerBoard.h"
+using models::PlayerBoard;
+
 #include "Constants.h"
 #include "Server.h"
+using net::Server;
+
 #include "Messages.h"
+#include "NoSuchPlayer.h"
+#include "Player.h"
+
 #include "GameServer.h"
 
 namespace proto {
     GameServer::GameServer(string const &host, unsigned short port, ShipTypes shipTypes)
-            : Server(host, port), shipTypes(move(shipTypes))
+            : Server(host, port), players(Players()), shipTypes(move(shipTypes)),
+            state(GameState::WAITING_FOR_PLAYERS)
     {}
 
     GameServer::GameServer(string const &host, unsigned short port)
@@ -40,19 +55,37 @@ namespace proto {
             : GameServer(models::Constants::shipTypes)
     {}
 
-    string GameServer::processLoginRequest(LoginRequest const &loginRequest) const
+    Player GameServer::getPlayer(unsigned long playerId) const
     {
-        LoginResponse loginResponse;
-        string playerName = loginRequest.playerName;
-        loginResponse.accepted = contains(models::Constants::VALID_PLAYER_NAMES, playerName);
-        return serialize(loginResponse);
+        for (Player const &player : players) {
+            if (player.getId() == playerId)
+                return player;
+        }
+
+        throw NoSuchPlayer(playerId);
     }
 
-    string GameServer::processShipTypesRequest(ShipTypesRequest const &shipTypesRequest) const
+    string GameServer::processLoginRequest(LoginRequest const &request)
     {
-        ShipTypesResponse shipTypesResponse;
-        shipTypesResponse.ships = static_cast<uint8_t>(shipTypes.size());
-        string buf = serialize(shipTypesResponse);
+        LoginResponse response;
+        response.header.playerId = request.header.playerId;
+        string playerName = request.playerName;
+
+        if (players.size() < 2) {
+            players.push_back(Player(players.size() + 1, playerName));
+            response.header.playerId = players.size();
+            response.accepted = true;
+        }
+
+        return serialize(response);
+    }
+
+    string GameServer::processShipTypesRequest(ShipTypesRequest const &request) const
+    {
+        ShipTypesResponse response;
+        response.header.playerId = request.header.playerId;
+        response.ships = static_cast<uint8_t>(shipTypes.size());
+        string buf = serialize(response);
 
         for (auto &[name, size] : shipTypes) {
             ShipType shipType;
@@ -64,13 +97,30 @@ namespace proto {
         return buf;
     }
 
-    string GameServer::processMapRequest(MapRequest const &mapRequest) const
+    string GameServer::processMapRequest(MapRequest const &request) const
     {
         MapResponse response;
-        return serialize(response);
+        response.header.playerId = request.header.playerId;
+        auto playerId = static_cast<unsigned long>(request.header.playerId);
+        Player otherPlayer;
+
+        try {
+            otherPlayer = Player(getPlayer(playerId));
+        } catch (NoSuchPlayer&) {
+            return serialize(InvalidRequest());
+        }
+
+        PlayerBoard targetBoard = otherPlayer.getBoard();
+        response.width = targetBoard.getWidth();
+        response.height = targetBoard.getHeight();
+        string targetBoardMap = targetBoard.toString();
+        response.size = static_cast<uint32_t>(targetBoardMap.size());
+        string buf = serialize(response);
+        buf += targetBoardMap;
+        return buf;
     }
 
-    string GameServer::processShipPlacementRequest(ShipPlacementRequest const &shipPlacementRequest) const
+    string GameServer::processShipPlacementRequest(ShipPlacementRequest const &request) const
     {
         ShipPlacementResponse response;
         return serialize(response);
@@ -88,7 +138,7 @@ namespace proto {
         return serialize(response);
     }
 
-    string GameServer::handleRequest(string const &buf) const
+    string GameServer::handleRequest(string const &buf)
     {
         RequestHeader header = deserialize<RequestHeader>(buf, true);
         InvalidRequest invalidRequest;

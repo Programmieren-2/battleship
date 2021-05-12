@@ -19,7 +19,7 @@ namespace models {
             : Board(width, height), name(name), ships(Ships()), misses(Coordinates())
     {}
 
-    PlayerBoard::PlayerBoard(string &name)
+    PlayerBoard::PlayerBoard(string const &name)
             : PlayerBoard(name, Constants::width, Constants::height)
     {}
 
@@ -54,7 +54,7 @@ namespace models {
                         return "x";
 
                     if (showShips)
-                        return "█";
+                        return "#";
                 }
             }
         }
