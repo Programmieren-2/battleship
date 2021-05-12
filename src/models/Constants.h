@@ -18,11 +18,11 @@ namespace models {
         static const unsigned short width = 10;
         static const unsigned short height = 10;
         static const ShipTypes shipTypes = {
-                {"Speed boat", (unsigned short) 2},
-                {"Destroyer", (unsigned short) 3},
-                {"Submarine", (unsigned short) 3},
-                {"Battleship", (unsigned short) 4},
-                {"Aircraft Carrier", (unsigned short) 5},
+                {"Speed boat", static_cast<unsigned short>(2)},
+                {"Destroyer", static_cast<unsigned short>(3)},
+                {"Submarine", static_cast<unsigned short>(3)},
+                {"Battleship", static_cast<unsigned short>(4)},
+                {"Aircraft Carrier", static_cast<unsigned short>(5)},
         };
         static const std::vector<std::string> VALID_PLAYER_NAMES = {"Richard", "Steve"};
     }
