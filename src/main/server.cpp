@@ -16,6 +16,6 @@ int main(int argc, char *argv[])
 
     string host = argv[1];
     string port = argv[2];
-    GameServer server(host, stoul(port));
+    GameServer server(host, static_cast<unsigned short>(stoul(port)));
     server.listen();
 }

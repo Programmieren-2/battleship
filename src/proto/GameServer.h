@@ -26,7 +26,6 @@ namespace proto {
         [[nodiscard]] std::string processShipPlacementRequest(ShipPlacementRequest const &shipPlacementRequest) const;
         [[nodiscard]] std::string processStatusRequest(StatusRequest const &statusRequest) const;
         [[nodiscard]] std::string processTurnRequest(TurnRequest const &turnRequest) const;
-        void appendShipTypes(std::string &buf) const;
     public:
         GameServer(string const &host, unsigned short port, models::ShipTypes shipTypes);
         GameServer(string const &host, unsigned short port);

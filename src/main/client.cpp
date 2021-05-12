@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
     string host = argv[1];
     string port = argv[2];
 
-    GameClient client(host, stoul(port));
+    GameClient client(host, static_cast<unsigned short>(stoul(port)));
     cout << "Enter your name to login or 'ships' to list the ships or 'exit' to exit.\n";
 
     while (true) {

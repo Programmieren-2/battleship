@@ -39,6 +39,7 @@ namespace bootstrap {
         string input;
         vector<string> items;
         string strX, strY;
+        unsigned short x, y;
 
         while (true) {
             input = readWithPrompt(prompt);
@@ -48,8 +49,11 @@ namespace bootstrap {
                 strX = items[0];
                 strY = items[1];
 
-                if (isNumber(strX) && isNumber(strY))
-                    return Coordinate((unsigned short) stoul(strX), (unsigned short) stoul(strY));
+                if (isNumber(strX) && isNumber(strY)) {
+                    x = static_cast<unsigned short>(stoul(strX));
+                    y = static_cast<unsigned short>(stoul(strY));
+                    return Coordinate(x, y);
+                }
             }
 
             cerr << "Invalid coordinates!\n";

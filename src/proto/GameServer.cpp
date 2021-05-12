@@ -60,7 +60,14 @@ namespace proto {
         ShipTypesResponse shipTypesResponse;
         shipTypesResponse.ships = static_cast<uint8_t>(shipTypes.size());
         string buf = serialize(shipTypesResponse);
-        appendShipTypes(buf);
+
+        for (auto &[name, size] : shipTypes) {
+            ShipType shipType;
+            copyString(shipType.name, name, sizeof shipType.name);
+            shipType.size = static_cast<uint8_t>(size);
+            buf += serialize(shipType);
+        }
+
         return buf;
     }
 
@@ -86,16 +93,6 @@ namespace proto {
     {
         TurnResponse response;
         return serialize(response);
-    }
-
-    void GameServer::appendShipTypes(string &buf) const
-    {
-        for (auto &[name, size] : shipTypes) {
-            ShipType shipType;
-            copyString(shipType.name, name, sizeof shipType.name);
-            shipType.size = (uint8_t) size;
-            buf += serialize(shipType);
-        }
     }
 
     string GameServer::handleRequest(string const &buf) const
