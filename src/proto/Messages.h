@@ -16,6 +16,8 @@
 #include "Net.h"
 #include "PlayerBoard.h"
 
+#include "exceptions.h"
+
 namespace proto {
     enum Status {
         WAITING_FOR_OPPONENT, WAITING_FOR_YOU
@@ -141,10 +143,10 @@ namespace proto {
         size_t msgSize = sizeof msg;
 
         if (msgSize > bufSize)
-            std::cerr << "Packet larger than buffer size. Partial read: " << (msgSize - bufSize) << "\n";
+            throw BufferSizeMismatch(bufSize, msgSize);
 
         if (msgSize < bufSize && !partialProcessing)
-            std::cerr << "Packet smaller than buffer size. Bytes unprocessed: " << (bufSize - msgSize) << "\n";
+            throw BufferSizeMismatch(bufSize, msgSize);
 
         std::memcpy(&msg, &buf[0], (msgSize < bufSize) ? msgSize : bufSize);
         return msg;
