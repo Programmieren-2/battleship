@@ -62,7 +62,7 @@ namespace util {
 
     int copyString(char *dest, string const &src, size_t size)
     {
-        size_t maxSize = size - 1;
+        size_t maxSize = size - 1;  // Reserve for terminating NULL byte.
 
         if (src.size() > maxSize)
             cerr << "String exceeds " << maxSize << " bytes, so it will be truncated.\n";
