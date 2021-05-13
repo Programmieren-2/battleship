@@ -3,7 +3,6 @@
 //
 #include <iostream>
 using std::cout;
-using std::endl;
 
 #include <string>
 using std::string;
@@ -32,25 +31,25 @@ namespace game {
         unsigned short player = round % 2;
         PlayerBoard &playerBoard = playerBoards[player];
         PlayerBoard &targetBoard = playerBoards[(player + 1) % 2];
-        cout << "It's " << playerBoard.getName() << "'s turn." << endl;
+        cout << "It's " << playerBoard.getName() << "'s turn.\n";
         cout << targetBoard.toString();
-        Coordinate target = readCoordinate();
+        Coordinate target = readCoordinate("Specify your target (<x>,<y>): ");
 
         switch (targetBoard.fireAt(target)) {
             case HitResult::HIT:
-                cout << "Hit!" << endl;
+                cout << "Hit!\n";
                 break;
             case HitResult::MISSED:
-                cout << "Miss!" << endl;
+                cout << "Miss!\n";
                 break;
             case HitResult::ALREADY_HIT:
-                cout << "You already hit here!" << endl;
+                cout << "You already hit here!\n";
                 break;
         }
 
         if (targetBoard.allShipsDestroyed()) {
-            cout << "All of " << targetBoard.getName() << "'s ships have been destroyed!" << endl;
-            cout << playerBoard.getName() << " has won the game." << endl;
+            cout << "All of " << targetBoard.getName() << "'s ships have been destroyed!\n";
+            cout << playerBoard.getName() << " has won the game.\n";
             return false;
         }
 

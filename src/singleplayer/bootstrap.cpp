@@ -3,8 +3,8 @@
 //
 
 #include <iostream>
+using std::cerr;
 using std::cout;
-using std::endl;
 
 #include <string>
 using std::string;
@@ -39,6 +39,7 @@ namespace bootstrap {
         string input;
         vector<string> items;
         string strX, strY;
+        unsigned short x, y;
 
         while (true) {
             input = readWithPrompt(prompt);
@@ -48,11 +49,14 @@ namespace bootstrap {
                 strX = items[0];
                 strY = items[1];
 
-                if (isNumber(strX) && isNumber(strY))
-                    return Coordinate((unsigned short) stoul(strX), (unsigned short) stoul(strY));
+                if (isNumber(strX) && isNumber(strY)) {
+                    x = static_cast<unsigned short>(stoul(strX));
+                    y = static_cast<unsigned short>(stoul(strY));
+                    return Coordinate(x, y);
+                }
             }
 
-            cout << "Invalid coordinates! " << endl;
+            cerr << "Invalid coordinates!\n";
         }
     }
 
@@ -73,7 +77,7 @@ namespace bootstrap {
             if (input == "y" || input == "Y")
                 return Orientation::Y;
 
-            cout << "Invalid orientation!" << endl;
+            cerr << "Invalid orientation!\n";
         }
     }
 
@@ -90,24 +94,21 @@ namespace bootstrap {
 
         switch (playerBoard.placeShip(ship)) {
             case PlacementResult::NOT_ON_BOARD:
-                cout << "Ship is not on the board." << endl;
+                cerr << "Ship is not on the board.\n";
                 readShip(playerBoard, type, length);
                 return;
             case PlacementResult::COLLISION:
-                cout << "Ship collides with another ship." << endl;
+                cerr << "Ship collides with another ship.\n";
                 readShip(playerBoard, type, length);
                 return;
             case PlacementResult::SUCCESS:
                 return;
         }
-
-        cout << "Something went awry. Try again." << endl;
-        readShip(playerBoard, type, length);
     }
 
     static void readShips(PlayerBoard &playerBoard) {
-        for (auto const &[type, length] : models::Constants::shipTypes) {
-            cout << "Place your " << type << " (size " << to_string(length) << ")." << endl;
+        for (auto const &[type, length] : models::Constants::SHIP_TYPES) {
+            cout << "Place your " << type << " (size " << length << ").\n";
             readShip(playerBoard, type, length);
             cout << playerBoard.toString(true);
         }

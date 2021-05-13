@@ -20,24 +20,28 @@ namespace models {
         unsigned short length;
         Orientation orientation;
         HitPoints hitPoints;
+
+        void initializeGrid();
     public:
-        Ship(std::string const &type, Coordinate const &anchorPoint, unsigned short length,
-             Orientation const orientation);
+        Ship(std::string type, Coordinate const &anchorPoint, unsigned short length, Orientation orientation);
 
         [[nodiscard]] Coordinate getAnchorPoint() const;
         [[nodiscard]] Coordinate getEndPoint() const;
-        [[nodiscard]] HitPoints getHitPoints() const;
-        [[nodiscard]] bool collidesWith(Ship const &ship) const;
-        [[nodiscard]] bool isDestroyed() const;
         [[nodiscard]] std::string getType() const;
+        [[nodiscard]] HitPoints getHitPoints() const;
+        [[nodiscard]] bool occupies(Coordinate const &coordinate) const;
+        [[nodiscard]] bool collidesWith(Ship const &ship) const;
+        [[nodiscard]] bool isHitAt(Coordinate const &coordinate) const;
+        [[nodiscard]] bool isDestroyed() const;
 
-        HitResult hitAt(Coordinate const &coordinate);
+        HitResult fireAt(Coordinate const &coordinate);
 
         bool operator==(Ship const &other) const;
         bool operator!=(Ship const &other) const;
     };
 
     typedef std::vector<Ship> Ships;
+    typedef std::map<std::string, unsigned short> ShipTypes;
 }
 
 #endif //BATTLESHIP_SHIP_H

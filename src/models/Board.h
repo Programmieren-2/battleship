@@ -6,17 +6,24 @@
 #define BATTLESHIP_BOARD_H
 
 #include "Coordinate.h"
+#include "HitPoint.h"
 
 namespace models {
     class Board {
     private:
         unsigned short width;
         unsigned short height;
+
+        void initializeGrid();
+    protected:
+        Grid grid;
     public:
         Board(unsigned short width, unsigned short height);
 
         [[nodiscard]] unsigned short getWidth() const;
         [[nodiscard]] unsigned short getHeight() const;
+
+        [[nodiscard]] virtual HitResult fireAt(Coordinate const &coordinate);
     };
 }
 

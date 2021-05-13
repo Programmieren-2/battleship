@@ -5,6 +5,8 @@
 #ifndef BATTLESHIP_HITPOINT_H
 #define BATTLESHIP_HITPOINT_H
 
+#include <vector>
+
 #include "Coordinate.h"
 
 namespace models {
@@ -16,11 +18,12 @@ namespace models {
     public:
         HitPoint(unsigned short x, unsigned short y);
 
-        HitResult doHit();
+        [[nodiscard]] HitResult doHit();
         [[nodiscard]] bool isHit() const;
     };
 
     typedef std::vector<HitPoint> HitPoints;
+    typedef std::vector<HitPoints> Grid;
 }
 
 #endif //BATTLESHIP_HITPOINT_H

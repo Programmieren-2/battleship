@@ -6,9 +6,10 @@
 #define BATTLESHIP_COORDINATE_H
 
 #include <string>
-#include <vector>
 
 namespace models {
+    enum Orientation { X, Y };
+
     class Coordinate {
     private:
         unsigned short x;
@@ -22,10 +23,6 @@ namespace models {
 
         bool operator==(Coordinate const &coordinate) const;
     };
-
-    typedef std::vector<Coordinate> Coordinates;
-
-    enum Orientation { X, Y };
 }
 
 

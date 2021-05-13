@@ -5,30 +5,41 @@
 #include <algorithm>
 using std::all_of;
 
-#include <iostream>
-using std::cout;
-using std::endl;
+#include <optional>
+using std::optional;
 
 #include <string>
 using std::string;
+
+#include <utility>
+using std::move;
 
 #include "Coordinate.h"
 #include "HitPoint.h"
 #include "Ship.h"
 
 namespace models {
-    Ship::Ship(string const &type, Coordinate const &anchorPoint, unsigned short length, Orientation const orientation)
-            : type(type), anchorPoint(anchorPoint), length(length), orientation(orientation), hitPoints(HitPoints())
+    Ship::Ship(string type, Coordinate const &anchorPoint, unsigned short length, Orientation orientation)
+            : type(move(type)), anchorPoint(anchorPoint), length(length), orientation(orientation), hitPoints(HitPoints())
     {
+        initializeGrid();
+    }
+
+    void Ship::initializeGrid()
+    {
+        optional<HitPoint> hitPoint;
+
         for (unsigned short offset = 0; offset < length; offset++) {
             switch (orientation) {
-                case Orientation::X:
-                    hitPoints.push_back(HitPoint(anchorPoint.getX() + offset, anchorPoint.getY()));
-                    break;
-                case Orientation::Y:
-                    hitPoints.push_back(HitPoint(anchorPoint.getX(), anchorPoint.getY() + offset));
-                    break;
+            case Orientation::X:
+                hitPoint = HitPoint(anchorPoint.getX() + offset, anchorPoint.getY());
+                break;
+            case Orientation::Y:
+                hitPoint = HitPoint(anchorPoint.getX(), anchorPoint.getY() + offset);
+                break;
             }
+
+            hitPoints.push_back(hitPoint.value());
         }
     }
 
@@ -50,16 +61,25 @@ namespace models {
         return hitPoints;
     }
 
-    bool Ship::collidesWith(Ship const &ship) const
+    bool Ship::occupies(const Coordinate &coordinate) const
     {
-        for (HitPoint const &hitPoint : hitPoints) {
-            for (HitPoint const &otherHitPoint : ship.getHitPoints()) {
-                if (hitPoint == otherHitPoint)
-                    return true;
-            }
-        }
+        return any_of(hitPoints.begin(), hitPoints.end(), [coordinate](auto const &hitPoint) {
+            return hitPoint == coordinate;
+        });
+    }
 
-        return false;
+    bool Ship::collidesWith(Ship const &other) const
+    {
+        return any_of(hitPoints.begin(), hitPoints.end(), [other](auto const &coordinate) {
+            return other.occupies(coordinate);
+        });
+    }
+
+    bool Ship::isHitAt(Coordinate const &coordinate) const
+    {
+        return any_of(hitPoints.begin(), hitPoints.end(), [coordinate](auto const &hitPoint) {
+            return hitPoint == coordinate && hitPoint.isHit();
+        });
     }
 
     bool Ship::isDestroyed() const
@@ -69,7 +89,7 @@ namespace models {
         });
     }
 
-    HitResult Ship::hitAt(Coordinate const &coordinate)
+    HitResult Ship::fireAt(const Coordinate &coordinate)
     {
         for (HitPoint &hitPoint : hitPoints) {
             if (hitPoint == coordinate)
