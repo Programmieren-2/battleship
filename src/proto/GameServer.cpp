@@ -32,7 +32,6 @@ using models::PlayerBoard;
 using net::Server;
 
 #include "Messages.h"
-#include "NoSuchPlayer.h"
 #include "Player.h"
 
 #include "GameServer.h"
@@ -55,14 +54,16 @@ namespace proto {
             : GameServer(models::Constants::SHIP_TYPES)
     {}
 
-    Player GameServer::getPlayer(unsigned long playerId) const
+    optional<Player> GameServer::getPlayer(unsigned long playerId) const
     {
+        optional<Player> result;
+
         for (Player const &player : players) {
             if (player.getId() == playerId)
-                return player;
+                return result =player;
         }
 
-        throw NoSuchPlayer(playerId);
+        return result;
     }
 
     string GameServer::processLoginRequest(LoginRequest const &request)
@@ -102,13 +103,10 @@ namespace proto {
         MapResponse response;
         response.header.playerId = request.header.playerId;
         auto playerId = static_cast<unsigned long>(request.header.playerId);
-        optional<Player> otherPlayer;
+        optional<Player> otherPlayer = getPlayer(playerId);
 
-        try {
-            otherPlayer = Player(getPlayer(playerId));
-        } catch (NoSuchPlayer&) {
+        if (!otherPlayer.has_value())
             return serialize(InvalidRequest());
-        }
 
         PlayerBoard targetBoard = otherPlayer.value().getBoard();
         response.width = targetBoard.getWidth();

@@ -5,6 +5,7 @@
 #ifndef BATTLESHIP_GAMESERVER_H
 #define BATTLESHIP_GAMESERVER_H
 
+#include <optional>
 #include <string>
 
 #include "Ship.h"
@@ -22,7 +23,7 @@ namespace proto {
         models::ShipTypes shipTypes;
         GameState state;
 
-        [[nodiscard]] Player getPlayer(unsigned long playerId) const;
+        [[nodiscard]] std::optional<Player> getPlayer(unsigned long playerId) const;
         [[nodiscard]] std::string processLoginRequest(LoginRequest const &request);
         [[nodiscard]] std::string processShipTypesRequest(ShipTypesRequest const &request) const;
         [[nodiscard]] std::string processMapRequest (MapRequest const &request) const;

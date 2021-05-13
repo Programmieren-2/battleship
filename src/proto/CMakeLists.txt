@@ -1,3 +1,3 @@
-add_library(proto GameClient.cpp GameClient.h GameServer.cpp GameServer.h Messages.h BufferSizeMismatch.cpp BufferSizeMismatch.h Player.cpp Player.h NoSuchPlayer.cpp NoSuchPlayer.h)
+add_library(proto GameClient.cpp GameClient.h GameServer.cpp GameServer.h Messages.h BufferSizeMismatch.cpp BufferSizeMismatch.h Player.cpp Player.h)
 target_include_directories(proto PUBLIC ../models ../net ../util)
 target_link_libraries(proto net models util)
