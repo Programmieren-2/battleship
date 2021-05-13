@@ -6,8 +6,14 @@
 using std::all_of;
 using std::any_of;
 
+#include <optional>
+using std::optional;
+
 #include <string>
 using std::string;
+
+#include <utility>
+using std::move;
 
 #include "Board.h"
 #include "Constants.h"
@@ -15,8 +21,8 @@ using std::string;
 #include "Ship.h"
 
 namespace models {
-    PlayerBoard::PlayerBoard(string const &name, unsigned short width, unsigned short height)
-            : Board(width, height), name(name), ships(Ships()), misses(Coordinates())
+    PlayerBoard::PlayerBoard(string name, unsigned short width, unsigned short height)
+            : Board(width, height), name(move(name)), ships(Ships())
     {}
 
     PlayerBoard::PlayerBoard(string const &name)
@@ -48,23 +54,15 @@ namespace models {
     string PlayerBoard::getSymbolAt(Coordinate const &coordinate, bool showShips) const
     {
         for (Ship const &ship : ships) {
-            for (HitPoint const &hitPoint : ship.getHitPoints()) {
-                if (hitPoint == coordinate) {
-                    if (hitPoint.isHit())
-                        return "x";
+            if (ship.isHitAt(coordinate))
+                return "x";
 
-                    if (showShips)
-                        return "#";
-                }
-            }
+            if (showShips && ship.occupies(coordinate))
+                return "#";
         }
 
-        for (Coordinate miss : misses) {
-            if (miss == coordinate)
-                return "o";
-        }
-
-        return "~";
+        HitPoint hitPoint = grid.at(coordinate.getY()).at(coordinate.getX());
+        return hitPoint.isHit() ? "o" : "~";
     }
 
     bool PlayerBoard::allShipsDestroyed() const
@@ -106,17 +104,21 @@ namespace models {
     HitResult PlayerBoard::fireAt(Coordinate const &coordinate)
     {
         for (Ship &ship : ships) {
-            switch (ship.hitAt(coordinate)) {
-                case HitResult::MISSED:
-                    continue;
+            switch (ship.fireAt(coordinate)) {
                 case HitResult::ALREADY_HIT:
                     return HitResult::ALREADY_HIT;
                 case HitResult::HIT:
                     return HitResult::HIT;
+                default:
+                    continue;
             }
         }
 
-        misses.push_back(coordinate);
-        return HitResult::MISSED;
+        switch(Board::fireAt(coordinate)) {
+            case HitResult::ALREADY_HIT:
+                return HitResult::ALREADY_HIT;
+            default:
+                return HitResult::MISSED;
+        }
     }
 }

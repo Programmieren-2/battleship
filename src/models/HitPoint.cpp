@@ -3,6 +3,7 @@
 //
 
 #include "Coordinate.h"
+
 #include "HitPoint.h"
 
 namespace models {

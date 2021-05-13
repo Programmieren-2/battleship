@@ -17,14 +17,13 @@ namespace models {
     private:
         std::string name;
         Ships ships;
-        Coordinates misses;
 
         [[nodiscard]] bool coordinateOnBoard(Coordinate const &coordinate) const;
         [[nodiscard]] bool shipOnBoard(Ship const &ship) const;
         [[nodiscard]] bool shipCollides(Ship const &ship) const;
         [[nodiscard]] std::string getSymbolAt(Coordinate const &coordinate, bool showShips) const;
     public:
-        PlayerBoard(std::string const &name, unsigned short width, unsigned short height);
+        PlayerBoard(std::string name, unsigned short width, unsigned short height);
         explicit PlayerBoard(std::string const &name);
 
         [[nodiscard]] std::string getName() const;
@@ -33,7 +32,7 @@ namespace models {
         [[nodiscard]] std::string toString() const;
 
         PlacementResult placeShip(Ship const &ship);
-        HitResult fireAt(Coordinate const &coordinate);
+        HitResult fireAt(Coordinate const &coordinate) override;
     };
 
     typedef std::vector<PlayerBoard> PlayerBoards;
