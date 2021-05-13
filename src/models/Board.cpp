@@ -45,16 +45,9 @@ namespace models {
     optional<HitPoint> Board::getHitPointAt(Coordinate const &coordinate)
     {
         optional<HitPoint> hitPoint;
-        optional<HitPoints> row;
 
         try {
-            row = grid.at(coordinate.getY());
-        } catch (out_of_range&) {
-            return hitPoint;
-        }
-
-        try {
-            hitPoint = row.value().at(coordinate.getX());
+            hitPoint = grid.at(coordinate.getY()).at(coordinate.getX());
         } catch (out_of_range&) {
             return hitPoint;
         }
