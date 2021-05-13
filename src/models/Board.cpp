@@ -42,23 +42,32 @@ namespace models {
         return height;
     }
 
-    HitResult Board::fireAt(Coordinate const &coordinate)
+    optional<HitPoint> Board::getHitPointAt(Coordinate const &coordinate)
     {
+        optional<HitPoint> hitPoint;
         optional<HitPoints> row;
 
         try {
             row = grid.at(coordinate.getY());
         } catch (out_of_range&) {
-            return HitResult::MISSED;
+            return hitPoint;
         }
-
-        optional<HitPoint> hitPoint;
 
         try {
             hitPoint = row.value().at(coordinate.getX());
         } catch (out_of_range&) {
-            return HitResult::MISSED;
+            return hitPoint;
         }
+
+        return hitPoint;
+    }
+
+    HitResult Board::fireAt(Coordinate const &coordinate)
+    {
+        optional<HitPoint> hitPoint = getHitPointAt(coordinate);
+
+        if (!hitPoint.has_value())
+            return HitResult::MISSED;
 
         return hitPoint.value().doHit();
     }

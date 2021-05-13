@@ -5,6 +5,8 @@
 #ifndef BATTLESHIP_BOARD_H
 #define BATTLESHIP_BOARD_H
 
+#include <optional>
+
 #include "Coordinate.h"
 #include "HitPoint.h"
 
@@ -23,6 +25,7 @@ namespace models {
         [[nodiscard]] unsigned short getWidth() const;
         [[nodiscard]] unsigned short getHeight() const;
 
+        [[nodiscard]] std::optional<HitPoint> getHitPointAt(Coordinate const &coordinate);
         [[nodiscard]] virtual HitResult fireAt(Coordinate const &coordinate);
     };
 }
