@@ -22,6 +22,7 @@ using models::Coordinate;
 
 #include "PlayerBoard.h"
 using models::PlayerBoard;
+using models::PlacementResult;
 
 #include "Ship.h"
 using models::Ship;
@@ -144,13 +145,20 @@ namespace proto {
         Player &player = candidate.value();
         PlayerBoard &board = player.getBoard();
         string type = request.type;
+        ShipPlacementResponse response;
 
-        if (shipTypes.count(type) == 0 || board.hasShip(type))
-            return serialize(InvalidRequest());
+        if (shipTypes.count(type) == 0) {
+            response.result = PlacementResult::INVALID_SHIP_TYPE;
+            return serialize(response);
+        }
+
+        if (board.hasShip(type)) {
+            response.result = PlacementResult::ALREADY_PLACED;
+            return serialize(response);
+        }
 
         unsigned short length = shipTypes.at(type);
         Ship ship(type, Coordinate(request.x, request.y), length, request.orientation);
-        ShipPlacementResponse response;
         response.result = board.placeShip(ship);
         return serialize(response);
     }

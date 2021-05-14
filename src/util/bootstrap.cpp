@@ -93,6 +93,8 @@ namespace bootstrap {
         Ship ship(type, anchorPoint, length, orientation);
 
         switch (playerBoard.placeShip(ship)) {
+            case PlacementResult::SUCCESS:
+                return;
             case PlacementResult::NOT_ON_BOARD:
                 cerr << "Ship is not on the board.\n";
                 readShip(playerBoard, type, length);
@@ -101,7 +103,11 @@ namespace bootstrap {
                 cerr << "Ship collides with another ship.\n";
                 readShip(playerBoard, type, length);
                 return;
-            case PlacementResult::SUCCESS:
+            case PlacementResult::ALREADY_PLACED:
+                cerr << "You already placed this this.\n";
+                return;
+            case PlacementResult::INVALID_SHIP_TYPE:
+                cerr << "Invalid ship type.\n";
                 return;
         }
     }

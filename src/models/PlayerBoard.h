@@ -11,7 +11,7 @@
 #include "Ship.h"
 
 namespace models {
-    enum PlacementResult { SUCCESS, NOT_ON_BOARD, COLLISION };
+    enum PlacementResult { SUCCESS, NOT_ON_BOARD, COLLISION, ALREADY_PLACED, INVALID_SHIP_TYPE };
 
     class PlayerBoard : public Board {
     private:

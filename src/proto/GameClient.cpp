@@ -105,6 +105,10 @@ namespace proto {
                 return "Ship not on the board.\n";
             case PlacementResult::COLLISION:
                 return "Ship collides with another ship.\n";
+            case PlacementResult::ALREADY_PLACED:
+                return "You already placed this ship.\n";
+            case PlacementResult::INVALID_SHIP_TYPE:
+                return "Invalid ship type.\n";
             default:
                 return "Here be dragons.\n";
         }
