@@ -57,10 +57,11 @@ namespace proto {
         return shipTypes;
     }
 
-    string GameClient::getMap()
+    string GameClient::getMap(bool own)
     {
         MapRequest request;
         request.header.playerId = playerId;
+        request.own = own;
         string buf = communicate(serialize(request));
         auto header = deserialize<ResponseHeader>(buf, true);
 

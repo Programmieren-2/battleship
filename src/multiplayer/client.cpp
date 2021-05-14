@@ -67,6 +67,8 @@ int main(int argc, char *argv[])
             printShipTypes(client.getShipTypes());
         else if (input == "map")
             cout << client.getMap();
+        else if (input == "ownmap")
+            cout << client.getMap(true);
         else
             printLoginResult(client.login(input));
     }

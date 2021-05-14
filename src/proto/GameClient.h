@@ -30,7 +30,7 @@ namespace proto {
 
         bool login(std::string const &name);
         models::ShipTypes getShipTypes();
-        std::string getMap();
+        std::string getMap(bool own = false);
     };
 }
 
