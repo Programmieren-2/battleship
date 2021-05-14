@@ -23,10 +23,10 @@ namespace models {
     Ship::Ship(string type, Coordinate const &anchorPoint, unsigned short length, Orientation orientation)
             : type(move(type)), anchorPoint(anchorPoint), length(length), orientation(orientation), hitPoints(HitPoints())
     {
-        initializeGrid();
+        initializeHitPoints();
     }
 
-    void Ship::initializeGrid()
+    void Ship::initializeHitPoints()
     {
         optional<HitPoint> hitPoint;
 
@@ -40,7 +40,8 @@ namespace models {
                 break;
             }
 
-            hitPoints.push_back(hitPoint.value());
+            if (hitPoint.has_value())
+                hitPoints.push_back(hitPoint.value());
         }
     }
 
@@ -57,11 +58,6 @@ namespace models {
         case Orientation::Y:
             return Coordinate(anchorPoint.getX(), anchorPoint.getY() + length - 1);
         }
-    }
-
-    HitPoints Ship::getHitPoints() const
-    {
-        return hitPoints;
     }
 
     bool Ship::occupies(const Coordinate &coordinate) const

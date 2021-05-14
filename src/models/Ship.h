@@ -21,14 +21,13 @@ namespace models {
         Orientation orientation;
         HitPoints hitPoints;
 
-        void initializeGrid();
+        void initializeHitPoints();
     public:
         Ship(std::string type, Coordinate const &anchorPoint, unsigned short length, Orientation orientation);
 
         [[nodiscard]] Coordinate getAnchorPoint() const;
         [[nodiscard]] Coordinate getEndPoint() const;
         [[nodiscard]] std::string getType() const;
-        [[nodiscard]] HitPoints getHitPoints() const;
         [[nodiscard]] bool occupies(Coordinate const &coordinate) const;
         [[nodiscard]] bool collidesWith(Ship const &ship) const;
         [[nodiscard]] bool isHitAt(Coordinate const &coordinate) const;
