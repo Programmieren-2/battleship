@@ -17,13 +17,6 @@ using std::move;
 #include <vector>
 using std::vector;
 
-#include "Ship.h"
-using models::ShipTypes;
-
-#include "util.h"
-using util::contains;
-using util::copyString;
-
 #include "Coordinate.h"
 using models::Coordinate;
 
@@ -32,6 +25,7 @@ using models::PlayerBoard;
 
 #include "Ship.h"
 using models::Ship;
+using models::ShipTypes;
 
 #include "Constants.h"
 #include "Server.h"
@@ -39,6 +33,10 @@ using net::Server;
 
 #include "Messages.h"
 #include "Player.h"
+
+#include "util.h"
+using util::contains;
+using util::copyString;
 
 #include "GameServer.h"
 
