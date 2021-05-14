@@ -25,6 +25,7 @@ namespace models {
     public:
         PlayerBoard(std::string name, unsigned short width, unsigned short height);
         explicit PlayerBoard(std::string const &name);
+        virtual ~PlayerBoard() = default;
 
         [[nodiscard]] std::string getName() const;
         [[nodiscard]] bool allShipsDestroyed() const;
