@@ -33,7 +33,7 @@ namespace proto {
         return keepalive;
     }
 
-    PlayerBoard Player::getBoard()
+    PlayerBoard& Player::getBoard()
     {
         return board;
     }

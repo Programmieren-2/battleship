@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "Coordinate.h"
 #include "Ship.h"
 #include "Net.h"
 #include "Client.h"
@@ -31,6 +32,7 @@ namespace proto {
         bool login(std::string const &name);
         models::ShipTypes getShipTypes();
         std::string getMap(bool own = false);
+        std::string placeShip(std::string const &type, models::Coordinate anchorPoint, models::Orientation orientation);
     };
 }
 

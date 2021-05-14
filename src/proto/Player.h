@@ -6,6 +6,7 @@
 #define BATTLESHIP_PLAYER_H
 
 #include <chrono>
+#include <functional>
 #include <string>
 #include <vector>
 
@@ -26,10 +27,11 @@ namespace proto {
         [[nodiscard]] unsigned long getId() const;
         [[nodiscard]] std::string getName() const;
         [[nodiscard]] Timestamp getKeepalive() const;
-        [[nodiscard]] models::PlayerBoard  getBoard();
+        [[nodiscard]] models::PlayerBoard& getBoard();
     };
 
     typedef std::vector<Player> Players;
+    typedef std::reference_wrapper<Player> PlayerRef;
 }
 
 #endif //BATTLESHIP_PLAYER_H

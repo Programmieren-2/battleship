@@ -23,12 +23,12 @@ namespace proto {
         models::ShipTypes shipTypes;
         GameState state;
 
-        [[nodiscard]] std::optional<Player> getPlayer(unsigned long playerId) const;
-        [[nodiscard]] std::optional<Player> getOpponent(unsigned long playerId) const;
+        [[nodiscard]] auto getPlayer(unsigned long playerId);
+        [[nodiscard]] auto getOpponent(unsigned long playerId);
         [[nodiscard]] std::string processLoginRequest(LoginRequest const &request);
         [[nodiscard]] std::string processShipTypesRequest(ShipTypesRequest const &request) const;
-        [[nodiscard]] std::string processMapRequest (MapRequest const &request) const;
-        [[nodiscard]] std::string processShipPlacementRequest(ShipPlacementRequest const &request) const;
+        [[nodiscard]] std::string processMapRequest (MapRequest const &request);
+        [[nodiscard]] std::string processShipPlacementRequest(ShipPlacementRequest const &request);
         [[nodiscard]] std::string processStatusRequest(StatusRequest const &request) const;
         [[nodiscard]] std::string processTurnRequest(TurnRequest const &request) const;
     protected:

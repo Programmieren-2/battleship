@@ -9,8 +9,16 @@ using std::string;
 #include <vector>
 using std::vector;
 
+#include "Coordinate.h"
+using models::Coordinate;
+using models::Orientation;
+
 #include "Ship.h"
 using models::ShipTypes;
+
+#include "bootstrap.h"
+using bootstrap::readCoordinate;
+using bootstrap::readOrientation;
 
 #include "util.h"
 using util::splitString;
@@ -42,6 +50,15 @@ static void printLoginResult(bool accepted)
         cerr << "Server denied us to login. Darn it!\n";
 }
 
+static string placeShip(GameClient &client)
+{
+    string type;
+    cin >> type;
+    Coordinate anchorPoint = readCoordinate();
+    Orientation orientation = readOrientation();
+    return client.placeShip(type, anchorPoint, orientation);
+}
+
 int main(int argc, char *argv[])
 {
     if (argc != 3) {
@@ -67,8 +84,10 @@ int main(int argc, char *argv[])
             printShipTypes(client.getShipTypes());
         else if (input == "map")
             cout << client.getMap();
-        else if (input == "ownmap")
+        else if (input == "mymap")
             cout << client.getMap(true);
+        else if (input == "place")
+            cout << placeShip(client);
         else
             printLoginResult(client.login(input));
     }

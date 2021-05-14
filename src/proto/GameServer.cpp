@@ -60,11 +60,11 @@ namespace proto {
             : GameServer(models::Constants::SHIP_TYPES)
     {}
 
-    optional<Player> GameServer::getPlayer(unsigned long playerId) const
+    auto GameServer::getPlayer(unsigned long playerId)
     {
-        optional<Player> result;
+        optional<PlayerRef> result;
 
-        for (Player const &player : players) {
+        for (Player &player : players) {
             if (player.getId() == playerId)
                 return result = player;
         }
@@ -72,11 +72,11 @@ namespace proto {
         return result;
     }
 
-    optional<Player> GameServer::getOpponent(unsigned long playerId) const
+    auto GameServer::getOpponent(unsigned long playerId)
     {
-        optional<Player> result;
+        optional<PlayerRef> result;
 
-        for (Player const &player : players) {
+        for (Player &player : players) {
             if (player.getId() != playerId)
                 return result = player;
         }
@@ -115,17 +115,18 @@ namespace proto {
         return buf;
     }
 
-    string GameServer::processMapRequest(MapRequest const &request) const
+    string GameServer::processMapRequest(MapRequest const &request)
     {
         MapResponse response;
         response.header.playerId = request.header.playerId;
         auto playerId = static_cast<unsigned long>(request.header.playerId);
-        optional<Player> player = request.own ? getPlayer(playerId) : getOpponent(playerId);
+        auto candidate = request.own ? getPlayer(playerId) : getOpponent(playerId);
 
-        if (!player.has_value())
+        if (!candidate.has_value())
             return serialize(InvalidRequest());
 
-        PlayerBoard board = player.value().getBoard();
+        Player &player = candidate.value();
+        PlayerBoard &board = player.getBoard();
         response.width = board.getWidth();
         response.height = board.getHeight();
         string targetBoardMap = board.toString(request.own);
@@ -135,15 +136,15 @@ namespace proto {
         return buf;
     }
 
-    string GameServer::processShipPlacementRequest(ShipPlacementRequest const &request) const
+    string GameServer::processShipPlacementRequest(ShipPlacementRequest const &request)
     {
-        optional<Player> candidate = getPlayer(request.header.playerId);
+        auto candidate = getPlayer(request.header.playerId);
 
         if (!candidate.has_value())
             return serialize(InvalidRequest());
 
-        Player player = candidate.value();
-        PlayerBoard board = player.getBoard();
+        Player &player = candidate.value();
+        PlayerBoard &board = player.getBoard();
         string type = request.type;
 
         if (shipTypes.count(type) == 0 || board.hasShip(type))

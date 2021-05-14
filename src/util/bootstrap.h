@@ -7,6 +7,9 @@
 
 #include <string>
 
+#include "Coordinate.h"
+#include "PlayerBoard.h"
+
 namespace bootstrap {
     models::Coordinate readCoordinate(std::string const &prompt);
     models::Coordinate readCoordinate();
