@@ -114,6 +114,7 @@ namespace proto {
 
     typedef struct mapRequest{
         RequestHeader header = {RequestType::MAP_REQUEST};
+        bool own = false;
     } MapRequest;
 
     typedef struct mapResponse {

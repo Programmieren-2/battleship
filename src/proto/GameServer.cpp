@@ -120,15 +120,15 @@ namespace proto {
         MapResponse response;
         response.header.playerId = request.header.playerId;
         auto playerId = static_cast<unsigned long>(request.header.playerId);
-        optional<Player> opponent = getOpponent(playerId);
+        optional<Player> player = request.own ? getPlayer(playerId) : getOpponent(playerId);
 
-        if (!opponent.has_value())
+        if (!player.has_value())
             return serialize(InvalidRequest());
 
-        PlayerBoard targetBoard = opponent.value().getBoard();
-        response.width = targetBoard.getWidth();
-        response.height = targetBoard.getHeight();
-        string targetBoardMap = targetBoard.toString();
+        PlayerBoard board = player.value().getBoard();
+        response.width = board.getWidth();
+        response.height = board.getHeight();
+        string targetBoardMap = board.toString(request.own);
         response.size = static_cast<uint32_t>(targetBoardMap.size());
         string buf = serialize(response);
         buf += targetBoardMap;
