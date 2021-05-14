@@ -60,7 +60,7 @@ namespace proto {
 
         for (Player const &player : players) {
             if (player.getId() == playerId)
-                return result =player;
+                return result = player;
         }
 
         return result;
