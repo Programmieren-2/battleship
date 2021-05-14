@@ -28,6 +28,7 @@ namespace models {
 
         [[nodiscard]] std::string getName() const;
         [[nodiscard]] bool allShipsDestroyed() const;
+        [[nodiscard]] bool hasShip(std::string const &type) const;
         [[nodiscard]] std::string toString(bool showShips) const;
         [[nodiscard]] std::string toString() const;
 

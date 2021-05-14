@@ -24,8 +24,14 @@ using models::ShipTypes;
 using util::contains;
 using util::copyString;
 
+#include "Coordinate.h"
+using models::Coordinate;
+
 #include "PlayerBoard.h"
 using models::PlayerBoard;
+
+#include "Ship.h"
+using models::Ship;
 
 #include "Constants.h"
 #include "Server.h"
@@ -66,10 +72,21 @@ namespace proto {
         return result;
     }
 
+    optional<Player> GameServer::getOpponent(unsigned long playerId) const
+    {
+        optional<Player> result;
+
+        for (Player const &player : players) {
+            if (player.getId() != playerId)
+                return result = player;
+        }
+
+        return result;
+    }
+
     string GameServer::processLoginRequest(LoginRequest const &request)
     {
         LoginResponse response;
-        response.header.playerId = request.header.playerId;
         string playerName = request.playerName;
 
         if (players.size() < 2) {
@@ -103,12 +120,12 @@ namespace proto {
         MapResponse response;
         response.header.playerId = request.header.playerId;
         auto playerId = static_cast<unsigned long>(request.header.playerId);
-        optional<Player> otherPlayer = getPlayer(playerId);
+        optional<Player> opponent = getOpponent(playerId);
 
-        if (!otherPlayer.has_value())
+        if (!opponent.has_value())
             return serialize(InvalidRequest());
 
-        PlayerBoard targetBoard = otherPlayer.value().getBoard();
+        PlayerBoard targetBoard = opponent.value().getBoard();
         response.width = targetBoard.getWidth();
         response.height = targetBoard.getHeight();
         string targetBoardMap = targetBoard.toString();
@@ -120,7 +137,22 @@ namespace proto {
 
     string GameServer::processShipPlacementRequest(ShipPlacementRequest const &request) const
     {
+        optional<Player> candidate = getPlayer(request.header.playerId);
+
+        if (!candidate.has_value())
+            return serialize(InvalidRequest());
+
+        Player player = candidate.value();
+        PlayerBoard board = player.getBoard();
+        string type = request.type;
+
+        if (shipTypes.count(type) == 0 || board.hasShip(type))
+            return serialize(InvalidRequest());
+
+        unsigned short length = shipTypes.at(type);
+        Ship ship(type, Coordinate(request.x, request.y), length, request.orientation);
         ShipPlacementResponse response;
+        response.result = board.placeShip(ship);
         return serialize(response);
     }
 

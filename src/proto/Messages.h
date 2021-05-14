@@ -125,7 +125,7 @@ namespace proto {
 
     typedef struct shipPlacementRequest {
         RequestHeader header = {RequestType::SHIP_PLACEMENT_REQUEST};
-        char name[32] = "";
+        char type[32] = "";
         uint8_t x = 0;
         uint8_t y = 0;
         models::Orientation orientation = models::Orientation::X;

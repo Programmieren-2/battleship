@@ -24,6 +24,7 @@ namespace proto {
         GameState state;
 
         [[nodiscard]] std::optional<Player> getPlayer(unsigned long playerId) const;
+        [[nodiscard]] std::optional<Player> getOpponent(unsigned long playerId) const;
         [[nodiscard]] std::string processLoginRequest(LoginRequest const &request);
         [[nodiscard]] std::string processShipTypesRequest(ShipTypesRequest const &request) const;
         [[nodiscard]] std::string processMapRequest (MapRequest const &request) const;

@@ -70,6 +70,11 @@ namespace models {
         return all_of(ships.begin(), ships.end(), [](Ship const &ship){ return ship.isDestroyed(); });
     }
 
+    bool PlayerBoard::hasShip(std::string const &type) const
+    {
+        return any_of(ships.begin(), ships.end(), [type](Ship const &ship){ return ship.getType() == type; });
+    }
+
     string PlayerBoard::toString(bool showShips) const
     {
         string result;

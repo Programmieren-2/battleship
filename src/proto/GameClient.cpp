@@ -32,15 +32,16 @@ namespace proto {
     bool GameClient::login(string const &name)
     {
         LoginRequest loginRequest;
-        loginRequest.header.playerId = playerId;
         copyString(loginRequest.playerName, name, sizeof loginRequest.playerName);
         LoginResponse response = communicate<LoginRequest, LoginResponse>(loginRequest);
+        playerId = response.header.playerId;
         return response.accepted;
     }
 
     ShipTypes GameClient::getShipTypes()
     {
         ShipTypesRequest request;
+        request.header.playerId = playerId;
         string buf = communicate(serialize(request));
         auto response = deserialize<ShipTypesResponse>(buf, true);
         ShipTypes shipTypes;
@@ -54,5 +55,19 @@ namespace proto {
         }
 
         return shipTypes;
+    }
+
+    string GameClient::getMap()
+    {
+        MapRequest request;
+        request.header.playerId = playerId;
+        string buf = communicate(serialize(request));
+        auto header = deserialize<ResponseHeader>(buf, true);
+
+        if (header.type == ResponseType::INVALID_REQUEST)
+            return "Invalid request.\n";
+
+        auto response = deserialize<MapResponse>(buf, true);
+        return buf.substr(sizeof response, response.size);
     }
 }
