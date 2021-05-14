@@ -4,4 +4,6 @@ add_library(models
         PlayerBoard.cpp PlayerBoard.h
         Ship.cpp Ship.h
         HitPoint.cpp HitPoint.h
-        )
+)
+target_include_directories(models PUBLIC ../util)
+target_link_libraries(models util)

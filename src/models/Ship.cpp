@@ -51,10 +51,12 @@ namespace models {
 
     Coordinate Ship::getEndPoint() const
     {
-        if (orientation == Orientation::X)
+        switch (orientation) {
+        case Orientation::X:
             return Coordinate(anchorPoint.getX() + length - 1, anchorPoint.getY());
-
-        return Coordinate(anchorPoint.getX(), anchorPoint.getY() + length - 1);
+        case Orientation::Y:
+            return Coordinate(anchorPoint.getX(), anchorPoint.getY() + length - 1);
+        }
     }
 
     HitPoints Ship::getHitPoints() const

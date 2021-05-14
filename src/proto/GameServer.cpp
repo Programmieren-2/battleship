@@ -121,7 +121,7 @@ namespace proto {
         auto playerId = static_cast<unsigned long>(request.header.playerId);
         auto candidate = request.own ? getPlayer(playerId) : getOpponent(playerId);
 
-        if (!candidate.has_value())
+        if (UNLIKELY(!candidate.has_value()))
             return serialize(InvalidRequest());
 
         Player &player = candidate.value();
@@ -139,7 +139,7 @@ namespace proto {
     {
         auto candidate = getPlayer(request.header.playerId);
 
-        if (!candidate.has_value())
+        if (UNLIKELY(!candidate.has_value()))
             return serialize(InvalidRequest());
 
         Player &player = candidate.value();
@@ -147,12 +147,12 @@ namespace proto {
         string type = request.type;
         ShipPlacementResponse response;
 
-        if (shipTypes.count(type) == 0) {
+        if (UNLIKELY(shipTypes.count(type) == 0)) {
             response.result = PlacementResult::INVALID_SHIP_TYPE;
             return serialize(response);
         }
 
-        if (board.hasShip(type)) {
+        if (UNLIKELY(board.hasShip(type))) {
             response.result = PlacementResult::ALREADY_PLACED;
             return serialize(response);
         }

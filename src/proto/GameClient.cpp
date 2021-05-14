@@ -38,7 +38,7 @@ namespace proto {
 
     bool GameClient::login(string const &name)
     {
-        if (playerId != 0)  // Already logged in.
+        if (UNLIKELY(playerId != 0))  // Already logged in.
             return true;
 
         LoginRequest loginRequest;
@@ -75,7 +75,7 @@ namespace proto {
         string buf = communicate(serialize(request));
         auto header = deserialize<ResponseHeader>(buf, true);
 
-        if (header.type == ResponseType::INVALID_REQUEST)
+        if (UNLIKELY(header.type == ResponseType::INVALID_REQUEST))
             return "Invalid request.\n";
 
         auto response = deserialize<MapResponse>(buf, true);
@@ -93,7 +93,7 @@ namespace proto {
         string buf = communicate(serialize(request));
         auto header = deserialize<ResponseHeader>(buf, true);
 
-        if (header.type == ResponseType::INVALID_REQUEST)
+        if (UNLIKELY(header.type == ResponseType::INVALID_REQUEST))
             return "Invalid request.\n";
 
         auto response = deserialize<ShipPlacementResponse>(buf);

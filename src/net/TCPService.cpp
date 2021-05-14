@@ -21,6 +21,7 @@ using boost::asio::write;
 using boost::system::error_code;
 
 #include "base64.h"
+#include "util.h"
 
 #include "Net.h"
 #include "SocketError.h"
@@ -56,7 +57,7 @@ namespace net {
         error_code error;
         read_until(socket, buf, terminator, error);
 
-        if (error && error != eof)
+        if (UNLIKELY(error && error != eof))
             throw SocketError(error);
 
         string raw = buffer_cast<const char*>(buf.data());

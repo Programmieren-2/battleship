@@ -8,6 +8,9 @@
 #include <string>
 #include <vector>
 
+#define LIKELY(x)   __builtin_expect(!!(x), 1)
+#define UNLIKELY(x) __builtin_expect(!!(x), 0)
+
 namespace util {
     std::vector <std::string> splitString(std::string const &str, std::string const &delimiter);
     std::string readWithPrompt(std::string const &prompt);

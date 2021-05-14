@@ -2,11 +2,16 @@
 // Created by rne on 07.05.21.
 //
 
+#include <functional>
+using std::reference_wrapper;
+
 #include <optional>
 using std::optional;
 
 #include <stdexcept>
 using std::out_of_range;
+
+#include "util.h"
 
 #include "Coordinate.h"
 #include "HitPoint.h"
@@ -42,26 +47,25 @@ namespace models {
         return height;
     }
 
-    optional<HitPoint> Board::getHitPointAt(Coordinate const &coordinate)
+    auto Board::getHitPointAt(Coordinate const &coordinate)
     {
-        optional<HitPoint> hitPoint;
+        optional<reference_wrapper<HitPoint>> hitPoint;
 
         try {
-            hitPoint = grid.at(coordinate.getY()).at(coordinate.getX());
+            return hitPoint = grid.at(coordinate.getY()).at(coordinate.getX());
         } catch (out_of_range&) {
             return hitPoint;
         }
-
-        return hitPoint;
     }
 
     HitResult Board::fireAt(Coordinate const &coordinate)
     {
-        optional<HitPoint> hitPoint = getHitPointAt(coordinate);
+        auto candidate = getHitPointAt(coordinate);
 
-        if (!hitPoint.has_value())
+        if (UNLIKELY(!candidate.has_value()))
             return HitResult::MISSED;
 
-        return hitPoint.value().doHit();
+        HitPoint &hitPoint = candidate.value();
+        return hitPoint.doHit();
     }
 }
