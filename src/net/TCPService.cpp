@@ -20,6 +20,8 @@ using boost::asio::streambuf;
 using boost::asio::write;
 using boost::system::error_code;
 
+#include <boost/config.hpp>
+
 #include "base64.h"
 #include "util.h"
 
@@ -57,7 +59,7 @@ namespace net {
         error_code error;
         read_until(socket, buf, terminator, error);
 
-        if (UNLIKELY(error && error != eof))
+        if (BOOST_UNLIKELY(error && error != eof))
             throw SocketError(error);
 
         string raw = buffer_cast<const char*>(buf.data());

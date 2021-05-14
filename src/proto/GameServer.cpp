@@ -17,6 +17,8 @@ using std::move;
 #include <vector>
 using std::vector;
 
+#include <boost/config.hpp>
+
 #include "Coordinate.h"
 using models::Coordinate;
 
@@ -121,7 +123,7 @@ namespace proto {
         auto playerId = static_cast<unsigned long>(request.header.playerId);
         auto candidate = request.own ? getPlayer(playerId) : getOpponent(playerId);
 
-        if (UNLIKELY(!candidate.has_value()))
+        if (BOOST_UNLIKELY(!candidate.has_value()))
             return serialize(InvalidRequest());
 
         Player &player = candidate.value();
@@ -139,7 +141,7 @@ namespace proto {
     {
         auto candidate = getPlayer(request.header.playerId);
 
-        if (UNLIKELY(!candidate.has_value()))
+        if (BOOST_UNLIKELY(!candidate.has_value()))
             return serialize(InvalidRequest());
 
         Player &player = candidate.value();
@@ -147,12 +149,12 @@ namespace proto {
         string type = request.type;
         ShipPlacementResponse response;
 
-        if (UNLIKELY(shipTypes.count(type) == 0)) {
+        if (BOOST_UNLIKELY(shipTypes.count(type) == 0)) {
             response.result = PlacementResult::INVALID_SHIP_TYPE;
             return serialize(response);
         }
 
-        if (UNLIKELY(board.hasShip(type))) {
+        if (BOOST_UNLIKELY(board.hasShip(type))) {
             response.result = PlacementResult::ALREADY_PLACED;
             return serialize(response);
         }

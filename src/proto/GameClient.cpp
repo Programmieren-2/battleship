@@ -8,6 +8,8 @@ using std::string;
 #include <vector>
 using std::vector;
 
+#include <boost/config.hpp>
+
 #include "Coordinate.h"
 using models::Coordinate;
 using models::Orientation;
@@ -38,7 +40,7 @@ namespace proto {
 
     bool GameClient::login(string const &name)
     {
-        if (UNLIKELY(playerId != 0))  // Already logged in.
+        if (BOOST_UNLIKELY(playerId != 0))  // Already logged in.
             return true;
 
         LoginRequest loginRequest;
@@ -75,7 +77,7 @@ namespace proto {
         string buf = communicate(serialize(request));
         auto header = deserialize<ResponseHeader>(buf, true);
 
-        if (UNLIKELY(header.type == ResponseType::INVALID_REQUEST))
+        if (BOOST_UNLIKELY(header.type == ResponseType::INVALID_REQUEST))
             return "Invalid request.\n";
 
         auto response = deserialize<MapResponse>(buf, true);
@@ -93,7 +95,7 @@ namespace proto {
         string buf = communicate(serialize(request));
         auto header = deserialize<ResponseHeader>(buf, true);
 
-        if (UNLIKELY(header.type == ResponseType::INVALID_REQUEST))
+        if (BOOST_UNLIKELY(header.type == ResponseType::INVALID_REQUEST))
             return "Invalid request.\n";
 
         auto response = deserialize<ShipPlacementResponse>(buf);

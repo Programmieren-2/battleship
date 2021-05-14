@@ -11,7 +11,7 @@ using std::optional;
 #include <stdexcept>
 using std::out_of_range;
 
-#include "util.h"
+#include <boost/config.hpp>
 
 #include "Coordinate.h"
 #include "HitPoint.h"
@@ -62,7 +62,7 @@ namespace models {
     {
         auto candidate = getHitPointAt(coordinate);
 
-        if (UNLIKELY(!candidate.has_value()))
+        if (BOOST_UNLIKELY(!candidate.has_value()))
             return HitResult::MISSED;
 
         HitPoint &hitPoint = candidate.value();
