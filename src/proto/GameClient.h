@@ -22,8 +22,7 @@ namespace proto {
         template <typename RequestType, typename ResponseType>
         ResponseType communicate(RequestType const &request)
         {
-            std::string buf = communicate(serialize(request));
-            return deserialize<ResponseType>(buf);
+            return deserialize<ResponseType>(communicate(serialize(request)));
         }
     public:
         GameClient(std::string const &host, unsigned short port);
