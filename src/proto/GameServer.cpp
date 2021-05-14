@@ -138,7 +138,7 @@ namespace proto {
 
     string GameServer::handleRequest(string const &buf)
     {
-        RequestHeader header = deserialize<RequestHeader>(buf, true);
+        auto header = deserialize<RequestHeader>(buf, true);
         InvalidRequest invalidRequest;
 
         switch (header.type) {
