@@ -4,6 +4,7 @@
 
 #include <algorithm>
 using std::all_of;
+using std::any_of;
 
 #include <optional>
 using std::optional;
