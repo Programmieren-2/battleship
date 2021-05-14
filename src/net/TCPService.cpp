@@ -21,9 +21,7 @@ using boost::asio::write;
 using boost::system::error_code;
 
 #include <boost/config.hpp>
-
 #include "base64.h"
-#include "util.h"
 
 #include "Net.h"
 #include "SocketError.h"
