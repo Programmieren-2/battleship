@@ -1,8 +1,16 @@
 //
 // Created by rne on 08.05.21.
 //
+
+#include <array>
+using std::array;
+
 #include <iostream>
+using std::cerr;
 using std::cout;
+
+#include <optional>
+using std::optional;
 
 #include <string>
 using std::string;
@@ -10,32 +18,47 @@ using std::string;
 #include "Coordinate.h"
 using models::Coordinate;
 
+#include "Game.h"
+using models::Game;
+
 #include "HitPoint.h"
 using models::HitResult;
 
-#include "PlayerBoard.h"
-using models::PlayerBoard;
+#include "Player.h"
+using models::Player;
+
+#include "Sea.h"
+using models::Sea;
 using models::PlayerBoards;
 
 #include "bootstrap.h"
 using bootstrap::readCoordinate;
-using bootstrap::readPlayerBoard;
+using bootstrap::readGame;
 
 #include "game.h"
 
 namespace game {
-    static bool playNextRound(PlayerBoards &playerBoards)
+    static bool playNextRound(auto &game)
     {
         static unsigned int round = 0;
         round++;
-        unsigned short player = round % 2;
-        PlayerBoard &playerBoard = playerBoards[player];
-        PlayerBoard &targetBoard = playerBoards[(player + 1) % 2];
-        cout << "It's " << playerBoard.getName() << "'s turn.\n";
-        cout << targetBoard.toString();
+        unsigned short index = round % 2;
+        auto playerCandidate = game.getPlayer(index);
+        auto opponentCandidate = game.getPlayer((index + 1) % 2);
+
+        if (!playerCandidate.has_value() || !opponentCandidate.has_value()) {
+            cerr <<  "Not enough players.\n";
+            return false;
+        }
+
+        Player &player = playerCandidate.value();
+        Player &opponent = opponentCandidate.value();
+        Sea &sea = opponent.getSea();
+        cout << "It's " << player.getName() << "'s turn.\n";
+        cout << sea.toString();
         Coordinate target = readCoordinate("Specify your target (<x>,<y>): ");
 
-        switch (targetBoard.fireAt(target)) {
+        switch (sea.fireAt(target)) {
             case HitResult::HIT:
                 cout << "Hit!\n";
                 break;
@@ -47,9 +70,9 @@ namespace game {
                 break;
         }
 
-        if (targetBoard.allShipsDestroyed()) {
-            cout << "All of " << targetBoard.getName() << "'s ships have been destroyed!\n";
-            cout << playerBoard.getName() << " has won the game.\n";
+        if (sea.allShipsDestroyed()) {
+            cout << "All of " << opponent.getName() << "'s ships have been destroyed!\n";
+            cout << player.getName() << " has won the game.\n";
             return false;
         }
 
@@ -58,7 +81,7 @@ namespace game {
 
     void spawn()
     {
-        PlayerBoards playerBoards = {readPlayerBoard(), readPlayerBoard()};
-        while (playNextRound(playerBoards));
+        auto game = readGame<Player>();
+        while (playNextRound(game));
     }
 }

@@ -8,14 +8,41 @@
 #include <string>
 
 #include "Coordinate.h"
-#include "PlayerBoard.h"
+#include "Game.h"
+#include "Sea.h"
+
+#include "util.h"
 
 namespace bootstrap {
     models::Coordinate readCoordinate(std::string const &prompt);
     models::Coordinate readCoordinate();
     models::Orientation readOrientation(string const &prompt);
     models::Orientation readOrientation();
-    models::PlayerBoard readPlayerBoard();
+    models::Sea readSea(unsigned short width, unsigned short height);
+
+    template <typename PlayerType>
+    PlayerType readPlayer(unsigned short width, unsigned short height) {
+        static unsigned short playerNum = 0;
+        playerNum++;
+        string name = util::readWithPrompt("Enter name of player #" + std::to_string(playerNum) + ": ");
+        models::Sea sea = readSea(width, height);
+        cout << sea.toString(true);
+        return PlayerType(name, sea);
+    }
+
+    template <typename PlayerType>
+    models::Game<PlayerType> readGame()
+    {
+        models::Game<PlayerType> game;
+        unsigned short width = game.getWidth();
+        unsigned short height = game.getHeight();
+
+        PlayerType player = readPlayer<PlayerType>(width, height);
+        game.addPlayer(player);
+        player = readPlayer<PlayerType>(width, height);
+        game.addPlayer(player);
+        return game;
+    }
 }
 
 

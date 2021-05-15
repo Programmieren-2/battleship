@@ -7,37 +7,32 @@
 
 #include <optional>
 #include <string>
+#include <vector>
 
+#include "Game.h"
 #include "Ship.h"
 
-#include "Net.h"
-
-#include "Messages.h"
-#include "Player.h"
 #include "Server.h"
 
+#include "Messages.h"
+#include "OnlineGame.h"
+
 namespace proto {
+    typedef std::vector<OnlineGame> Games;
+
     class GameServer : public net::Server {
     private:
-        Players players;
-        models::ShipTypes shipTypes;
-        GameState state;
+        static unsigned long gameId;
+        Games games;
 
-        [[nodiscard]] auto getPlayer(unsigned long playerId);
-        [[nodiscard]] auto getOpponent(unsigned long playerId);
-        [[nodiscard]] std::string processLoginRequest(LoginRequest const &request);
-        [[nodiscard]] std::string processShipTypesRequest(ShipTypesRequest const &request) const;
-        [[nodiscard]] std::string processMapRequest (MapRequest const &request);
-        [[nodiscard]] std::string processShipPlacementRequest(ShipPlacementRequest const &request);
-        [[nodiscard]] std::string processStatusRequest(StatusRequest const &request) const;
-        [[nodiscard]] std::string processTurnRequest(TurnRequest const &request) const;
-    protected:
+        [[nodiscard]] unsigned long addGame(unsigned short width, unsigned short height);
+        [[nodiscard]] std::string processNewGameRequest(NewGameRequest const &request);
         [[nodiscard]] std::string handleRequest(std::string const &buf) override;
     public:
-        GameServer(string const &host, unsigned short port, models::ShipTypes shipTypes);
         GameServer(string const &host, unsigned short port);
-        explicit GameServer(models::ShipTypes shipTypes);
         GameServer();
+
+        std::optional<OnlineGame> getGame(unsigned long id);
     };
 }
 

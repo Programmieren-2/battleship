@@ -6,8 +6,14 @@
 using std::all_of;
 using std::any_of;
 
+#include <functional>
+using std::reference_wrapper;
+
 #include <optional>
 using std::optional;
+
+#include <stdexcept>
+using std::out_of_range;
 
 #include <string>
 using std::string;
@@ -15,43 +21,72 @@ using std::string;
 #include <utility>
 using std::move;
 
-#include "Board.h"
 #include "Constants.h"
-#include "PlayerBoard.h"
+#include "Sea.h"
 #include "Ship.h"
 
 namespace models {
-    PlayerBoard::PlayerBoard(string name, unsigned short width, unsigned short height)
-            : Board(width, height), name(move(name)), ships(Ships())
-    {}
-
-    PlayerBoard::PlayerBoard(string const &name)
-            : PlayerBoard(name, Constants::WIDTH, Constants::HEIGHT)
-    {}
-
-    string PlayerBoard::getName() const
+    Sea::Sea(unsigned short width, unsigned short height)
+            : width(width), height(height), ships(Ships())
     {
-        return name;
+        initializeGrid();
     }
 
-    bool PlayerBoard::coordinateOnBoard(Coordinate const &coordinate) const
+    Sea::Sea()
+            : Sea(Constants::WIDTH, Constants::HEIGHT)
+    {}
+
+    void Sea::initializeGrid()
+    {
+        for (unsigned short y = 0; y < height; y++) {
+            HitPoints row;
+
+            for (unsigned short x = 0; x < height; x++)
+                row.push_back(HitPoint(x, y));
+
+            grid.push_back(row);
+        }
+    }
+
+    unsigned short Sea::getWidth() const
+    {
+        return width;
+    }
+
+    unsigned short Sea::getHeight() const
+    {
+        return height;
+    }
+
+    auto Sea::getHitPointAt(Coordinate const &coordinate)
+    {
+        optional<reference_wrapper<HitPoint>> hitPoint;
+
+        try {
+            return hitPoint = grid.at(coordinate.getY()).at(coordinate.getX());
+        } catch (out_of_range&) {
+            return hitPoint;
+        }
+    }
+
+    bool Sea::coordinateOnBoard(Coordinate const &coordinate) const
     {
         return coordinate.getX() < getWidth() && coordinate.getY() < getHeight();
     }
 
-    bool PlayerBoard::shipOnBoard(Ship const &ship) const
+    bool Sea::shipOnBoard(Ship const &ship) const
     {
         return coordinateOnBoard(ship.getAnchorPoint()) && coordinateOnBoard(ship.getEndPoint());
     }
 
-    bool PlayerBoard::shipCollides(Ship const &ship) const
+    bool Sea::shipCollides(Ship const &ship) const
     {
         return any_of(ships.begin(), ships.end(), [ship](Ship const &other) {
             return ship.collidesWith(other);
         });
     }
 
-    string PlayerBoard::getSymbolAt(Coordinate const &coordinate, bool showShips) const
+    string Sea::getSymbolAt(Coordinate const &coordinate, bool showShips) const
     {
         for (Ship const &ship : ships) {
             if (ship.isHitAt(coordinate))
@@ -65,17 +100,17 @@ namespace models {
         return hitPoint.isHit() ? "o" : "~";
     }
 
-    bool PlayerBoard::allShipsDestroyed() const
+    bool Sea::allShipsDestroyed() const
     {
         return all_of(ships.begin(), ships.end(), [](Ship const &ship){ return ship.isDestroyed(); });
     }
 
-    bool PlayerBoard::hasShip(std::string const &type) const
+    bool Sea::hasShip(std::string const &type) const
     {
         return any_of(ships.begin(), ships.end(), [type](Ship const &ship){ return ship.getType() == type; });
     }
 
-    string PlayerBoard::toString(bool showShips) const
+    string Sea::toString(bool showShips) const
     {
         string result;
 
@@ -89,12 +124,12 @@ namespace models {
         return result;
     }
 
-    string PlayerBoard::toString() const
+    string Sea::toString() const
     {
         return toString(false);
     }
 
-    PlacementResult PlayerBoard::placeShip(Ship const &ship)
+    PlacementResult Sea::placeShip(Ship const &ship)
     {
         if (!shipOnBoard(ship))
             return PlacementResult::NOT_ON_BOARD;
@@ -106,8 +141,7 @@ namespace models {
         return PlacementResult::SUCCESS;
     }
 
-    HitResult PlayerBoard::fireAt(Coordinate const &coordinate)
-    {
+    HitResult Sea::fireAt(Coordinate const &coordinate) {
         for (Ship &ship : ships) {
             switch (ship.fireAt(coordinate)) {
                 case HitResult::ALREADY_HIT:
@@ -119,7 +153,14 @@ namespace models {
             }
         }
 
-        switch(Board::fireAt(coordinate)) {
+        auto candidate = getHitPointAt(coordinate);
+
+        if (!candidate.has_value())
+            return HitResult::MISSED;
+
+        HitPoint &hitPoint = candidate.value();
+
+        switch (hitPoint.doHit()) {
             case HitResult::ALREADY_HIT:
                 return HitResult::ALREADY_HIT;
             default:

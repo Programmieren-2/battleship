@@ -14,7 +14,7 @@ using std::vector;
 using models::Coordinate;
 using models::Orientation;
 
-#include "PlayerBoard.h"
+#include "Sea.h"
 using models::PlacementResult;
 
 #include "Ship.h"

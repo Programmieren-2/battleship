@@ -1,7 +1,9 @@
 add_library(models
-        Board.cpp Board.h
+        Constants.h
         Coordinate.cpp Coordinate.h
-        PlayerBoard.cpp PlayerBoard.h
-        Ship.cpp Ship.h
+        Game.h
         HitPoint.cpp HitPoint.h
+        Player.cpp Player.h
+        Sea.cpp Sea.h
+        Ship.cpp Ship.h
 )

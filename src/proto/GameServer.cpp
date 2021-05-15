@@ -5,198 +5,83 @@
 #include <optional>
 using std::optional;
 
-#include <stdexcept>
-using std::out_of_range;
-
 #include <string>
 using std::string;
 
-#include <utility>
-using std::move;
-
-#include <vector>
-using std::vector;
-
 #include <boost/config.hpp>
 
-#include "Coordinate.h"
-using models::Coordinate;
-
-#include "PlayerBoard.h"
-using models::PlayerBoard;
-using models::PlacementResult;
-
-#include "Ship.h"
-using models::Ship;
-using models::ShipTypes;
-
-#include "Constants.h"
+#include "Net.h"
 #include "Server.h"
 using net::Server;
 
 #include "Messages.h"
-#include "Player.h"
-
-#include "util.h"
-using util::contains;
-using util::copyString;
+#include "OnlineGame.h"
 
 #include "GameServer.h"
 
 namespace proto {
-    GameServer::GameServer(string const &host, unsigned short port, ShipTypes shipTypes)
-            : Server(host, port), players(Players()), shipTypes(move(shipTypes)),
-            state(GameState::WAITING_FOR_PLAYERS)
-    {}
+    unsigned long GameServer::gameId = 0;
 
-    GameServer::GameServer(string const &host, unsigned short port)
-            : GameServer(host, port, models::Constants::SHIP_TYPES)
-    {}
-
-    GameServer::GameServer(ShipTypes shipTypes)
-            : Server(), shipTypes(move(shipTypes))
+    GameServer::GameServer(const string &host, unsigned short port)
+        : Server(host, port), games(Games())
     {}
 
     GameServer::GameServer()
-            : GameServer(models::Constants::SHIP_TYPES)
+        : GameServer(net::Defaults::HOST, net::Defaults::PORT)
     {}
 
-    auto GameServer::getPlayer(unsigned long playerId)
+    optional<OnlineGame> GameServer::getGame(unsigned long id)
     {
-        optional<PlayerRef> result;
+        optional<OnlineGame> result;
 
-        for (Player &player : players) {
-            if (player.getId() == playerId)
-                return result = player;
+        for (auto &game : games) {
+            if (game.getId() == id)
+                return result = game;
         }
 
         return result;
     }
 
-    auto GameServer::getOpponent(unsigned long playerId)
+    unsigned long GameServer::addGame(unsigned short width, unsigned short height)
     {
-        optional<PlayerRef> result;
-
-        for (Player &player : players) {
-            if (player.getId() != playerId)
-                return result = player;
-        }
-
-        return result;
+        games.push_back(OnlineGame(gameId++, width, height));
+        return gameId;
     }
 
-    string GameServer::processLoginRequest(LoginRequest const &request)
+    string GameServer::processNewGameRequest(NewGameRequest const &request)
     {
-        LoginResponse response;
-        string playerName = request.playerName;
-
-        if (players.size() < 2) {
-            players.push_back(Player(players.size() + 1, playerName));
-            response.header.playerId = players.size();
-            response.accepted = true;
-        }
-
+        NewGameResponse response;
+        response.gameId = addGame(request.width, request.height);
         return serialize(response);
     }
 
-    string GameServer::processShipTypesRequest(ShipTypesRequest const &request) const
-    {
-        ShipTypesResponse response;
-        response.header.playerId = request.header.playerId;
-        response.ships = static_cast<uint8_t>(shipTypes.size());
-        string buf = serialize(response);
-
-        for (auto &[name, size] : shipTypes) {
-            ShipType shipType;
-            copyString(shipType.name, name, sizeof shipType.name);
-            shipType.size = static_cast<uint8_t>(size);
-            buf += serialize(shipType);
-        }
-
-        return buf;
-    }
-
-    string GameServer::processMapRequest(MapRequest const &request)
-    {
-        MapResponse response;
-        response.header.playerId = request.header.playerId;
-        auto playerId = static_cast<unsigned long>(request.header.playerId);
-        auto candidate = request.own ? getPlayer(playerId) : getOpponent(playerId);
-
-        if (BOOST_UNLIKELY(!candidate.has_value()))
-            return serialize(InvalidRequest());
-
-        Player &player = candidate.value();
-        PlayerBoard &board = player.getBoard();
-        response.width = board.getWidth();
-        response.height = board.getHeight();
-        string targetBoardMap = board.toString(request.own);
-        response.size = static_cast<uint32_t>(targetBoardMap.size());
-        string buf = serialize(response);
-        buf += targetBoardMap;
-        return buf;
-    }
-
-    string GameServer::processShipPlacementRequest(ShipPlacementRequest const &request)
-    {
-        auto candidate = getPlayer(request.header.playerId);
-
-        if (BOOST_UNLIKELY(!candidate.has_value()))
-            return serialize(InvalidRequest());
-
-        Player &player = candidate.value();
-        PlayerBoard &board = player.getBoard();
-        string type = request.type;
-        ShipPlacementResponse response;
-
-        if (BOOST_UNLIKELY(shipTypes.count(type) == 0)) {
-            response.result = PlacementResult::INVALID_SHIP_TYPE;
-            return serialize(response);
-        }
-
-        if (BOOST_UNLIKELY(board.hasShip(type))) {
-            response.result = PlacementResult::ALREADY_PLACED;
-            return serialize(response);
-        }
-
-        unsigned short length = shipTypes.at(type);
-        Ship ship(type, Coordinate(request.x, request.y), length, request.orientation);
-        response.result = board.placeShip(ship);
-        return serialize(response);
-    }
-
-    string GameServer::processStatusRequest(StatusRequest const &statusRequest) const
-    {
-        StatusResponse response;
-        return serialize(response);
-    }
-
-    string GameServer::processTurnRequest(TurnRequest const &turnRequest) const
-    {
-        TurnResponse response;
-        return serialize(response);
-    }
-
-    string GameServer::handleRequest(string const &buf)
-    {
+    string GameServer::handleRequest(const string &buf) {
         auto header = deserialize<RequestHeader>(buf, true);
-        InvalidRequest invalidRequest;
+        unsigned long gameId = header.gameId;
+        auto candidate = getGame(gameId);
+
+        if (BOOST_UNLIKELY(!candidate.has_value()))
+            return serialize(InvalidRequest());
+
+        auto &game = candidate.value();
 
         switch (header.type) {
-            case RequestType::LOGIN_REQUEST:
-                return processLoginRequest(deserialize<LoginRequest>(buf));
-            case RequestType::SHIP_TYPES_REQUEST:
-                return processShipTypesRequest(deserialize<ShipTypesRequest>(buf));
-            case RequestType::MAP_REQUEST:
-                return processMapRequest(deserialize<MapRequest>(buf));
-            case RequestType::SHIP_PLACEMENT_REQUEST:
-                return processShipPlacementRequest(deserialize<ShipPlacementRequest>(buf));
-            case RequestType::STATUS_REQUEST:
-                return processStatusRequest(deserialize<StatusRequest>(buf));
-            case RequestType::TURN_REQUEST:
-                return processTurnRequest(deserialize<TurnRequest>(buf));
-            default:
-                return serialize(invalidRequest);
+            case NOOP:
+                return serialize(InvalidRequest());
+            case NEW_GAME_REQUEST:
+                return processNewGameRequest(deserialize<NewGameRequest>(buf));
+            case LOGIN_REQUEST:
+                return game.processLoginRequest(deserialize<LoginRequest>(buf));
+            case SHIP_TYPES_REQUEST:
+                return game.processShipTypesRequest(deserialize<ShipTypesRequest>(buf));
+            case MAP_REQUEST:
+                return game.processMapRequest(deserialize<MapRequest>(buf));
+            case SHIP_PLACEMENT_REQUEST:
+                return game.processShipPlacementRequest(deserialize<ShipPlacementRequest>(buf));
+            case STATUS_REQUEST:
+                return game.processStatusRequest(deserialize<StatusRequest>(buf));
+            case TURN_REQUEST:
+                return game.processTurnRequest(deserialize<TurnRequest>(buf));
         }
     }
 }
