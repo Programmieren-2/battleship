@@ -1,5 +1,5 @@
 add_library(models
-        Constants.h
+        Models.h
         Coordinate.cpp Coordinate.h
         Game.h
         HitPoint.cpp HitPoint.h

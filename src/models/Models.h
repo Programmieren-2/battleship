@@ -2,8 +2,8 @@
 // Created by rne on 07.05.21.
 //
 
-#ifndef BATTLESHIP_CONSTANTS_H
-#define BATTLESHIP_CONSTANTS_H
+#ifndef BATTLESHIP_MODELS_H
+#define BATTLESHIP_MODELS_H
 
 #include <map>
 #include <string>
@@ -14,7 +14,7 @@
 namespace models {
     typedef std::map<std::string, unsigned short> ShipTypes;
 
-    namespace Constants {
+    namespace Defaults {
         static const unsigned short WIDTH = 10;
         static const unsigned short HEIGHT = 10;
         static const ShipTypes SHIP_TYPES = {
@@ -26,4 +26,4 @@ namespace models {
         };
     }
 }
-#endif //BATTLESHIP_CONSTANTS_H
+#endif //BATTLESHIP_MODELS_H

@@ -21,7 +21,7 @@ using std::string;
 #include <utility>
 using std::move;
 
-#include "Constants.h"
+#include "Models.h"
 #include "Sea.h"
 #include "Ship.h"
 
@@ -33,7 +33,7 @@ namespace models {
     }
 
     Sea::Sea()
-            : Sea(Constants::WIDTH, Constants::HEIGHT)
+            : Sea(Defaults::WIDTH, Defaults::HEIGHT)
     {}
 
     void Sea::initializeGrid()

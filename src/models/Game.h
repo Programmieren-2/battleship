@@ -14,7 +14,7 @@
 
 #include <boost/config.hpp>
 
-#include "Constants.h"
+#include "Models.h"
 #include "Ship.h"
 
 namespace models {
@@ -39,11 +39,11 @@ namespace models {
         {}
 
         Game(unsigned short width, unsigned short height)
-            : Game(width, height, Constants::SHIP_TYPES)
+            : Game(width, height, Defaults::SHIP_TYPES)
         {}
 
         Game()
-            : Game(Constants::WIDTH, Constants::HEIGHT)
+            : Game(Defaults::WIDTH, Defaults::HEIGHT)
         {}
 
         [[nodiscard]] unsigned short getWidth() const

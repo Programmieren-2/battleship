@@ -13,7 +13,7 @@ using std::to_string;
 #include <vector>
 using std::vector;
 
-#include "Constants.h"
+#include "Models.h"
 
 #include "Coordinate.h"
 using models::Coordinate;
@@ -121,7 +121,7 @@ namespace bootstrap {
     Sea readSea(unsigned short width, unsigned short height) {
         Sea sea(width, height);
 
-        for (auto const &[type, length] : models::Constants::SHIP_TYPES) {
+        for (auto const &[type, length] : models::Defaults::SHIP_TYPES) {
             cout << "Place your " << type << " (size " << length << ").\n";
             readShip(sea, type, length);
         }
