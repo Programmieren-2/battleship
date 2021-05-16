@@ -6,4 +6,4 @@ add_library(models
         Player.cpp Player.h
         Sea.cpp Sea.h
         Ship.cpp Ship.h
-)
+        BasicShip.cpp BasicShip.h)

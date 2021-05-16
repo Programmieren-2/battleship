@@ -9,9 +9,10 @@
 #include <string>
 #include <vector>
 
-#include "Ship.h"
-
 namespace models {
+    enum PlacementResult { SUCCESS, NOT_ON_BOARD, COLLISION, ALREADY_PLACED, INVALID_SHIP_TYPE };
+    enum HitResult { HIT, ALREADY_HIT, MISSED };
+
     typedef std::map<std::string, unsigned short> ShipTypes;
 
     namespace Defaults {
@@ -25,5 +26,9 @@ namespace models {
                 {"Aircraft Carrier", static_cast<unsigned short>(5)},
         };
     }
+
+    template <typename T>
+    using Matrix = std::vector<std::vector<T>>;
 }
+
 #endif //BATTLESHIP_MODELS_H

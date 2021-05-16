@@ -1,94 +1,54 @@
 #include <iostream>
-using std::cerr;
-using std::cin;
 using std::cout;
+
+#include <optional>
+using std::optional;
 
 #include <string>
 using std::string;
 
-#include <vector>
-using std::vector;
+#include <boost/program_options.hpp>
 
-#include "Coordinate.h"
-using models::Coordinate;
-using models::Orientation;
-
-#include "Ship.h"
-using models::ShipTypes;
-
-#include "bootstrap.h"
-using bootstrap::readCoordinate;
-using bootstrap::readOrientation;
-
-#include "util.h"
-using util::splitString;
+#include "Net.h"
 
 #include "GameClient.h"
 using proto::GameClient;
 
-static bool checkExit(string const &command)
+static auto parseArgs(int argc, const char *argv[])
 {
-    if (cin.eof())
-        cout << "\n";
+    namespace args = boost::program_options;
+    args::options_description desc("Command line options");
+    desc.add_options()
+        ("help", "Show this page")
+        ("address", args::value<string>()->default_value(net::Defaults::HOST), "IP address to connect to")
+        ("port", args::value<unsigned short>()->default_value(net::Defaults::PORT), "Port to connect to")
+    ;
 
-    return cin.eof() || command == "exit" || command == "quit";
-}
+    args::variables_map varMap;
+    args::store(args::parse_command_line(argc, argv, desc), varMap);
+    args::notify(varMap);
+    optional<args::variables_map> result;
 
-static void printShipTypes(ShipTypes shipTypes)
-{
-    cout << "The server has the following ship types:\n";
-
-    for (auto const &[name, size] : shipTypes)
-        cout << "* " << name << " (" << size << ")\n";
-}
-
-static void printLoginResult(bool accepted)
-{
-    if (accepted)
-        cout << "Server allowed us to login. Yay!\n";
-    else
-        cerr << "Server denied us to login. Darn it!\n";
-}
-
-static string placeShip(GameClient &client)
-{
-    string type;
-    cin >> type;
-    Coordinate anchorPoint = readCoordinate();
-    Orientation orientation = readOrientation();
-    return client.placeShip(type, anchorPoint, orientation);
-}
-
-int main(int argc, char *argv[])
-{
-    if (argc != 3) {
-        cerr << "Must specify hostname and port!\n";
-        return 2;
+    if (varMap.count("help")) {
+        cout << desc << "\n";
+        return result;
     }
 
-    string host = argv[1];
-    string port = argv[2];
+    return result = varMap;
+}
 
-    GameClient client(host, static_cast<unsigned short>(stoul(port)));
-    cout << "Enter your name to login or 'ships' to list the ships or 'exit' to exit.\n";
+int main(int argc, const char *argv[])
+{
+    auto parsedArgs = parseArgs(argc, argv);
+    if (!parsedArgs.has_value())
+        return 1;
 
-    while (true) {
-        cout << "% ";
-        string input;
-        cin >> input;
+    auto args = parsedArgs.value();
+    auto address = args.at("address").as<string>();
+    auto port = args.at("port").as<unsigned short>();
 
-        if (checkExit(input))
-            return 0;
+    GameClient client(address, port);
+    client.loop();
 
-        if (input == "ships")
-            printShipTypes(client.getShipTypes());
-        else if (input == "map")
-            cout << client.getMap();
-        else if (input == "mymap")
-            cout << client.getMap(true);
-        else if (input == "place")
-            cout << placeShip(client);
-        else
-            printLoginResult(client.login(input));
-    }
+    return 0;
 }

@@ -5,10 +5,11 @@
 #ifndef BATTLESHIP_GAMECLIENT_H
 #define BATTLESHIP_GAMECLIENT_H
 
+#include <map>
 #include <string>
 
+#include "BasicShip.h"
 #include "Coordinate.h"
-#include "Ship.h"
 #include "Net.h"
 #include "Client.h"
 #include "Messages.h"
@@ -16,23 +17,43 @@
 namespace proto {
     class GameClient : public net::Client {
     private:
+        using net::Client::communicate;
+
+        unsigned long gameId;
         unsigned long playerId;
 
-        using net::Client::communicate;
+        template <typename RequestType>
+        std::string communicate(RequestType const &request)
+        {
+            string buf = communicate(serialize(request));
+            auto header = deserialize<ResponseHeader>(buf, true);
+            if (header.type == ResponseType::INVALID_REQUEST)
+                throw deserialize<InvalidRequest>(buf, true);
+
+            return buf;
+        }
 
         template <typename RequestType, typename ResponseType>
         ResponseType communicate(RequestType const &request)
         {
-            return deserialize<ResponseType>(communicate(serialize(request)));
+            return deserialize<ResponseType>(communicate(request));
         }
     public:
         GameClient(std::string const &host, unsigned short port);
         GameClient();
 
+        [[nodiscard]] unsigned long getGameId() const;
+        [[nodiscard]] unsigned long getPlayerId() const;
+        void setGameId(unsigned long newGameId);
+        void setPlayerId(unsigned long newPlayerId);
+
         bool login(std::string const &name);
         models::ShipTypes getShipTypes();
         std::string getMap(bool own = false);
-        std::string placeShip(std::string const &type, models::Coordinate anchorPoint, models::Orientation orientation);
+        PlacementResult placeShip(models::BasicShip const &ship);
+        GameState getStatus();
+        std::vector<ListedGame> listGames();
+        unsigned long newGame(unsigned short width, unsigned short height);
     };
 }
 

@@ -31,7 +31,6 @@ using models::Sea;
 
 #include "Ship.h"
 using models::Ship;
-using models::Ships;
 
 #include "util.h"
 using util::isNumber;

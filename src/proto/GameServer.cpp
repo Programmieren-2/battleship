@@ -48,40 +48,63 @@ namespace proto {
         return gameId;
     }
 
-    string GameServer::processNewGameRequest(NewGameRequest const &request)
+    string GameServer::processListGamesRequest(ListGamesRequest const &request)
     {
-        NewGameResponse response;
-        response.gameId = addGame(request.width, request.height);
-        return serialize(response);
+        ListGamesResponse response(games.size());
+        string buf = serialize(response);
+
+        for (auto const &game : games) {
+            ListedGame listedGame(game.getId(), game.getWidth(), game.getHeight(), game.getPlayerCount());
+            buf += serialize(listedGame);
+        }
     }
 
-    string GameServer::handleRequest(const string &buf) {
-        auto header = deserialize<RequestHeader>(buf, true);
-        unsigned long gameId = header.gameId;
-        auto candidate = getGame(gameId);
+    string GameServer::processListGamesRequest(string const &buf)
+    {
+        return processListGamesRequest(deserialize<ListGamesRequest>(buf));
+    }
 
-        if (BOOST_UNLIKELY(!candidate.has_value()))
-            return serialize(InvalidRequest());
+    NewGameResponse GameServer::processNewGameRequest(NewGameRequest const &request)
+    {
+        auto newGameId = addGame(request.width, request.height);
+        return NewGameResponse(request.header.playerId, newGameId);
+    }
 
-        auto &game = candidate.value();
+    string GameServer::processNewGameRequest(string const &buf)
+    {
+        return serialize(processNewGameRequest(deserialize<NewGameRequest>(buf)));
+    }
 
-        switch (header.type) {
+    string GameServer::handleRequest(OnlineGame &game, RequestType type, string const &buf)
+    {
+        switch (type) {
             case NOOP:
                 return serialize(InvalidRequest());
+            case LIST_GAMES_REQUEST:
+                return processListGamesRequest(buf);
             case NEW_GAME_REQUEST:
-                return processNewGameRequest(deserialize<NewGameRequest>(buf));
+                return processNewGameRequest(buf);
             case LOGIN_REQUEST:
-                return game.processLoginRequest(deserialize<LoginRequest>(buf));
+                return game.processLoginRequest(buf);
             case SHIP_TYPES_REQUEST:
-                return game.processShipTypesRequest(deserialize<ShipTypesRequest>(buf));
+                return game.processShipTypesRequest(buf);
             case MAP_REQUEST:
-                return game.processMapRequest(deserialize<MapRequest>(buf));
+                return game.processMapRequest(buf);
             case SHIP_PLACEMENT_REQUEST:
-                return game.processShipPlacementRequest(deserialize<ShipPlacementRequest>(buf));
+                return game.processShipPlacementRequest(buf);
             case STATUS_REQUEST:
-                return game.processStatusRequest(deserialize<StatusRequest>(buf));
+                return game.processStatusRequest(buf);
             case TURN_REQUEST:
-                return game.processTurnRequest(deserialize<TurnRequest>(buf));
+                return game.processTurnRequest(buf);
         }
+    }
+
+    string GameServer::handleRequest(string const &buf) {
+        auto header = deserialize<RequestHeader>(buf, true);
+        auto candidate = getGame(header.gameId);
+        if (BOOST_UNLIKELY(!candidate.has_value()))
+            return serialize(InvalidRequest(ErrorType::NO_SUCH_GAME));
+
+        return handleRequest(candidate.value(), header.type, buf);
     }
 }

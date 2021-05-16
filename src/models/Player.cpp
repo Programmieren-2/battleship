@@ -24,6 +24,11 @@ namespace models {
         return name;
     }
 
+    Sea Player::getSea() const
+    {
+        return sea;
+    }
+
     Sea& Player::getSea()
     {
         return sea;

@@ -2,7 +2,19 @@
 // Created by rne on 08.05.21.
 //
 
+#include <iostream>
+using std::cerr;
+using std::cout;
+
+#include <optional>
+using std::optional;
+
+#include <stdexcept>
+using std::invalid_argument;
+using std::out_of_range;
+
 #include <string>
+using std::stoul;
 using std::string;
 
 #include <vector>
@@ -10,9 +22,15 @@ using std::vector;
 
 #include <boost/config.hpp>
 
+#include "BasicShip.h"
+using models::BasicShip;
+
 #include "Coordinate.h"
 using models::Coordinate;
-using models::Orientation;
+
+#include "Models.h"
+using models::HitResult;
+using models::PlacementResult;
 
 #include "Sea.h"
 using models::PlacementResult;
@@ -25,18 +43,42 @@ using net::Client;
 
 #include "util.h"
 using util::copyString;
+using util::isExitCommand;
+using util::readCommandLine;
 
 #include "Messages.h"
+#include "ProtocolError.h"
+
 #include "GameClient.h"
 
 namespace proto {
     GameClient::GameClient(string const &host, unsigned short port)
-            : Client(host, port), playerId(0)
+            : Client(host, port), gameId(0), playerId(0)
     {}
 
     GameClient::GameClient()
-            : Client(), playerId(0)
+            : Client(), gameId(0), playerId(0)
     {}
+
+    unsigned long GameClient::getGameId() const
+    {
+        return gameId;
+    }
+
+    unsigned long GameClient::getPlayerId() const
+    {
+        return playerId;
+    }
+
+    void GameClient::setGameId(unsigned long newGameId)
+    {
+        gameId = newGameId;
+    }
+
+    void GameClient::setPlayerId(unsigned long newPlayerId)
+    {
+        playerId = newPlayerId;
+    }
 
     bool GameClient::login(string const &name)
     {
@@ -45,7 +87,7 @@ namespace proto {
 
         LoginRequest loginRequest;
         copyString(loginRequest.playerName, name, sizeof loginRequest.playerName);
-        LoginResponse response = communicate<LoginRequest, LoginResponse>(loginRequest);
+        auto response = communicate<LoginRequest, LoginResponse>(loginRequest);
         playerId = response.header.playerId;
         return response.accepted;
     }
@@ -54,14 +96,14 @@ namespace proto {
     {
         ShipTypesRequest request;
         request.header.playerId = playerId;
-        string buf = communicate(serialize(request));
+        string buf = communicate(request);
         auto response = deserialize<ShipTypesResponse>(buf, true);
         ShipTypes shipTypes;
         ShipType shipType;
         size_t offset;
 
         for (unsigned short i = 0; i < response.ships; i++) {
-            offset = i * sizeof shipType + sizeof response;
+            offset = sizeof response + sizeof shipType * i;
             shipType = deserialize<ShipType>(buf.substr(offset, sizeof shipType), true);
             shipTypes[shipType.name] = shipType.size;
         }
@@ -74,45 +116,67 @@ namespace proto {
         MapRequest request;
         request.header.playerId = playerId;
         request.own = own;
-        string buf = communicate(serialize(request));
+        string buf = communicate(request);
         auto header = deserialize<ResponseHeader>(buf, true);
 
-        if (BOOST_UNLIKELY(header.type == ResponseType::INVALID_REQUEST))
-            return "Invalid request.\n";
+        if (BOOST_UNLIKELY(header.type != ResponseType::MAP_RESPONSE))
+            throw ProtocolError(header.type);
 
         auto response = deserialize<MapResponse>(buf, true);
         return buf.substr(sizeof response, response.size);
     }
 
-    string GameClient::placeShip(string const &type, Coordinate anchorPoint, Orientation orientation)
+    PlacementResult GameClient::placeShip(BasicShip const &ship)
     {
         ShipPlacementRequest request;
         request.header.playerId = playerId;
-        copyString(request.type, type, sizeof request.type);
-        request.x = anchorPoint.getX();
-        request.y = anchorPoint.getY();
-        request.orientation = orientation;
-        string buf = communicate(serialize(request));
+        copyString(request.type, ship.getType(), sizeof request.type);
+        request.x = ship.getAnchorPoint().getX();
+        request.y = ship.getAnchorPoint().getY();
+        request.orientation = ship.getOrientation();
+        string buf = communicate(request);
         auto header = deserialize<ResponseHeader>(buf, true);
 
-        if (BOOST_UNLIKELY(header.type == ResponseType::INVALID_REQUEST))
-            return "Invalid request.\n";
+        if (BOOST_UNLIKELY(header.type != ResponseType::SHIP_PLACEMENT_RESPONSE))
+            throw ProtocolError(header.type);
 
         auto response = deserialize<ShipPlacementResponse>(buf);
+        return response.result;
+    }
 
-        switch (response.result) {
-            case PlacementResult::SUCCESS:
-                return "Ship placed.\n";
-            case PlacementResult::NOT_ON_BOARD:
-                return "Ship not on the board.\n";
-            case PlacementResult::COLLISION:
-                return "Ship collides with another ship.\n";
-            case PlacementResult::ALREADY_PLACED:
-                return "You already placed this ship.\n";
-            case PlacementResult::INVALID_SHIP_TYPE:
-                return "Invalid ship type.\n";
-            default:
-                return "Here be dragons.\n";
+    GameState GameClient::getStatus()
+    {
+        StatusRequest request(gameId, playerId);
+        auto response = communicate<StatusRequest, StatusResponse>(request);
+        return response.state;
+    }
+
+    vector<ListedGame> GameClient::listGames()
+    {
+        ListGamesRequest request;
+        string buf = communicate(request);
+        auto header = deserialize<ResponseHeader>(buf, true);
+        if (header.type != ResponseType::LIST_GAMES_RESPONSE)
+            throw ProtocolError(header.type);
+
+        auto response = deserialize<ListGamesResponse>(buf, true);
+        vector<ListedGame> listedGames;
+        ListedGame listedGame;
+        size_t offset;
+
+        for (unsigned long i = 0; i < response.games; i++) {
+            offset = sizeof response + sizeof listedGame * i;
+            listedGame = deserialize<ListedGame>(buf.substr(offset, sizeof listedGame));
+            listedGames.push_back(listedGame);
         }
+
+        return listedGames;
+    }
+
+    unsigned long GameClient::newGame(unsigned short width, unsigned short height)
+    {
+        NewGameRequest request(width, height);
+        auto response = communicate<NewGameRequest, NewGameResponse>(request);
+        return response.gameId;
     }
 }

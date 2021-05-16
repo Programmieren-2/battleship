@@ -18,7 +18,8 @@ namespace models {
         Player(std::string name, models::Sea sea);
 
         [[nodiscard]] std::string getName() const;
-
+        [[nodiscard]] models::Sea getSea() const;
+        
         [[nodiscard]] models::Sea& getSea();
     };
 }

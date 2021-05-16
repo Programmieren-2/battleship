@@ -25,14 +25,19 @@ namespace proto {
         static unsigned long gameId;
         Games games;
 
+        [[nodiscard]] std::optional<OnlineGame> getGame(unsigned long id);
         [[nodiscard]] unsigned long addGame(unsigned short width, unsigned short height);
-        [[nodiscard]] std::string processNewGameRequest(NewGameRequest const &request);
+
+        [[nodiscard]] NewGameResponse processNewGameRequest(NewGameRequest const &request);
+        [[nodiscard]] std::string processNewGameRequest(std::string const &buf);
+
+        [[nodiscard]] std::string processListGamesRequest(ListGamesRequest const &request);
+        [[nodiscard]] std::string processListGamesRequest(std::string const &buf);
+        [[nodiscard]] std::string handleRequest(OnlineGame &game, RequestType type, std::string const &buf);
         [[nodiscard]] std::string handleRequest(std::string const &buf) override;
     public:
         GameServer(string const &host, unsigned short port);
         GameServer();
-
-        std::optional<OnlineGame> getGame(unsigned long id);
     };
 }
 

@@ -29,7 +29,6 @@ using models::Player;
 
 #include "Sea.h"
 using models::Sea;
-using models::PlayerBoards;
 
 #include "bootstrap.h"
 using bootstrap::readCoordinate;

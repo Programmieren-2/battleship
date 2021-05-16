@@ -16,10 +16,13 @@
 #include "Net.h"
 #include "Sea.h"
 
+#include "util.h"
+
 #include "BufferSizeMismatch.h"
 
 namespace proto {
     enum GameState {
+        INITIAL,
         WAITING_FOR_PLAYERS,
         WAITING_FOR_YOUR_SHIP_PLACEMENTS,
         WAITING_FOR_OPPONENTS_SHIP_PLACEMENTS,
@@ -29,6 +32,7 @@ namespace proto {
 
     enum RequestType {
         NOOP,
+        LIST_GAMES_REQUEST,
         NEW_GAME_REQUEST,
         LOGIN_REQUEST,
         SHIP_TYPES_REQUEST,
@@ -40,6 +44,7 @@ namespace proto {
 
     enum ResponseType {
         INVALID_REQUEST,
+        LIST_GAMES_RESPONSE,
         NEW_GAME_RESPONSE,
         LOGIN_RESPONSE,
         SHIP_TYPES_RESPONSE,
@@ -49,107 +54,310 @@ namespace proto {
         TURN_RESPONSE,
     };
 
+    enum ErrorType {
+        UNKNOWN,
+        NO_SUCH_GAME,
+        NO_SUCH_PLAYER,
+        NO_OPPONENT,
+        NOT_YOUR_TURN,
+        OPPONENT_NOT_READY,
+    };
+
 #pragma pack(push, 1)
 
     struct RequestHeader {
-        RequestType type = NOOP;
-        uint32_t gameId = 0;
-        uint32_t playerId = 0;
+        RequestType type;
+        uint32_t gameId;
+        uint32_t playerId;
+
+        RequestHeader(RequestType type, uint32_t gameId, uint32_t playerId)
+            : type(type), gameId(gameId), playerId(playerId)
+        {}
+
+        RequestHeader()
+            : RequestHeader(NOOP, 0, 0)
+        {}
     };
 
     struct ResponseHeader {
-        ResponseType type = INVALID_REQUEST;
-        uint32_t gameId = 0;
-        uint32_t playerId = 0;
+        ResponseType type;
+        uint32_t gameId;
+        uint32_t playerId;
+
+        ResponseHeader(ResponseType type, uint32_t gameId, uint32_t playerId)
+            : type(type), gameId(gameId), playerId(playerId)
+        {}
+
+        ResponseHeader()
+            : ResponseHeader(INVALID_REQUEST, 0, 0)
+        {}
     };
 
-    struct NewGameRequest {
-        RequestHeader header = {NEW_GAME_REQUEST};
-        uint8_t width = 0;
-        uint8_t height = 0;
+    struct Request {
+        RequestHeader header;
+
+        Request(RequestType type, uint32_t gameId, uint32_t playerId)
+            : header(RequestHeader(type, gameId, playerId))
+        {}
     };
 
-    struct NewGameResponse {
-        ResponseHeader header {NEW_GAME_RESPONSE};
-        uint32_t gameId = 0;
+    struct Response {
+        ResponseHeader header;
+
+        Response(ResponseType type, uint32_t gameId, uint32_t playerId)
+            : header(ResponseHeader(type, gameId, playerId))
+        {}
+    };
+
+    struct ListGamesRequest : Request {
+        ListGamesRequest()
+            : Request(LIST_GAMES_REQUEST, 0, 0)
+        {}
+    };
+
+    struct ListGamesResponse : Response {
+        uint32_t games;
+
+        ListGamesResponse(uint32_t games)
+            : Response(LIST_GAMES_RESPONSE, 0, 0), games(games)
+        {}
+
+        ListGamesResponse()
+            : ListGamesResponse(0)
+        {}
+    };
+
+    struct ListedGame {
+        uint32_t id;
+        uint8_t width;
+        uint8_t height;
+        uint8_t players;
+
+        ListedGame(uint32_t id, uint8_t width, uint8_t height, uint8_t players)
+            : id(id), width(width), height(height), players(players)
+        {}
+
+        ListedGame()
+            : ListedGame(0, 0, 0, 0)
+        {}
+    };
+
+    struct NewGameRequest : Request {
+        uint8_t width;
+        uint8_t height;
+
+        NewGameRequest(uint8_t width, uint8_t height)
+            : Request(NEW_GAME_REQUEST, 0 ,0), width(width), height(height)
+        {}
+
+        NewGameRequest()
+            : NewGameRequest(0, 0)
+        {}
+    };
+
+    struct NewGameResponse : Response {
+        uint32_t gameId;
+
+        NewGameResponse(uint32_t playerId, uint32_t gameId)
+            : Response(NEW_GAME_RESPONSE, gameId, playerId), gameId(gameId)
+        {}
+
+        NewGameResponse()
+            : NewGameResponse(0 ,0)
+        {}
     };
     
-    struct LoginRequest {
-        RequestHeader header = {LOGIN_REQUEST};
-        char playerName[32] = "";
+    struct LoginRequest : Request {
+        char playerName[32];
+
+        LoginRequest(uint32_t gameId, uint32_t playerId, std::string const &name)
+            : Request(LOGIN_REQUEST, gameId, playerId), playerName("")
+        {
+            if (!name.empty())
+                util::copyString(playerName, name, sizeof playerName);
+        }
+
+        LoginRequest()
+            : LoginRequest(0, 0, "")
+        {}
     };
 
-    struct LoginResponse {
-        ResponseHeader header = {LOGIN_RESPONSE};
-        bool accepted = false;
+    struct LoginResponse : Response {
+        bool accepted;
+
+        LoginResponse(uint32_t gameId, uint32_t playerId, bool accepted)
+            : Response(LOGIN_RESPONSE, gameId, playerId), accepted(accepted)
+        {}
+
+        LoginResponse()
+            : LoginResponse(0, 0, false)
+        {}
     };
 
-    struct ShipTypesRequest {
-        RequestHeader header = {SHIP_TYPES_REQUEST};
+    struct ShipTypesRequest : Request {
+        ShipTypesRequest(uint32_t gameId, uint32_t playerId)
+            : Request(SHIP_TYPES_REQUEST, gameId, playerId)
+        {}
+
+        ShipTypesRequest()
+            : ShipTypesRequest(0, 0)
+        {}
     };
 
-    struct ShipTypesResponse {
-        ResponseHeader header = {SHIP_TYPES_RESPONSE};
-        uint8_t ships = 0;
+    struct ShipTypesResponse : Response {
+        uint8_t ships;
+
+        ShipTypesResponse(uint32_t gameId, uint32_t playerId, uint8_t ships)
+            : Response(SHIP_TYPES_RESPONSE, gameId, playerId), ships(ships)
+        {}
+
+        ShipTypesResponse()
+            : ShipTypesResponse(0, 0, 0)
+        {}
     };
 
     /*
      * ShipType is a special appendix packet to ShipTypesResponse and thus does not need a header.
      */
     struct ShipType {
-        char name[32] = "";
-        uint8_t size = 0;
+        char name[32];
+        uint8_t size;
+
+        ShipType(string const &type, uint8_t size)
+            : name(""), size(size)
+        {
+            if (!type.empty())
+                util::copyString(name, type, sizeof name);
+        }
+
+        ShipType()
+            : ShipType("", 0)
+        {}
     };
 
-    struct MapRequest {
-        RequestHeader header = {MAP_REQUEST};
-        bool own = false;
+    struct MapRequest : Request {
+        bool own;
+
+        MapRequest(uint32_t gameId, uint32_t playerId, bool own)
+            : Request(MAP_REQUEST, gameId, playerId), own(own)
+        {}
+
+        MapRequest()
+            : MapRequest(0, 0, false)
+        {}
     };
 
-    struct MapResponse {
-        ResponseHeader header = {MAP_RESPONSE};
-        uint8_t width = 0;
-        uint8_t height = 0;
-        uint32_t size = 0;  // Followed by so many ASCII chars for ASCII representation of the map
+    struct MapResponse : Response {
+        uint8_t width;
+        uint8_t height;
+        uint32_t size;  // Followed by so many ASCII chars for ASCII representation of the map.
+
+        MapResponse(uint32_t gameId, uint32_t playerId, uint8_t width, uint8_t height, uint32_t size)
+            : Response(MAP_RESPONSE, gameId, playerId), width(width), height(height), size(size)
+        {}
+
+        MapResponse()
+            : MapResponse(0, 0, 0, 0, 0)
+        {}
     };
 
-    struct ShipPlacementRequest {
-        RequestHeader header = {SHIP_PLACEMENT_REQUEST};
-        char type[32] = "";
-        uint8_t x = 0;
-        uint8_t y = 0;
-        models::Orientation orientation = models::Orientation::X;
+    struct ShipPlacementRequest : Request {
+        char type[32];
+        uint8_t x;
+        uint8_t y;
+        models::Orientation orientation;
+
+        ShipPlacementRequest(uint32_t gameId, uint32_t playerId, string const &typeName, uint8_t x, uint8_t y,
+                             models::Orientation orientation)
+             : Request(SHIP_PLACEMENT_REQUEST, gameId, playerId), type(""), x(x), y(y), orientation(orientation)
+        {
+            if (!typeName.empty())
+                util::copyString(type, typeName, sizeof type);
+        }
+
+        ShipPlacementRequest()
+            : ShipPlacementRequest(0, 0, "", 0, 0, models::Orientation::X)
+        {}
     };
 
-    struct ShipPlacementResponse {
-        ResponseHeader header = {SHIP_PLACEMENT_RESPONSE};
-        models::PlacementResult result = models::PlacementResult::SUCCESS;
+    struct ShipPlacementResponse : Response {
+        models::PlacementResult result;
+
+        ShipPlacementResponse(uint32_t gameId, uint32_t playerId, models::PlacementResult result)
+            : Response(SHIP_TYPES_RESPONSE, gameId, playerId), result(result)
+        {}
+
+        ShipPlacementResponse()
+            : ShipPlacementResponse(0, 0, models::PlacementResult::INVALID_SHIP_TYPE)
+        {}
     };
 
-    struct StatusRequest {
-        RequestHeader header = {STATUS_REQUEST};
+    struct StatusRequest : Request {
+        StatusRequest(uint32_t gameId, uint32_t playerId)
+            : Request(STATUS_REQUEST, gameId, playerId)
+        {}
+
+        StatusRequest()
+            : StatusRequest(0, 0)
+        {}
     };
 
-    struct StatusResponse {
-        ResponseHeader header = {STATUS_RESPONSE};
-        GameState status = GameState::WAITING_FOR_PLAYERS;
+    struct StatusResponse : Response {
+        GameState state;
+
+        StatusResponse(uint32_t gameId, uint32_t playerId, GameState state)
+            : Response(STATUS_RESPONSE, gameId, playerId), state(state)
+        {}
+
+        StatusResponse()
+            : StatusResponse(0, 0, GameState::INITIAL)
+        {}
     };
 
-    struct TurnRequest {
-        RequestHeader header = {TURN_REQUEST};
-        uint8_t x = 0;
-        uint8_t y = 0;
+    struct TurnRequest : Request {
+        uint8_t x;
+        uint8_t y;
+
+        TurnRequest(uint32_t gameId, uint32_t playerId, uint8_t x, uint8_t y)
+            : Request(TURN_REQUEST, gameId, playerId), x(x), y(y)
+        {}
+
+        TurnRequest()
+            : TurnRequest(0, 0, 0, 0)
+        {}
     };
 
-    struct TurnResponse {
-        ResponseHeader header = {TURN_RESPONSE};
-        bool hit = false;
-        bool gameOver = false;
-        bool won = false;
+    struct TurnResponse : Response {
+        models::HitResult hitResult;
+        bool won;
+
+        TurnResponse(uint32_t gameId, uint32_t playerId, models::HitResult hitResult, bool won)
+            : Response(TURN_RESPONSE, gameId, playerId), hitResult(hitResult), won(won)
+        {}
+
+        TurnResponse()
+            : TurnResponse(0, 0, models::HitResult::MISSED, false)
+        {}
     };
 
-    struct InvalidRequest {
-        ResponseHeader header = {INVALID_REQUEST};
+    struct InvalidRequest : Response {
+        ErrorType error;
+
+        InvalidRequest(uint32_t gameId, uint32_t playerId, ErrorType error)
+            : Response(INVALID_REQUEST, gameId, playerId), error(error)
+        {}
+
+        InvalidRequest(uint32_t playerId, ErrorType error)
+            : InvalidRequest(0, playerId, error)
+        {}
+
+        explicit InvalidRequest(ErrorType error)
+            : InvalidRequest(0, error)
+        {}
+
+        InvalidRequest()
+            : InvalidRequest(ErrorType::UNKNOWN)
+        {}
     };
 
 #pragma pack(pop)

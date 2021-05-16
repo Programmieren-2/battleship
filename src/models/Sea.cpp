@@ -21,13 +21,16 @@ using std::string;
 #include <utility>
 using std::move;
 
+#include <vector>
+using std::vector;
+
 #include "Models.h"
 #include "Sea.h"
 #include "Ship.h"
 
 namespace models {
     Sea::Sea(unsigned short width, unsigned short height)
-            : width(width), height(height), ships(Ships())
+            : width(width), height(height)
     {
         initializeGrid();
     }
@@ -39,7 +42,7 @@ namespace models {
     void Sea::initializeGrid()
     {
         for (unsigned short y = 0; y < height; y++) {
-            HitPoints row;
+            vector<HitPoint> row;
 
             for (unsigned short x = 0; x < height; x++)
                 row.push_back(HitPoint(x, y));
@@ -56,6 +59,17 @@ namespace models {
     unsigned short Sea::getHeight() const
     {
         return height;
+    }
+
+    auto Sea::getHitPointAt(const Coordinate &coordinate) const
+    {
+        optional<HitPoint> hitPoint;
+
+        try {
+            return hitPoint = grid.at(coordinate.getY()).at(coordinate.getX());
+        } catch (out_of_range&) {
+            return hitPoint;
+        }
     }
 
     auto Sea::getHitPointAt(Coordinate const &coordinate)
@@ -86,18 +100,17 @@ namespace models {
         });
     }
 
-    string Sea::getSymbolAt(Coordinate const &coordinate, bool showShips) const
+    char Sea::getSymbolAt(Coordinate const &coordinate, bool showShips) const
     {
         for (Ship const &ship : ships) {
             if (ship.isHitAt(coordinate))
-                return "x";
+                return 'x';
 
             if (showShips && ship.occupies(coordinate))
-                return "#";
+                return '#';
         }
 
-        HitPoint hitPoint = grid.at(coordinate.getY()).at(coordinate.getX());
-        return hitPoint.isHit() ? "o" : "~";
+        return grid.at(coordinate.getY()).at(coordinate.getX()).isHit() ? 'o' : '~';
     }
 
     bool Sea::allShipsDestroyed() const
@@ -105,7 +118,7 @@ namespace models {
         return all_of(ships.begin(), ships.end(), [](Ship const &ship){ return ship.isDestroyed(); });
     }
 
-    bool Sea::hasShip(std::string const &type) const
+    bool Sea::hasShip(string const &type) const
     {
         return any_of(ships.begin(), ships.end(), [type](Ship const &ship){ return ship.getType() == type; });
     }
@@ -154,7 +167,6 @@ namespace models {
         }
 
         auto candidate = getHitPointAt(coordinate);
-
         if (!candidate.has_value())
             return HitResult::MISSED;
 

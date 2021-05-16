@@ -14,7 +14,7 @@ using models::Sea;
 #include "OnlinePlayer.h"
 
 namespace proto {
-    OnlinePlayer::OnlinePlayer(unsigned long id, string const &name, Sea &sea)
+    OnlinePlayer::OnlinePlayer(unsigned long id, string const &name, Sea const &sea)
             : Player(name, sea), id(id), keepalive(system_clock::now())
     {}
 
@@ -31,5 +31,10 @@ namespace proto {
     void OnlinePlayer::updateTimestamp()
     {
         keepalive = system_clock::now();
+    }
+
+    bool OnlinePlayer::operator==(const OnlinePlayer &other) const
+    {
+        return other.getId() == id;
     }
 }

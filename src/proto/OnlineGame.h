@@ -5,7 +5,7 @@
 #ifndef BATTLESHIP_ONLINEGAME_H
 #define BATTLESHIP_ONLINEGAME_H
 
-#include <functional>
+#include <optional>
 #include <string>
 
 #include "Game.h"
@@ -15,34 +15,46 @@
 #include "OnlinePlayer.h"
 
 namespace proto {
-    class OnlineGame : models::Game<OnlinePlayer> {
+    class OnlineGame : public models::Game<OnlinePlayer> {
     private:
-        unsigned long id;
+        using models::Game<OnlinePlayer>::getShipTypes;
+        using models::Game<OnlinePlayer>::getPlayers;
+        using models::Game<OnlinePlayer>::accessPlayers;
+        using models::Game<OnlinePlayer>::addPlayer;
 
-        models::Sea makeSea() const;
+        unsigned long id;
+        GameState state;
+        std::optional<OnlinePlayer> currentPlayer;
+
+        [[nodiscard]] models::Sea makeSea() const;
+        [[nodiscard]] bool allShipsPlaced(models::Sea const &sea) const;
+
+        [[nodiscard]] LoginResponse processLoginRequest(LoginRequest const &request);
+        [[nodiscard]] std::string processShipTypesRequest(ShipTypesRequest const &request) const;
+        [[nodiscard]] std::string processMapRequest(MapRequest const &request) const;
+        [[nodiscard]] ShipPlacementResponse processShipPlacementRequest(ShipPlacementRequest const &request);
+        [[nodiscard]] StatusResponse processStatusRequest(StatusRequest const &request) const;
+        [[nodiscard]] TurnResponse processTurnRequest(TurnRequest const &request);
     public:
         using models::Game<OnlinePlayer>::getWidth;
         using models::Game<OnlinePlayer>::getHeight;
-        using models::Game<OnlinePlayer>::getShipTypes;
-        using models::Game<OnlinePlayer>::getPlayers;
-        using models::Game<OnlinePlayer>::addPlayer;
+        using models::Game<OnlinePlayer>::getPlayerCount;
 
         OnlineGame(unsigned long id, unsigned short width, unsigned short height);
 
-        unsigned long getId() const;
+        [[nodiscard]] unsigned long getId() const;
+        [[nodiscard]] auto getOpponent(unsigned long playerId) const;
+        [[nodiscard]] auto getPlayer(unsigned long playerId) const;
+        [[nodiscard]] auto accessOpponent(unsigned long playerId);
+        [[nodiscard]] auto accessPlayer(unsigned long playerId);
 
-        auto getOpponent(unsigned long playerId);
-        auto getPlayer(unsigned long playerId);
-
-        std::string processLoginRequest(LoginRequest const &request);
-        std::string processShipTypesRequest(ShipTypesRequest const &request) const;
-        std::string processMapRequest(MapRequest const &request);
-        std::string processShipPlacementRequest(ShipPlacementRequest const &request);
-        std::string processStatusRequest(StatusRequest const &statusRequest) const;
-        std::string processTurnRequest(TurnRequest const &turnRequest) const;
+        [[nodiscard]] std::string processLoginRequest(std::string const &buf);
+        [[nodiscard]] std::string processShipTypesRequest(std::string const &buf) const;
+        [[nodiscard]] std::string processMapRequest(std::string const &buf) const;
+        [[nodiscard]] std::string processShipPlacementRequest(std::string const &buf);
+        [[nodiscard]] std::string processStatusRequest(std::string const &buf) const;
+        [[nodiscard]] std::string processTurnRequest(std::string const &buf);
     };
-
-    typedef std::reference_wrapper<OnlinePlayer> OnlineGameReference;
 }
 
 #endif //BATTLESHIP_ONLINEGAME_H

@@ -19,11 +19,13 @@ namespace proto {
         unsigned long id;
         Timestamp keepalive;
     public:
-        OnlinePlayer(unsigned long id, std::string const &name, models::Sea &sea);
+        OnlinePlayer(unsigned long id, std::string const &name, models::Sea const &sea);
         [[nodiscard]] unsigned long getId() const;
         [[nodiscard]] Timestamp getKeepalive() const;
 
         void updateTimestamp();
+
+        bool operator==(OnlinePlayer const &other) const;
     };
 
     typedef std::reference_wrapper<OnlinePlayer> OnlinePlayerReference;

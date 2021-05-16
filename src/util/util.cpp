@@ -6,6 +6,7 @@
 using std::cerr;
 using std::cin;
 using std::cout;
+using std::noskipws;
 
 #include <regex>
 using std::regex;
@@ -20,7 +21,19 @@ using std::vector;
 #include "util.h"
 
 namespace util {
-    vector<string> splitString(string const &str, string const &delimiter) {
+    static bool isWhitespace(char const character)
+    {
+        switch (character) {
+            case ' ':
+            case '\t':
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    vector<string> splitString(string const &str, string const &delimiter)
+    {
         vector<string> result;
         string processed;
         string lookahead;
@@ -46,12 +59,50 @@ namespace util {
         return result;
     }
 
-    string readWithPrompt(string const &prompt)
+    vector<string> splitString(string const &str)
+    {
+        vector<string> result;
+        string item;
+
+        for (char const character : str) {
+            if (isWhitespace(character)) {
+                if (!item.empty()) {
+                    result.push_back(item);
+                    item = "";
+                }
+            } else {
+                item += character;
+            }
+        }
+
+        if (!item.empty())
+            result.push_back(item);
+
+        return result;
+    }
+
+    string readWithPrompt(string const &prompt, bool skipWhitespace)
     {
         string input;
         cout << prompt;
-        cin >> input;
+
+        if (skipWhitespace)
+            cin >> input;
+        else
+            cin >> noskipws >> input;
+
         return input;
+    }
+
+    vector<string> readCommandLine(string const &prompt)
+    {
+        string commandLine = readWithPrompt(prompt, false);
+        return splitString(commandLine);
+    }
+
+    bool isExitCommand(std::string const &command)
+    {
+        return contains({"exit", "quit"}, command);
     }
 
     bool isNumber(string const &str)

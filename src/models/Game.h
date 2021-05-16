@@ -20,10 +20,10 @@
 namespace models {
     template <typename PlayerType>
     class Game {
-    typedef std::optional<PlayerType> OptionalPlayer;
-    typedef std::array<OptionalPlayer, 2> OptionalPlayers;
-    typedef std::reference_wrapper<PlayerType> PlayerRef;
-    typedef std::optional<PlayerRef> OptionalPlayerRef;
+        typedef std::optional<PlayerType> OptionalPlayer;
+        typedef std::array<OptionalPlayer, 2> OptionalPlayers;
+        typedef std::reference_wrapper<PlayerType> PlayerRef;
+        typedef std::optional<PlayerRef> OptionalPlayerRef;
     private:
         unsigned short width;
         unsigned short height;
@@ -61,16 +61,33 @@ namespace models {
             return shipTypes;
         }
 
-        std::vector<PlayerType> getPlayers()
+        std::vector<PlayerType> getPlayers() const
         {
             std::vector<PlayerType> result;
 
-            for (auto &candidate : players) {
+            for (auto const &candidate : players) {
                 if (candidate.has_value())
                     result.push_back(candidate.value());
             }
 
             return result;
+        }
+
+        [[nodiscard]] unsigned short getPlayerCount() const
+        {
+            unsigned short playerCount = 0;
+
+            for (auto const &candidate : players) {
+                if (candidate.has_value())
+                    playerCount++;
+            }
+
+            return playerCount;
+        }
+
+        std::vector<PlayerType> &accessPlayers()
+        {
+            return players;
         }
 
         OptionalPlayerRef getPlayer(unsigned short index)
