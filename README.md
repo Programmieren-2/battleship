@@ -25,5 +25,5 @@ To connect to a server with the client, run
 Do not send critical information via the multiplayer connections.
 
 # Credits
-This project was inspired by exercise #3 from the lecture "Programmieren 2" at TU Braunschweig during the summer semester of 2021.    
+This project was inspired by exercise #3 from the lecture *Programmieren 2* at TU Braunschweig during the summer semester of 2021.    
 Credits to Dr. Steve Grogorick on whose idea and work this rewrite is based.
