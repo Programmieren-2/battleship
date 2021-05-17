@@ -170,15 +170,15 @@ namespace proto {
     struct LoginRequest : Request {
         char playerName[32];
 
-        LoginRequest(uint32_t gameId, uint32_t playerId, std::string const &name)
-            : Request(LOGIN_REQUEST, gameId, playerId), playerName("")
+        LoginRequest(uint32_t gameId, std::string const &name)
+            : Request(LOGIN_REQUEST, gameId, 0), playerName("")
         {
             if (!name.empty())
                 util::copyString(playerName, name, sizeof playerName);
         }
 
         LoginRequest()
-            : LoginRequest(0, 0, "")
+            : LoginRequest(0, "")
         {}
     };
 

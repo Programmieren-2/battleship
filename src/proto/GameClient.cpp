@@ -80,18 +80,6 @@ namespace proto {
         playerId = newPlayerId;
     }
 
-    bool GameClient::login(string const &name)
-    {
-        if (BOOST_UNLIKELY(playerId != 0))  // Already logged in.
-            return true;
-
-        LoginRequest loginRequest;
-        copyString(loginRequest.playerName, name, sizeof loginRequest.playerName);
-        auto response = communicate<LoginRequest, LoginResponse>(loginRequest);
-        playerId = response.header.playerId;
-        return response.accepted;
-    }
-
     ShipTypes GameClient::getShipTypes()
     {
         ShipTypesRequest request;
@@ -178,5 +166,18 @@ namespace proto {
         NewGameRequest request(width, height);
         auto response = communicate<NewGameRequest, NewGameResponse>(request);
         return response.gameId;
+    }
+
+    bool GameClient::join(unsigned long gameId, string const &playerName)
+    {
+        LoginRequest request(gameId, playerName);
+        auto response = communicate<LoginRequest, LoginResponse>(request);
+
+        if (response.accepted) {
+            gameId = response.header.gameId;
+            playerId = response.header.playerId;
+        }
+
+        return response.accepted;
     }
 }

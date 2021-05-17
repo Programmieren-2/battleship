@@ -25,7 +25,7 @@ namespace proto {
         template <typename RequestType>
         std::string communicate(RequestType const &request)
         {
-            string buf = communicate(serialize(request));
+            std::string buf = communicate(serialize(request));
             auto header = deserialize<ResponseHeader>(buf, true);
             if (header.type == ResponseType::INVALID_REQUEST)
                 throw deserialize<InvalidRequest>(buf, true);
@@ -54,6 +54,7 @@ namespace proto {
         GameState getStatus();
         std::vector<ListedGame> listGames();
         unsigned long newGame(unsigned short width, unsigned short height);
+        bool join(unsigned long gameId, std::string const &name);
     };
 }
 

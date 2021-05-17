@@ -103,8 +103,8 @@ namespace proto {
 
     void CLIClient::joinGame(string const &command, vector<string> const &args)
     {
-        if (args.size() != 1) {
-            cerr << "No game specified. Use '" << command << " <gameID>' to join a game.\n";
+        if (args.size() != 2) {
+            cerr << "No game specified. Use '" << command << " <gameID> <playerName>' to join a game.\n";
             return;
         }
 
@@ -117,7 +117,7 @@ namespace proto {
             return;
         }
 
-        if (join(gameId))
+        if (join(gameId, args[1]))
             cout << "Joined game #" << gameId << ".\n";
         else
             cerr << "Failed to join game.\n";
