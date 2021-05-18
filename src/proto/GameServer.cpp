@@ -72,15 +72,28 @@ namespace proto {
         return serialize(processNewGameRequest(deserialize<NewGameRequest>(buf)));
     }
 
-    string GameServer::handleRequest(OnlineGame &game, RequestType type, string const &buf)
+    string GameServer::handleRequest(string const &buf)
     {
-        switch (type) {
+        auto header = deserialize<RequestHeader>(buf, true);
+
+        switch (header.type) {
             case NOOP:
                 return serialize(InvalidRequest());
             case LIST_GAMES_REQUEST:
                 return processListGamesRequest();
             case NEW_GAME_REQUEST:
                 return processNewGameRequest(buf);
+            default:
+                break;
+        }
+
+        auto candidate = getGame(header.gameId);
+        if (BOOST_UNLIKELY(!candidate.has_value()))
+            return serialize(InvalidRequest(ErrorType::NO_SUCH_GAME));
+
+        auto game = candidate.value();
+
+        switch (header.type) {
             case LOGIN_REQUEST:
                 return game.processLoginRequest(buf);
             case LOGOUT_REQUEST:
@@ -95,15 +108,8 @@ namespace proto {
                 return game.processStatusRequest(buf);
             case TURN_REQUEST:
                 return game.processTurnRequest(buf);
+            default:
+                return serialize(InvalidRequest(ErrorType::UNKNOWN));
         }
-    }
-
-    string GameServer::handleRequest(string const &buf) {
-        auto header = deserialize<RequestHeader>(buf, true);
-        auto candidate = getGame(header.gameId);
-        if (BOOST_UNLIKELY(!candidate.has_value()))
-            return serialize(InvalidRequest(ErrorType::NO_SUCH_GAME));
-
-        return handleRequest(candidate.value(), header.type, buf);
     }
 }

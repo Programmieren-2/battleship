@@ -5,6 +5,7 @@
 #ifndef BATTLESHIP_GAMECLIENT_H
 #define BATTLESHIP_GAMECLIENT_H
 
+#include <iostream>
 #include <map>
 #include <string>
 #include <vector>
@@ -29,8 +30,10 @@ namespace proto {
         {
             std::string buf = communicate(serialize(request));
             auto header = deserialize<ResponseHeader>(buf, true);
-            if (header.type == ResponseType::INVALID_REQUEST)
+            if (header.type == ResponseType::INVALID_REQUEST) {
+                std::cerr << "Invalid request: " << header.type << "\n";
                 throw deserialize<InvalidRequest>(buf, true);
+            }
 
             return buf;
         }

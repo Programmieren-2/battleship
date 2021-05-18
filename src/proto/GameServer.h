@@ -32,7 +32,6 @@ namespace proto {
         [[nodiscard]] std::string processNewGameRequest(std::string const &buf);
 
         [[nodiscard]] std::string processListGamesRequest();
-        [[nodiscard]] std::string handleRequest(OnlineGame &game, RequestType type, std::string const &buf);
         [[nodiscard]] std::string handleRequest(std::string const &buf) override;
     public:
         GameServer(string const &host, unsigned short port);
