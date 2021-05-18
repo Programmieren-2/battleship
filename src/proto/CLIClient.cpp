@@ -65,8 +65,9 @@ namespace proto {
 
         for (auto const &game : listGames()) {
             cout << "Game #" << game.id << ":\n";
-            cout << "  Sea size: " << game.width << "x" << game.height << "\n";
-            cout << "  Current players: " << game.players << "\n";
+            cout << "  Sea size: " << static_cast<unsigned short>(game.width)
+                    << "x" << static_cast<unsigned short>(game.height) << "\n";
+            cout << "  Current players: " << static_cast<unsigned long>(game.players) << "\n";
         }
     }
 
@@ -104,7 +105,7 @@ namespace proto {
     void CLIClient::joinGame(string const &command, vector<string> const &args)
     {
         if (args.size() != 2) {
-            cerr << "No game specified. Use '" << command << " <gameID> <playerName>' to join a game.\n";
+            cerr << "Usage '" << command << " <gameID> <playerName>' to join a game.\n";
             return;
         }
 

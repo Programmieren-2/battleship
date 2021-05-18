@@ -109,9 +109,9 @@ namespace proto {
         return response.gameId;
     }
 
-    bool GameClient::join(unsigned long gameId, string const &playerName)
+    bool GameClient::join(unsigned long newGameId, string const &playerName)
     {
-        LoginRequest request(gameId, playerName);
+        LoginRequest request(newGameId, playerName);
         auto response = exchangeMessage<LoginRequest, LoginResponse>(request);
 
         if (response.accepted) {

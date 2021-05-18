@@ -30,10 +30,8 @@ namespace proto {
         {
             std::string buf = communicate(serialize(request));
             auto header = deserialize<ResponseHeader>(buf, true);
-            if (header.type == ResponseType::INVALID_REQUEST) {
-                std::cerr << "Invalid request: " << header.type << "\n";
+            if (header.type == ResponseType::INVALID_REQUEST)
                 throw deserialize<InvalidRequest>(buf, true);
-            }
 
             return buf;
         }
