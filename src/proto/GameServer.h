@@ -31,8 +31,7 @@ namespace proto {
         [[nodiscard]] NewGameResponse processNewGameRequest(NewGameRequest const &request);
         [[nodiscard]] std::string processNewGameRequest(std::string const &buf);
 
-        [[nodiscard]] std::string processListGamesRequest(ListGamesRequest const &request);
-        [[nodiscard]] std::string processListGamesRequest(std::string const &buf);
+        [[nodiscard]] std::string processListGamesRequest();
         [[nodiscard]] std::string handleRequest(OnlineGame &game, RequestType type, std::string const &buf);
         [[nodiscard]] std::string handleRequest(std::string const &buf) override;
     public:

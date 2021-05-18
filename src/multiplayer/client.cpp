@@ -11,12 +11,13 @@ using std::string;
 
 #include "Net.h"
 
-#include "GameClient.h"
-using proto::GameClient;
+#include "CLIClient.h"
+using proto::CLIClient;
+
+namespace args = boost::program_options;
 
 static auto parseArgs(int argc, const char *argv[])
 {
-    namespace args = boost::program_options;
     args::options_description desc("Command line options");
     desc.add_options()
         ("help", "Show this page")
@@ -47,7 +48,7 @@ int main(int argc, const char *argv[])
     auto address = args.at("address").as<string>();
     auto port = args.at("port").as<unsigned short>();
 
-    GameClient client(address, port);
+    CLIClient client(address, port);
     client.loop();
 
     return 0;

@@ -40,12 +40,15 @@ namespace proto {
 
     class CLIClient : GameClient {
     private:
-        using GameClient::login;
+        using GameClient::listGames;
+        using GameClient::newGame;
+        using GameClient::join;
+        using GameClient::logout;
         using GameClient::getShipTypes;
         using GameClient::getMap;
         using GameClient::placeShip;
-        using GameClient::listGames;
-        using GameClient::newGame;
+        using GameClient::getStatus;
+        using GameClient::fireAt;
 
         void help(std::string const &string, std::vector<std::string> const &args);
         void listGames(std::string const &string, std::vector<std::string> const &args);

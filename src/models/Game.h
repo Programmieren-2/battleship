@@ -5,6 +5,7 @@
 #ifndef BATTLESHIP_GAME_H
 #define BATTLESHIP_GAME_H
 
+#include <algorithm>
 #include <array>
 #include <functional>
 #include <optional>
@@ -61,7 +62,7 @@ namespace models {
             return shipTypes;
         }
 
-        std::vector<PlayerType> getPlayers() const
+        [[nodiscard]] std::vector<PlayerType> getPlayers() const
         {
             std::vector<PlayerType> result;
 
@@ -85,9 +86,16 @@ namespace models {
             return playerCount;
         }
 
-        std::vector<PlayerType> &accessPlayers()
+        std::vector<PlayerRef> accessPlayers()
         {
-            return players;
+            std::vector<PlayerRef> result;
+
+            for (auto &candidate : players) {
+                if (candidate.has_value())
+                    result.push_back(candidate.value());
+            }
+
+            return result;
         }
 
         OptionalPlayerRef getPlayer(unsigned short index)
@@ -101,6 +109,16 @@ namespace models {
             }
 
             return player;
+        }
+
+        void removePlayer(PlayerType const &player)
+        {
+            std::remove_if(players.begin(), players.end(), [player](auto const &target) {
+               if (target.has_value())
+                   return target.value() == player;
+
+               return false;
+            });
         }
 
         [[nodiscard]] bool hasPlayers() const {

@@ -7,6 +7,7 @@
 
 #include <map>
 #include <string>
+#include <vector>
 
 #include "BasicShip.h"
 #include "Coordinate.h"
@@ -21,9 +22,10 @@ namespace proto {
 
         unsigned long gameId;
         unsigned long playerId;
+        bool won;
 
         template <typename RequestType>
-        std::string communicate(RequestType const &request)
+        std::string sendMessage(RequestType const &request)
         {
             std::string buf = communicate(serialize(request));
             auto header = deserialize<ResponseHeader>(buf, true);
@@ -34,9 +36,9 @@ namespace proto {
         }
 
         template <typename RequestType, typename ResponseType>
-        ResponseType communicate(RequestType const &request)
+        ResponseType exchangeMessage(RequestType const &request)
         {
-            return deserialize<ResponseType>(communicate(request));
+            return deserialize<ResponseType>(sendMessage(request));
         }
     public:
         GameClient(std::string const &host, unsigned short port);
@@ -47,14 +49,15 @@ namespace proto {
         void setGameId(unsigned long newGameId);
         void setPlayerId(unsigned long newPlayerId);
 
-        bool login(std::string const &name);
-        models::ShipTypes getShipTypes();
-        std::string getMap(bool own = false);
-        PlacementResult placeShip(models::BasicShip const &ship);
-        GameState getStatus();
         std::vector<ListedGame> listGames();
         unsigned long newGame(unsigned short width, unsigned short height);
         bool join(unsigned long gameId, std::string const &name);
+        bool logout();
+        models::ShipTypes getShipTypes();
+        std::string getMap(bool own = false);
+        models::PlacementResult placeShip(models::BasicShip const &ship);
+        GameState getStatus();
+        models::HitResult fireAt(models::Coordinate const &target);
     };
 }
 

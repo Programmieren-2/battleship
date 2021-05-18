@@ -53,7 +53,7 @@ using util::readCommandLine;
 
 namespace proto {
     GameClient::GameClient(string const &host, unsigned short port)
-            : Client(host, port), gameId(0), playerId(0)
+            : Client(host, port), gameId(0), playerId(0), won(false)
     {}
 
     GameClient::GameClient()
@@ -80,69 +80,10 @@ namespace proto {
         playerId = newPlayerId;
     }
 
-    ShipTypes GameClient::getShipTypes()
-    {
-        ShipTypesRequest request;
-        request.header.playerId = playerId;
-        string buf = communicate(request);
-        auto response = deserialize<ShipTypesResponse>(buf, true);
-        ShipTypes shipTypes;
-        ShipType shipType;
-        size_t offset;
-
-        for (unsigned short i = 0; i < response.ships; i++) {
-            offset = sizeof response + sizeof shipType * i;
-            shipType = deserialize<ShipType>(buf.substr(offset, sizeof shipType), true);
-            shipTypes[shipType.name] = shipType.size;
-        }
-
-        return shipTypes;
-    }
-
-    string GameClient::getMap(bool own)
-    {
-        MapRequest request;
-        request.header.playerId = playerId;
-        request.own = own;
-        string buf = communicate(request);
-        auto header = deserialize<ResponseHeader>(buf, true);
-
-        if (BOOST_UNLIKELY(header.type != ResponseType::MAP_RESPONSE))
-            throw ProtocolError(header.type);
-
-        auto response = deserialize<MapResponse>(buf, true);
-        return buf.substr(sizeof response, response.size);
-    }
-
-    PlacementResult GameClient::placeShip(BasicShip const &ship)
-    {
-        ShipPlacementRequest request;
-        request.header.playerId = playerId;
-        copyString(request.type, ship.getType(), sizeof request.type);
-        request.x = ship.getAnchorPoint().getX();
-        request.y = ship.getAnchorPoint().getY();
-        request.orientation = ship.getOrientation();
-        string buf = communicate(request);
-        auto header = deserialize<ResponseHeader>(buf, true);
-
-        if (BOOST_UNLIKELY(header.type != ResponseType::SHIP_PLACEMENT_RESPONSE))
-            throw ProtocolError(header.type);
-
-        auto response = deserialize<ShipPlacementResponse>(buf);
-        return response.result;
-    }
-
-    GameState GameClient::getStatus()
-    {
-        StatusRequest request(gameId, playerId);
-        auto response = communicate<StatusRequest, StatusResponse>(request);
-        return response.state;
-    }
-
     vector<ListedGame> GameClient::listGames()
     {
         ListGamesRequest request;
-        string buf = communicate(request);
+        string buf = sendMessage(request);
         auto header = deserialize<ResponseHeader>(buf, true);
         if (header.type != ResponseType::LIST_GAMES_RESPONSE)
             throw ProtocolError(header.type);
@@ -164,14 +105,14 @@ namespace proto {
     unsigned long GameClient::newGame(unsigned short width, unsigned short height)
     {
         NewGameRequest request(width, height);
-        auto response = communicate<NewGameRequest, NewGameResponse>(request);
+        auto response = exchangeMessage<NewGameRequest, NewGameResponse>(request);
         return response.gameId;
     }
 
     bool GameClient::join(unsigned long gameId, string const &playerName)
     {
         LoginRequest request(gameId, playerName);
-        auto response = communicate<LoginRequest, LoginResponse>(request);
+        auto response = exchangeMessage<LoginRequest, LoginResponse>(request);
 
         if (response.accepted) {
             gameId = response.header.gameId;
@@ -179,5 +120,79 @@ namespace proto {
         }
 
         return response.accepted;
+    }
+
+    bool GameClient::logout()
+    {
+        LogoutRequest request(gameId, playerId);
+        auto response = exchangeMessage<LogoutRequest, LogoutResponse>(request);
+        return response.accepted;
+    }
+
+    ShipTypes GameClient::getShipTypes()
+    {
+        ShipTypesRequest request;
+        request.header.playerId = playerId;
+        string buf = sendMessage(request);
+        auto response = deserialize<ShipTypesResponse>(buf, true);
+        ShipTypes shipTypes;
+        ShipType shipType;
+        size_t offset;
+
+        for (unsigned short i = 0; i < response.ships; i++) {
+            offset = sizeof response + sizeof shipType * i;
+            shipType = deserialize<ShipType>(buf.substr(offset, sizeof shipType), true);
+            shipTypes[shipType.name] = shipType.size;
+        }
+
+        return shipTypes;
+    }
+
+    string GameClient::getMap(bool own)
+    {
+        MapRequest request;
+        request.header.playerId = playerId;
+        request.own = own;
+        string buf = sendMessage(request);
+        auto header = deserialize<ResponseHeader>(buf, true);
+
+        if (BOOST_UNLIKELY(header.type != ResponseType::MAP_RESPONSE))
+            throw ProtocolError(header.type);
+
+        auto response = deserialize<MapResponse>(buf, true);
+        return buf.substr(sizeof response, response.size);
+    }
+
+    PlacementResult GameClient::placeShip(BasicShip const &ship)
+    {
+        ShipPlacementRequest request;
+        request.header.playerId = playerId;
+        copyString(request.type, ship.getType(), sizeof request.type);
+        request.x = ship.getAnchorPoint().getX();
+        request.y = ship.getAnchorPoint().getY();
+        request.orientation = ship.getOrientation();
+        string buf = sendMessage(request);
+        auto header = deserialize<ResponseHeader>(buf, true);
+
+        if (BOOST_UNLIKELY(header.type != ResponseType::SHIP_PLACEMENT_RESPONSE))
+            throw ProtocolError(header.type);
+
+        auto response = deserialize<ShipPlacementResponse>(buf);
+        return response.result;
+    }
+
+    GameState GameClient::getStatus()
+    {
+        StatusRequest request(gameId, playerId);
+        auto response = exchangeMessage<StatusRequest, StatusResponse>(request);
+        return response.state;
+    }
+
+    models::HitResult GameClient::fireAt(const Coordinate &target)
+    {
+        TurnRequest request(gameId, playerId, target.getX(), target.getY());
+        auto response = exchangeMessage<TurnRequest, TurnResponse>(request);
+        won = response.won;
+        return response.hitResult;
     }
 }

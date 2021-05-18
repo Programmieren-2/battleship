@@ -48,7 +48,7 @@ namespace proto {
         return gameId;
     }
 
-    string GameServer::processListGamesRequest(ListGamesRequest const &request)
+    string GameServer::processListGamesRequest()
     {
         ListGamesResponse response(games.size());
         string buf = serialize(response);
@@ -57,11 +57,8 @@ namespace proto {
             ListedGame listedGame(game.getId(), game.getWidth(), game.getHeight(), game.getPlayerCount());
             buf += serialize(listedGame);
         }
-    }
 
-    string GameServer::processListGamesRequest(string const &buf)
-    {
-        return processListGamesRequest(deserialize<ListGamesRequest>(buf));
+        return buf;
     }
 
     NewGameResponse GameServer::processNewGameRequest(NewGameRequest const &request)
@@ -81,11 +78,13 @@ namespace proto {
             case NOOP:
                 return serialize(InvalidRequest());
             case LIST_GAMES_REQUEST:
-                return processListGamesRequest(buf);
+                return processListGamesRequest();
             case NEW_GAME_REQUEST:
                 return processNewGameRequest(buf);
             case LOGIN_REQUEST:
                 return game.processLoginRequest(buf);
+            case LOGOUT_REQUEST:
+                return game.processLogoutRequest(buf);
             case SHIP_TYPES_REQUEST:
                 return game.processShipTypesRequest(buf);
             case MAP_REQUEST:

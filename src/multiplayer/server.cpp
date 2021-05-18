@@ -14,9 +14,10 @@ using std::string;
 #include "GameServer.h"
 using proto::GameServer;
 
+namespace args = boost::program_options;
+
 static auto parseArgs(int argc, const char *argv[])
 {
-    namespace args = boost::program_options;
     args::options_description desc("Command line options");
     desc.add_options()
         ("help", "Show this page")

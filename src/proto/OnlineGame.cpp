@@ -26,6 +26,8 @@ using models::Sea;
 using models::Ship;
 using models::ShipTypes;
 
+#include "OnlinePlayer.h"
+
 #include "util.h"
 using util::copyString;
 
@@ -75,7 +77,8 @@ namespace proto {
     {
         optional<OnlinePlayerReference> result;
 
-        for (auto &player : accessPlayers()) {
+        for (auto &candidate : accessPlayers()) {
+            OnlinePlayer &player = candidate;
             if (player.getId() != playerId)
                 return result = player;
         }
@@ -87,7 +90,8 @@ namespace proto {
     {
         optional<OnlinePlayerReference> result;
 
-        for (auto &player : accessPlayers()) {
+        for (auto &candidate : accessPlayers()) {
+            OnlinePlayer &player = candidate;
             if (player.getId() == playerId)
                 return result = player;
         }
@@ -111,6 +115,21 @@ namespace proto {
     string OnlineGame::processLoginRequest(string const &buf)
     {
         return serialize(processLoginRequest(deserialize<LoginRequest>(buf)));
+    }
+
+    LogoutResponse OnlineGame::processLogoutRequest(LogoutRequest const &request)
+    {
+        auto player = getPlayer(request.header.playerId);
+        if (BOOST_UNLIKELY(!player.has_value()))
+            return LogoutResponse(request.header.gameId, request.header.playerId, false);
+
+        removePlayer(player.value());
+        return LogoutResponse(request.header.gameId, request.header.playerId, true);
+    }
+
+    string OnlineGame::processLogoutRequest(string const &buf)
+    {
+        return serialize(processLogoutRequest(deserialize<LogoutRequest>(buf)));
     }
 
     string OnlineGame::processShipTypesRequest(ShipTypesRequest const &request) const

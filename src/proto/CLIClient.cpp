@@ -128,7 +128,7 @@ namespace proto {
         if (!args.empty())
             cerr << "Command '" << command << "' expects no arguments.\n";
 
-        rpcLogout();
+        logout();
     }
 
     void CLIClient::getShipTypes(string const &command, vector<string> const &args)
@@ -160,9 +160,9 @@ namespace proto {
         Orientation orientation;
 
         if (args[3] == "x")
-            orientation == Orientation::X;
+            orientation = Orientation::X;
         else if (args[3] == "y")
-            orientation == Orientation::Y;
+            orientation = Orientation::Y;
         else {
             cerr << "Invalid orientation: '" << args[3] << "'. Use 'x' or 'y'.\n";
             return;
@@ -172,7 +172,7 @@ namespace proto {
 
         switch (placeShip(ship)) {
             case PlacementResult::SUCCESS:
-                cout << type << " placed at " << x << "x" << y << " facing " << args[3] << ".\n";
+                cout << type << " placed at " << args[1] << "x" << args[2] << " facing " << args[3] << ".\n";
                 break;
             case PlacementResult::INVALID_SHIP_TYPE:
                 cerr << "Invalid ship type: " << type << ".\n";
@@ -211,7 +211,7 @@ namespace proto {
             return;
         }
 
-        switch (fireAt(target)) {
+        switch (fireAt(target.value())) {
             case HitResult::HIT:
                 cout << "Hit!\n";
                 break;

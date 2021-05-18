@@ -35,6 +35,7 @@ namespace proto {
         LIST_GAMES_REQUEST,
         NEW_GAME_REQUEST,
         LOGIN_REQUEST,
+        LOGOUT_REQUEST,
         SHIP_TYPES_REQUEST,
         MAP_REQUEST,
         SHIP_PLACEMENT_REQUEST,
@@ -47,6 +48,7 @@ namespace proto {
         LIST_GAMES_RESPONSE,
         NEW_GAME_RESPONSE,
         LOGIN_RESPONSE,
+        LOGOUT_RESPONSE,
         SHIP_TYPES_RESPONSE,
         MAP_RESPONSE,
         SHIP_PLACEMENT_RESPONSE,
@@ -191,6 +193,28 @@ namespace proto {
 
         LoginResponse()
             : LoginResponse(0, 0, false)
+        {}
+    };
+
+    struct LogoutRequest : Request {
+        LogoutRequest(uint32_t gameId, uint32_t playerId)
+            : Request(LOGOUT_REQUEST, gameId, playerId)
+        {}
+
+        LogoutRequest()
+            : LogoutRequest(0, 0)
+        {}
+    };
+
+    struct LogoutResponse : Response {
+        bool accepted;
+
+        LogoutResponse(uint32_t gameId, uint32_t playerId, bool accepted)
+            : Response(LOGOUT_RESPONSE, gameId, playerId), accepted(accepted)
+        {}
+
+        LogoutResponse()
+            : LogoutResponse(0, 0, false)
         {}
     };
 

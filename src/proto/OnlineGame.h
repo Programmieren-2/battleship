@@ -30,6 +30,7 @@ namespace proto {
         [[nodiscard]] bool allShipsPlaced(models::Sea const &sea) const;
 
         [[nodiscard]] LoginResponse processLoginRequest(LoginRequest const &request);
+        [[nodiscard]] LogoutResponse processLogoutRequest(LogoutRequest const &request);
         [[nodiscard]] std::string processShipTypesRequest(ShipTypesRequest const &request) const;
         [[nodiscard]] std::string processMapRequest(MapRequest const &request) const;
         [[nodiscard]] ShipPlacementResponse processShipPlacementRequest(ShipPlacementRequest const &request);
@@ -49,6 +50,7 @@ namespace proto {
         [[nodiscard]] auto accessPlayer(unsigned long playerId);
 
         [[nodiscard]] std::string processLoginRequest(std::string const &buf);
+        [[nodiscard]] std::string processLogoutRequest(std::string const &buf);
         [[nodiscard]] std::string processShipTypesRequest(std::string const &buf) const;
         [[nodiscard]] std::string processMapRequest(std::string const &buf) const;
         [[nodiscard]] std::string processShipPlacementRequest(std::string const &buf);

@@ -19,6 +19,11 @@ namespace proto {
         message = "Unexpected response type: " + to_string(type);
     }
 
+    ResponseType ProtocolError::getType() const noexcept
+    {
+        return type;
+    }
+
     const char *ProtocolError::what() const noexcept
     {
         return message.c_str();

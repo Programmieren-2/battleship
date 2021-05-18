@@ -18,6 +18,7 @@ namespace proto {
     public:
         explicit ProtocolError(ResponseType type);
 
+        ResponseType getType() const noexcept;
         const char *what() const noexcept;
     };
 }
