@@ -15,7 +15,7 @@ using boost::program_options::variables_map;
 namespace util {
     std::vector<std::string> splitString(std::string const &str, std::string const &delimiter);
     std::vector<std::string> splitString(std::string const &str);
-    std::string readWithPrompt(std::string const &prompt, bool skipWhitespace = true);
+    std::string readWithPrompt(std::string const &prompt);
     std::vector<std::string> readCommandLine(std::string const &prompt);
     bool isExitCommand(std::string const &command);
     bool isNumber(std::string const &str);

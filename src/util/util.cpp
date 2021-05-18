@@ -6,7 +6,7 @@
 using std::cerr;
 using std::cin;
 using std::cout;
-using std::noskipws;
+using std::getline;
 
 #include <optional>
 using std::optional;
@@ -92,23 +92,17 @@ namespace util {
         return result;
     }
 
-    string readWithPrompt(string const &prompt, bool skipWhitespace)
+    string readWithPrompt(string const &prompt)
     {
-        string input;
+        string result;
         cout << prompt;
-
-        if (skipWhitespace)
-            cin >> input;
-        else
-            cin >> noskipws >> input;
-
-        return input;
+        getline(cin, result);
+        return result;
     }
 
     vector<string> readCommandLine(string const &prompt)
     {
-        string commandLine = readWithPrompt(prompt, false);
-        return splitString(commandLine);
+        return splitString(readWithPrompt(prompt));
     }
 
     bool isExitCommand(std::string const &command)
