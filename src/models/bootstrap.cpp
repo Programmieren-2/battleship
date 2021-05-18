@@ -91,7 +91,7 @@ namespace bootstrap {
         return readOrientation("Orientation (x or y): ");
     }
 
-    static void readShip(Sea &sea, string type, unsigned short length) {
+    static void readShip(Sea &sea, string const &type, unsigned short length) {
         Coordinate anchorPoint = readCoordinate();
         Orientation orientation = readOrientation();
 
@@ -121,6 +121,7 @@ namespace bootstrap {
         Sea sea(width, height);
 
         for (auto const &[type, length] : models::Defaults::SHIP_TYPES) {
+            cout << sea.toString(true) << "\n";
             cout << "Place your " << type << " (size " << length << ").\n";
             readShip(sea, type, length);
         }
