@@ -1,4 +1,4 @@
-add_library(net Client.cpp Client.h Net.h Server.cpp Server.h TCPService.cpp TCPService.h SocketError.cpp SocketError.h)
+add_library(net Client.cpp Client.h Net.h Server.cpp Server.h SocketError.cpp SocketError.h TCPService.cpp TCPService.h)
 target_include_directories(net PRIVATE ../base64)
 
 if(MSVC)
