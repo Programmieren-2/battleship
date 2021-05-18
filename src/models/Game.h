@@ -113,12 +113,10 @@ namespace models {
 
         void removePlayer(PlayerType const &player)
         {
-            std::remove_if(players.begin(), players.end(), [player](auto const &target) {
-               if (target.has_value())
-                   return target.value() == player;
-
-               return false;
-            });
+            for (auto &candidate : players) {
+                if (candidate.has_value() && candidate.value() == player)
+                    candidate.reset();
+            }
         }
 
         [[nodiscard]] bool hasPlayers() const {
