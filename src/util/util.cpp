@@ -8,6 +8,9 @@ using std::cin;
 using std::cout;
 using std::noskipws;
 
+#include <optional>
+using std::optional;
+
 #include <regex>
 using std::regex;
 using std::regex_match;
@@ -17,6 +20,14 @@ using std::string;
 
 #include <vector>
 using std::vector;
+
+#include <boost/program_options.hpp>
+using boost::program_options::notify;
+using boost::program_options::options_description;
+using boost::program_options::parse_command_line;
+using boost::program_options::store;
+using boost::program_options::unknown_option;
+using boost::program_options::variables_map;
 
 #include "util.h"
 
@@ -124,5 +135,28 @@ namespace util {
 #else
         return strncpy_s(dest, size, src.c_str(), maxSize);
 #endif
+    }
+
+    optional<variables_map> parseArgDesc(int argc, const char *argv[], options_description desc)
+    {
+        optional<variables_map> args;
+        variables_map varMap;
+
+        try {
+            store(parse_command_line(argc, argv, desc), varMap);
+        } catch (unknown_option const &error) {
+            cerr << "Invalid option: " << error.get_option_name() << "\n";
+            cerr << desc << "\n";
+            return args;
+        }
+
+        notify(varMap);
+
+        if (varMap.count("help")) {
+            cout << desc << "\n";
+            return args;
+        }
+
+        return args = varMap;
     }
 }

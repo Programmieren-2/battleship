@@ -8,43 +8,36 @@ using std::optional;
 using std::string;
 
 #include <boost/program_options.hpp>
+using boost::program_options::options_description;
+using boost::program_options::value;
 
 #include "Net.h"
+using net::Defaults::HOST;
+using net::Defaults::PORT;
+
+#include "util.h"
+using util::parseArgDesc;
 
 #include "CLIClient.h"
 using proto::CLIClient;
 
-namespace args = boost::program_options;
-
 static auto parseArgs(int argc, const char *argv[])
 {
-    args::options_description desc("Command line options");
+    options_description desc("Command line options");
     desc.add_options()
-        ("help", "Show this page")
-        ("address", args::value<string>()->default_value(net::Defaults::HOST), "IP address to connect to")
-        ("port", args::value<unsigned short>()->default_value(net::Defaults::PORT), "Port to connect to")
-    ;
-
-    args::variables_map varMap;
-    args::store(args::parse_command_line(argc, argv, desc), varMap);
-    args::notify(varMap);
-    optional<args::variables_map> result;
-
-    if (varMap.count("help")) {
-        cout << desc << "\n";
-        return result;
-    }
-
-    return result = varMap;
+            ("help,h", "Show this page")
+            ("address,a", value<string>()->default_value(HOST), "IP address to connect to")
+            ("port,p", value<unsigned short>()->default_value(PORT), "Port to connect to");
+    return parseArgDesc(argc, argv, desc);
 }
 
 int main(int argc, const char *argv[])
 {
-    auto parsedArgs = parseArgs(argc, argv);
-    if (!parsedArgs.has_value())
+    auto optArgs = parseArgs(argc, argv);
+    if (!optArgs.has_value())
         return 1;
 
-    auto args = parsedArgs.value();
+    auto args = optArgs.value();
     auto address = args.at("address").as<string>();
     auto port = args.at("port").as<unsigned short>();
 
