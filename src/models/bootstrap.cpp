@@ -121,7 +121,7 @@ namespace bootstrap {
         Sea sea(width, height);
 
         for (auto const &[type, length] : models::Defaults::SHIP_TYPES) {
-            cout << sea.toString(true) << "\n";
+            cout << sea.toString(true);
             cout << "Place your " << type << " (size " << length << ").\n";
             readShip(sea, type, length);
         }
