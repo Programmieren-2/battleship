@@ -2,6 +2,9 @@
 // Created by rne on 08.05.21.
 //
 
+#include <functional>
+using std::reference_wrapper;
+
 #include <optional>
 using std::optional;
 
@@ -30,9 +33,9 @@ namespace proto {
         : GameServer(net::Defaults::HOST, net::Defaults::PORT)
     {}
 
-    optional<OnlineGame> GameServer::getGame(unsigned long id)
+    optional<reference_wrapper<OnlineGame>> GameServer::getGame(unsigned long id)
     {
-        optional<OnlineGame> result;
+        optional<reference_wrapper<OnlineGame>> result;
 
         for (auto &game : games) {
             if (game.getId() == id)
@@ -91,7 +94,7 @@ namespace proto {
         if (BOOST_UNLIKELY(!candidate.has_value()))
             return serialize(InvalidRequest(ErrorType::NO_SUCH_GAME));
 
-        auto game = candidate.value();
+        auto &game = candidate.value().get();
 
         switch (header.type) {
             case LOGIN_REQUEST:

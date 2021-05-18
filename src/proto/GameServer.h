@@ -5,6 +5,7 @@
 #ifndef BATTLESHIP_GAMESERVER_H
 #define BATTLESHIP_GAMESERVER_H
 
+#include <functional>
 #include <optional>
 #include <string>
 #include <vector>
@@ -25,7 +26,7 @@ namespace proto {
         static unsigned long gameId;
         Games games;
 
-        [[nodiscard]] std::optional<OnlineGame> getGame(unsigned long id);
+        [[nodiscard]] std::optional<std::reference_wrapper<OnlineGame>> getGame(unsigned long id);
         [[nodiscard]] unsigned long addGame(unsigned short width, unsigned short height);
 
         [[nodiscard]] NewGameResponse processNewGameRequest(NewGameRequest const &request);
