@@ -5,9 +5,10 @@
 #ifndef BATTLESHIP_TCPSERVICE_H
 #define BATTLESHIP_TCPSERVICE_H
 
+#include "os.h"
+
 #include <string>
 
-#include <SDKDDKVer.h>
 #include <boost/asio.hpp>
 
 #include "Net.h"

@@ -2,6 +2,8 @@
 // Created by rne on 07.05.21.
 //
 
+#include "os.h"
+
 #include <iostream>
 using std::cerr;
 using std::cin;
@@ -21,7 +23,6 @@ using std::string;
 #include <vector>
 using std::vector;
 
-#include <SDKDDKVer.h>
 #include <boost/program_options.hpp>
 using boost::program_options::notify;
 using boost::program_options::options_description;
@@ -124,11 +125,11 @@ namespace util {
         if (src.size() > maxSize)
             cerr << "String exceeds " << maxSize << " bytes, so it will be truncated.\n";
 
-#if defined(__linux__)
+#ifdef WINDOWS
+        return strncpy_s(dest, size, src.c_str(), maxSize);
+#else
         strncpy(dest, src.c_str(), maxSize);
         return 0;
-#else
-        return strncpy_s(dest, size, src.c_str(), maxSize);
 #endif
     }
 

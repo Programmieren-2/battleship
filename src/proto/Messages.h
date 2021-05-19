@@ -5,11 +5,12 @@
 #ifndef BATTLESHIP_MESSAGES_H
 #define BATTLESHIP_MESSAGES_H
 
+#include "os.h"
+
 #include <cstring>
 #include <iostream>
 #include <string>
 
-#include <SDKDDKVer.h>
 #include <boost/asio.hpp>
 
 #include "BasicShip.h"

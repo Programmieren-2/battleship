@@ -2,6 +2,8 @@
 // Created by rne on 08.05.21.
 //
 
+#include "os.h"
+
 #include <functional>
 using std::reference_wrapper;
 
@@ -11,7 +13,6 @@ using std::optional;
 #include <string>
 using std::string;
 
-#include <SDKDDKVer.h>
 #include <boost/config.hpp>
 
 #include "Net.h"

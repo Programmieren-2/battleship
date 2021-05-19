@@ -2,7 +2,8 @@
 // Created by rne on 12.05.21.
 //
 
-#include <SDKDDKVer.h>
+#include "os.h"
+
 #include <boost/asio.hpp>
 using boost::system::error_code;
 

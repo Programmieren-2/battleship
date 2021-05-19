@@ -5,9 +5,10 @@
 #ifndef BATTLESHIP_SOCKETERROR_H
 #define BATTLESHIP_SOCKETERROR_H
 
+#include "os.h"
+
 #include <exception>
 
-#include <SDKDDKVer.h>
 #include <boost/asio.hpp>
 
 namespace net {

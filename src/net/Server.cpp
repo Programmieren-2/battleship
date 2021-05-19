@@ -2,10 +2,11 @@
 // Created by rne on 08.05.21.
 //
 
+#include "os.h"
+
 #include <string>
 using std::string;
 
-#include <SDKDDKVer.h>
 #include <boost/asio.hpp>
 using boost::asio::ip::tcp;
 

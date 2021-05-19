@@ -5,9 +5,10 @@
 #ifndef BATTLESHIP_NET_H
 #define BATTLESHIP_NET_H
 
+#include "os.h"
+
 #include <string>
 
-#include <SDKDDKVer.h>
 #include <boost/asio.hpp>
 
 namespace net {
