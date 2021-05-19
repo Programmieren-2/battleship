@@ -36,8 +36,8 @@ using bootstrap::readGame;
 
 #include "engine.h"
 
-namespace game {
-    static bool playNextRound(auto &game)
+namespace engine {
+    static bool playNextRound(Game<Player> &game)
     {
         static unsigned int round = 0;
         round++;

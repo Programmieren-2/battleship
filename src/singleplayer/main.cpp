@@ -1,5 +1,5 @@
 #include "engine.h"
-using game::spawn;
+using engine::spawn;
 
 int main()
 {
