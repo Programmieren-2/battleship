@@ -26,8 +26,10 @@ static auto parseArgs(int argc, const char *argv[])
     options_description desc("Command line options");
     desc.add_options()
             ("help,h", "Show this page")
-            ("address,a", value<string>()->default_value(HOST), "IP address to connect to")
-            ("port,p", value<unsigned short>()->default_value(PORT), "Port to connect to");
+            ("address,a", value<string>()->default_value(HOST)->value_name("ip_address"),
+                    "IP address to connect to")
+            ("port,p", value<unsigned short>()->default_value(PORT)->value_name("portnum"),
+                    "Port to connect to");
     return parseArgDesc(argc, argv, desc);
 }
 
