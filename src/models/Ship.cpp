@@ -34,7 +34,7 @@ namespace models {
     {
         optional<HitPoint> hitPoint;
 
-        for (unsigned short offset = 0; offset < length; offset++) {
+        for (unsigned short offset = 0; offset < length; ++offset) {
             Coordinate coordinate = getAnchorPoint();
 
             switch (getOrientation()) {
@@ -100,7 +100,7 @@ namespace models {
 
     HitResult Ship::fireAt(const Coordinate &coordinate)
     {
-        for (HitPoint &hitPoint : hitPoints) {
+        for (auto &hitPoint : hitPoints) {
             if (hitPoint == coordinate)
                 return hitPoint.doHit();
         }

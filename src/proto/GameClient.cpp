@@ -73,7 +73,7 @@ namespace proto {
         ListedGame listedGame;
         size_t offset;
 
-        for (unsigned long i = 0; i < response.games; i++) {
+        for (unsigned long i = 0; i < response.games; ++i) {
             offset = sizeof response + sizeof listedGame * i;
             listedGame = deserialize<ListedGame>(buf.substr(offset, sizeof listedGame));
             listedGames.push_back(listedGame);
@@ -126,7 +126,7 @@ namespace proto {
         ShipType shipType;
         size_t offset;
 
-        for (unsigned short i = 0; i < response.ships; i++) {
+        for (unsigned short i = 0; i < response.ships; ++i) {
             offset = sizeof response + sizeof shipType * i;
             shipType = deserialize<ShipType>(buf.substr(offset, sizeof shipType), true);
             shipTypes[shipType.name] = shipType.size;

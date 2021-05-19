@@ -41,10 +41,10 @@ namespace models {
 
     void Sea::initializeGrid()
     {
-        for (unsigned short y = 0; y < height; y++) {
+        for (unsigned short y = 0; y < height; ++y) {
             vector<HitPoint> row;
 
-            for (unsigned short x = 0; x < height; x++)
+            for (unsigned short x = 0; x < height; ++x)
                 row.emplace_back(x, y);
 
             grid.push_back(row);
@@ -102,7 +102,7 @@ namespace models {
 
     char Sea::getSymbolAt(Coordinate const &coordinate, bool showShips) const
     {
-        for (Ship const &ship : ships) {
+        for (auto const &ship : ships) {
             if (ship.isHitAt(coordinate))
                 return 'x';
 
@@ -127,8 +127,8 @@ namespace models {
     {
         string result;
 
-        for (unsigned short y = 0; y < getHeight(); y++) {
-            for (unsigned short x = 0; x < getWidth(); x++)
+        for (unsigned short y = 0; y < getHeight(); ++y) {
+            for (unsigned short x = 0; x < getWidth(); ++x)
                 result += getSymbolAt(Coordinate(x, y), showShips);
 
             result += "\n";
@@ -155,7 +155,7 @@ namespace models {
     }
 
     HitResult Sea::fireAt(Coordinate const &coordinate) {
-        for (Ship &ship : ships) {
+        for (auto &ship : ships) {
             switch (ship.fireAt(coordinate)) {
                 case HitResult::ALREADY_HIT:
                     return HitResult::ALREADY_HIT;

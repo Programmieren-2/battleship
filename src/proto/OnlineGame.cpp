@@ -52,7 +52,7 @@ namespace proto {
         return id;
     }
 
-    auto OnlineGame::getOpponent(unsigned long playerId)
+    optional<OnlinePlayerReference> OnlineGame::getOpponent(unsigned long playerId)
     {
         optional<OnlinePlayerReference> result;
 
@@ -64,9 +64,9 @@ namespace proto {
         return result;
     }
 
-    auto OnlineGame::getPlayer(unsigned long playerId)
+    optional<OnlinePlayerReference> OnlineGame::getPlayer(unsigned long playerId)
     {
-        optional<reference_wrapper<OnlinePlayer>> result;
+        optional<OnlinePlayerReference> result;
 
         for (auto &player : getPlayers()) {
             if (player.get().getId() == playerId)
