@@ -23,8 +23,7 @@ namespace models {
     class Game {
         typedef std::optional<PlayerType> OptionalPlayer;
         typedef std::array<OptionalPlayer, 2> OptionalPlayers;
-        typedef std::reference_wrapper<PlayerType> PlayerRef;
-        typedef std::optional<PlayerRef> OptionalPlayerRef;
+        typedef std::reference_wrapper<PlayerType> PlayerReference;
     private:
         unsigned short width;
         unsigned short height;
@@ -66,9 +65,21 @@ namespace models {
         {
             std::vector<PlayerType> result;
 
-            for (auto const &candidate : players) {
-                if (candidate.has_value())
-                    result.push_back(candidate.value());
+            for (auto &player : players) {
+                if (player.has_value())
+                    result.push_back(player.value());
+            }
+
+            return result;
+        }
+
+        [[nodiscard]] std::vector<PlayerReference> getPlayers()
+        {
+            std::vector<PlayerReference> result;
+
+            for (auto &player : players) {
+                if (player.has_value())
+                    result.push_back(player.value());
             }
 
             return result;
@@ -86,29 +97,22 @@ namespace models {
             return playerCount;
         }
 
-        std::vector<PlayerRef> accessPlayers()
+        std::optional<PlayerType> getPlayer(unsigned short index) const
         {
-            std::vector<PlayerRef> result;
-
-            for (auto &candidate : players) {
-                if (candidate.has_value())
-                    result.push_back(candidate.value());
+            try {
+                return players.at(index % 2);
+            } catch (std::out_of_range&) {
+                return std::optional<PlayerType>();
             }
-
-            return result;
         }
 
-        OptionalPlayerRef getPlayer(unsigned short index)
+        std::optional<PlayerReference> getPlayer(unsigned short index)
         {
-            OptionalPlayerRef player;
-
             try {
-                player = *players.at(index % 2);
+                return *players.at(index % 2);
             } catch (std::out_of_range&) {
-                return player;
+                return std::optional<PlayerReference>();
             }
-
-            return player;
         }
 
         void removePlayer(PlayerType const &player)

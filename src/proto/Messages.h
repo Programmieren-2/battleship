@@ -63,6 +63,9 @@ namespace proto {
         NO_OPPONENT,
         NOT_YOUR_TURN,
         OPPONENT_NOT_READY,
+        UNEXPECTED_RESPONSE_TYPE,
+        ALREADY_LOGGED_IN,
+        GAME_OVER,
     };
 
 #pragma pack(push, 1)

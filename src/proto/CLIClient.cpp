@@ -318,5 +318,7 @@ namespace proto {
             vector<string> args(commandLine.begin() + 1, commandLine.end());
             handleCommand(command, args);
         }
+
+        teardown();
     }
 }

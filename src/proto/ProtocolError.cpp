@@ -13,13 +13,13 @@ using std::to_string;
 #include "ProtocolError.h"
 
 namespace proto {
-    ProtocolError::ProtocolError(ResponseType type)
+    ProtocolError::ProtocolError(ErrorType type)
         : exception(), type(type)
     {
         message = "Unexpected response type: " + to_string(type);
     }
 
-    ResponseType ProtocolError::getType() const noexcept
+    ErrorType ProtocolError::getType() const noexcept
     {
         return type;
     }

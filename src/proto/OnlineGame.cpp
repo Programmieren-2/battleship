@@ -2,6 +2,9 @@
 // Created by rne on 15.05.21.
 //
 
+#include <functional>
+using std::reference_wrapper;
+
 #include <optional>
 using std::optional;
 
@@ -49,57 +52,31 @@ namespace proto {
         return id;
     }
 
-    auto OnlineGame::getOpponent(unsigned long playerId) const
+    auto OnlineGame::getOpponent(unsigned long playerId)
     {
         optional<OnlinePlayerReference> result;
 
         for (auto &player : getPlayers()) {
-            if (player.getId() != playerId)
+            if (player.get().getId() != playerId)
                 return result = player;
         }
 
         return result;
     }
 
-    auto OnlineGame::getPlayer(unsigned long playerId) const
+    auto OnlineGame::getPlayer(unsigned long playerId)
     {
-        optional<OnlinePlayerReference> result;
+        optional<reference_wrapper<OnlinePlayer>> result;
 
         for (auto &player : getPlayers()) {
-            if (player.getId() == playerId)
+            if (player.get().getId() == playerId)
                 return result = player;
         }
 
         return result;
     }
 
-    auto OnlineGame::accessOpponent(unsigned long playerId)
-    {
-        optional<OnlinePlayerReference> result;
-
-        for (auto &candidate : accessPlayers()) {
-            OnlinePlayer &player = candidate;
-            if (player.getId() != playerId)
-                return result = player;
-        }
-
-        return result;
-    }
-
-    auto OnlineGame::accessPlayer(unsigned long playerId)
-    {
-        optional<OnlinePlayerReference> result;
-
-        for (auto &candidate : accessPlayers()) {
-            OnlinePlayer &player = candidate;
-            if (player.getId() == playerId)
-                return result = player;
-        }
-
-        return result;
-    }
-
-    bool OnlineGame::allShipsPlaced(const Sea &sea) const
+    bool OnlineGame::allShipsPlaced(Sea const &sea)
     {
         ShipTypes shipTypes = getShipTypes();
         return all_of(shipTypes.begin(), shipTypes.end(), [sea] (auto &pair) { return sea.hasShip(pair.first); });
@@ -132,7 +109,7 @@ namespace proto {
         return serialize(processLogoutRequest(deserialize<LogoutRequest>(buf)));
     }
 
-    string OnlineGame::processShipTypesRequest(ShipTypesRequest const &request) const
+    string OnlineGame::processShipTypesRequest(ShipTypesRequest const &request)
     {
         ShipTypesResponse response;
         response.header.playerId = request.header.playerId;
@@ -148,17 +125,17 @@ namespace proto {
         return buf;
     }
 
-    string OnlineGame::processShipTypesRequest(string const &buf) const
+    string OnlineGame::processShipTypesRequest(string const &buf)
     {
         return processShipTypesRequest(deserialize<ShipTypesRequest>(buf));
     }
 
-    string OnlineGame::processMapRequest(MapRequest const &request) const
+    string OnlineGame::processMapRequest(MapRequest const &request)
     {
         auto playerId = static_cast<unsigned long>(request.header.playerId);
         auto candidate = request.own ? getPlayer(playerId) : getOpponent(playerId);
         if (BOOST_UNLIKELY(!candidate.has_value()))
-            throw InvalidRequest(ErrorType::NO_SUCH_PLAYER);
+            throw InvalidRequest(NO_SUCH_PLAYER);
 
         OnlinePlayer &player = candidate.value();
         Sea &sea = player.getSea();
@@ -167,7 +144,7 @@ namespace proto {
         return serialize(response) + map;
     }
 
-    string OnlineGame::processMapRequest(string const &buf) const
+    string OnlineGame::processMapRequest(string const &buf)
     {
         try {
             return processMapRequest(deserialize<MapRequest>(buf));
@@ -180,7 +157,7 @@ namespace proto {
     {
         auto candidate = getPlayer(request.header.playerId);
         if (BOOST_UNLIKELY(!candidate.has_value()))
-            throw InvalidRequest(ErrorType::NO_SUCH_PLAYER);
+            throw InvalidRequest(NO_SUCH_PLAYER);
 
         OnlinePlayer &player = candidate.value();
         Sea &sea = player.getSea();
@@ -209,17 +186,17 @@ namespace proto {
         }
     }
 
-    StatusResponse OnlineGame::processStatusRequest(StatusRequest const &request) const
+    StatusResponse OnlineGame::processStatusRequest(StatusRequest const &request)
     {
         auto candidate = getPlayer(request.header.playerId);
         if (BOOST_UNLIKELY(!candidate.has_value()))
-            throw InvalidRequest(ErrorType::NO_SUCH_PLAYER);
+            throw InvalidRequest(NO_SUCH_PLAYER);
 
         OnlinePlayer &player = candidate.value();
         return StatusResponse(id, player.getId(), state);
     }
 
-    string OnlineGame::processStatusRequest(string const &buf) const
+    string OnlineGame::processStatusRequest(string const &buf)
     {
         try {
             return serialize(processStatusRequest(deserialize<StatusRequest>(buf)));
@@ -232,13 +209,13 @@ namespace proto {
     {
         optional<OnlinePlayerReference> playerRef = getPlayer(request.header.playerId);
         if (!playerRef.has_value())
-            throw InvalidRequest(ErrorType::NO_SUCH_PLAYER);
+            throw InvalidRequest(NO_SUCH_PLAYER);
 
         OnlinePlayer &player = playerRef.value();
 
         optional<OnlinePlayerReference> opponentRef = getOpponent(request.header.playerId);
         if (!opponentRef.has_value())
-            throw InvalidRequest(ErrorType::NO_OPPONENT);
+            throw InvalidRequest(NO_OPPONENT);
 
         OnlinePlayer &opponent = opponentRef.value();
 
@@ -249,7 +226,7 @@ namespace proto {
 
         Sea &sea = opponent.getSea();
         if (!allShipsPlaced(sea))
-            throw InvalidRequest(ErrorType::OPPONENT_NOT_READY);
+            throw InvalidRequest(OPPONENT_NOT_READY);
 
         currentPlayer = opponent;
         return TurnResponse(id, player.getId(), sea.fireAt(target), sea.allShipsDestroyed());

@@ -13,13 +13,13 @@
 namespace proto {
     class ProtocolError : std::exception {
     private:
-        ResponseType type;
+        ErrorType type;
         std::string message;
     public:
-        explicit ProtocolError(ResponseType type);
+        explicit ProtocolError(ErrorType type);
 
-        ResponseType getType() const noexcept;
-        const char *what() const noexcept;
+        [[nodiscard]] ErrorType getType() const noexcept;
+        [[nodiscard]] const char *what() const noexcept;
     };
 }
 

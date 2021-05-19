@@ -23,6 +23,7 @@ namespace proto {
 
         unsigned long gameId;
         unsigned long playerId;
+        bool gameOver;
         bool won;
 
         template <typename RequestType>
@@ -59,6 +60,9 @@ namespace proto {
         models::PlacementResult placeShip(models::BasicShip const &ship);
         GameState getStatus();
         models::HitResult fireAt(models::Coordinate const &target);
+
+        bool isLoggedIn() const;
+        void teardown();
     };
 }
 

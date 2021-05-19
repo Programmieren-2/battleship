@@ -53,7 +53,7 @@ using util::readCommandLine;
 
 namespace proto {
     GameClient::GameClient(string const &host, unsigned short port)
-            : Client(host, port), gameId(0), playerId(0), won(false)
+            : Client(host, port), gameId(0), playerId(0), gameOver(false), won(false)
     {}
 
     GameClient::GameClient()
@@ -86,7 +86,7 @@ namespace proto {
         string buf = sendMessage(request);
         auto header = deserialize<ResponseHeader>(buf, true);
         if (header.type != ResponseType::LIST_GAMES_RESPONSE)
-            throw ProtocolError(header.type);
+            throw ProtocolError(UNEXPECTED_RESPONSE_TYPE);
 
         auto response = deserialize<ListGamesResponse>(buf, true);
         vector<ListedGame> listedGames;
@@ -111,6 +111,9 @@ namespace proto {
 
     bool GameClient::join(unsigned long newGameId, string const &playerName)
     {
+        if (gameId != 0 || playerId != 0)
+            throw ProtocolError(ALREADY_LOGGED_IN);
+
         LoginRequest request(newGameId, playerName);
         auto response = exchangeMessage<LoginRequest, LoginResponse>(request);
 
@@ -126,6 +129,11 @@ namespace proto {
     {
         LogoutRequest request(gameId, playerId);
         auto response = exchangeMessage<LogoutRequest, LogoutResponse>(request);
+        if (response.accepted) {
+            playerId = 0;
+            gameId = 0;
+        }
+
         return response.accepted;
     }
 
@@ -157,7 +165,7 @@ namespace proto {
         auto header = deserialize<ResponseHeader>(buf, true);
 
         if (BOOST_UNLIKELY(header.type != ResponseType::MAP_RESPONSE))
-            throw ProtocolError(header.type);
+            throw ProtocolError(UNEXPECTED_RESPONSE_TYPE);
 
         auto response = deserialize<MapResponse>(buf, true);
         return buf.substr(sizeof response, response.size);
@@ -175,7 +183,7 @@ namespace proto {
         auto header = deserialize<ResponseHeader>(buf, true);
 
         if (BOOST_UNLIKELY(header.type != ResponseType::SHIP_PLACEMENT_RESPONSE))
-            throw ProtocolError(header.type);
+            throw ProtocolError(UNEXPECTED_RESPONSE_TYPE);
 
         auto response = deserialize<ShipPlacementResponse>(buf);
         return response.result;
@@ -190,9 +198,23 @@ namespace proto {
 
     models::HitResult GameClient::fireAt(const Coordinate &target)
     {
+        if (gameOver)
+            throw ProtocolError(GAME_OVER);
+
         TurnRequest request(gameId, playerId, target.getX(), target.getY());
         auto response = exchangeMessage<TurnRequest, TurnResponse>(request);
         won = response.won;
         return response.hitResult;
+    }
+
+    bool GameClient::isLoggedIn() const
+    {
+        return playerId != 0;
+    }
+
+    void GameClient::teardown()
+    {
+        if (isLoggedIn())
+            logout();
     }
 }
