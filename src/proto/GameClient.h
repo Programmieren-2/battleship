@@ -5,8 +5,6 @@
 #ifndef BATTLESHIP_GAMECLIENT_H
 #define BATTLESHIP_GAMECLIENT_H
 
-#include <iostream>
-#include <map>
 #include <string>
 #include <vector>
 

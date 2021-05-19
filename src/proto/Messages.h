@@ -11,6 +11,7 @@
 
 #include <boost/asio.hpp>
 
+#include "BasicShip.h"
 #include "Models.h"
 #include "Coordinate.h"
 #include "Net.h"
@@ -301,6 +302,11 @@ namespace proto {
             if (!typeName.empty())
                 util::copyString(type, typeName, sizeof type);
         }
+
+        ShipPlacementRequest(uint32_t gameId, uint32_t playerId, models::BasicShip const &ship)
+            : ShipPlacementRequest(gameId, playerId, ship.getType(), ship.getAnchorPoint().getX(),
+                                   ship.getAnchorPoint().getY(), ship.getOrientation())
+        {}
 
         ShipPlacementRequest()
             : ShipPlacementRequest(0, 0, "", 0, 0, models::Orientation::X)

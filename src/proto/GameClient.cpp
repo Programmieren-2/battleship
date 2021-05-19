@@ -2,19 +2,7 @@
 // Created by rne on 08.05.21.
 //
 
-#include <iostream>
-using std::cerr;
-using std::cout;
-
-#include <optional>
-using std::optional;
-
-#include <stdexcept>
-using std::invalid_argument;
-using std::out_of_range;
-
 #include <string>
-using std::stoul;
 using std::string;
 
 #include <vector>
@@ -31,20 +19,10 @@ using models::Coordinate;
 #include "Models.h"
 using models::HitResult;
 using models::PlacementResult;
-
-#include "Sea.h"
-using models::PlacementResult;
-
-#include "Ship.h"
 using models::ShipTypes;
 
 #include "Client.h"
 using net::Client;
-
-#include "util.h"
-using util::copyString;
-using util::isExitCommand;
-using util::readCommandLine;
 
 #include "Messages.h"
 #include "ProtocolError.h"
@@ -139,8 +117,7 @@ namespace proto {
 
     ShipTypes GameClient::getShipTypes()
     {
-        ShipTypesRequest request;
-        request.header.playerId = playerId;
+        ShipTypesRequest request(gameId, playerId);
         string buf = sendMessage(request);
         auto response = deserialize<ShipTypesResponse>(buf, true);
         ShipTypes shipTypes;
@@ -158,9 +135,7 @@ namespace proto {
 
     string GameClient::getMap(bool own)
     {
-        MapRequest request;
-        request.header.playerId = playerId;
-        request.own = own;
+        MapRequest request(gameId, playerId, own);
         string buf = sendMessage(request);
         auto header = deserialize<ResponseHeader>(buf, true);
 
@@ -173,12 +148,7 @@ namespace proto {
 
     PlacementResult GameClient::placeShip(BasicShip const &ship)
     {
-        ShipPlacementRequest request;
-        request.header.playerId = playerId;
-        copyString(request.type, ship.getType(), sizeof request.type);
-        request.x = ship.getAnchorPoint().getX();
-        request.y = ship.getAnchorPoint().getY();
-        request.orientation = ship.getOrientation();
+        ShipPlacementRequest request(gameId, playerId, ship);
         string buf = sendMessage(request);
         auto header = deserialize<ResponseHeader>(buf, true);
 

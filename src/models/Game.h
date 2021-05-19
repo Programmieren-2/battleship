@@ -129,7 +129,7 @@ namespace models {
 
         bool addPlayer(PlayerType const &newPlayer) {
             for (auto &player : players) {
-                if (BOOST_UNLIKELY(player.has_value()))
+                if (player.has_value())
                     continue;
 
                 player = newPlayer;
