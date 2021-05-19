@@ -17,9 +17,6 @@ namespace net {
     public:
         using TCPService::TCPService;
 
-        /*
-         * Sends a base64 encoded string to the server and returns a base64 encoded string as response.
-         */
         std::string communicate(std::string const &message);
     };
 }

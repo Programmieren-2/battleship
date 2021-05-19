@@ -45,7 +45,7 @@ namespace models {
             vector<HitPoint> row;
 
             for (unsigned short x = 0; x < height; x++)
-                row.push_back(HitPoint(x, y));
+                row.emplace_back(x, y);
 
             grid.push_back(row);
         }
@@ -61,7 +61,7 @@ namespace models {
         return height;
     }
 
-    auto Sea::getHitPointAt(const Coordinate &coordinate) const
+    optional<HitPoint> Sea::getHitPointAt(const Coordinate &coordinate) const
     {
         optional<HitPoint> hitPoint;
 
@@ -72,7 +72,7 @@ namespace models {
         }
     }
 
-    auto Sea::getHitPointAt(Coordinate const &coordinate)
+    optional<reference_wrapper<HitPoint>> Sea::getHitPointAt(Coordinate const &coordinate)
     {
         optional<reference_wrapper<HitPoint>> hitPoint;
 

@@ -6,6 +6,9 @@
 using std::all_of;
 using std::any_of;
 
+#include <exception>
+using std::invalid_argument;
+
 #include <optional>
 using std::optional;
 
@@ -64,7 +67,7 @@ namespace models {
                 return Coordinate(coordinate.getX(), coordinate.getY() + length - 1);
         }
 
-        throw "Invalid orientation.";
+        throw invalid_argument("Invalid orientation.");
     }
 
     bool Ship::occupies(const Coordinate &coordinate) const

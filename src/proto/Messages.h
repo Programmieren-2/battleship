@@ -8,6 +8,7 @@
 #include "os.h"
 
 #include <cstring>
+#include <exception>
 #include <iostream>
 #include <string>
 
@@ -20,8 +21,6 @@
 #include "Sea.h"
 
 #include "util.h"
-
-#include "BufferSizeMismatch.h"
 
 namespace proto {
     enum GameState {
@@ -410,10 +409,10 @@ namespace proto {
         size_t msgSize = sizeof msg;
 
         if (msgSize > bufSize)
-            throw BufferSizeMismatch("Message size exceeds buffer size.");
+            throw std::underflow_error("Message size exceeds buffer size.");
 
         if (msgSize < bufSize && !partialProcessing)
-            throw BufferSizeMismatch("Buffer size exceeds message size.");
+            throw std::overflow_error("Buffer size exceeds message size.");
 
         std::memcpy(&msg, &buf[0], (msgSize < bufSize) ? msgSize : bufSize);
         return msg;

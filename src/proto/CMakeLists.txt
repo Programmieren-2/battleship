@@ -1,5 +1,4 @@
 add_library(proto
-        BufferSizeMismatch.cpp BufferSizeMismatch.h
         CLIClient.cpp CLIClient.h
         GameClient.cpp GameClient.h
         GameServer.cpp GameServer.h

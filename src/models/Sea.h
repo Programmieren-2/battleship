@@ -5,6 +5,8 @@
 #ifndef BATTLESHIP_SEA_H
 #define BATTLESHIP_SEA_H
 
+#include <functional>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -35,9 +37,9 @@ namespace models {
         [[nodiscard]] bool hasShip(std::string const &type) const;
         [[nodiscard]] std::string toString(bool showShips) const;
         [[nodiscard]] std::string toString() const;
-        [[nodiscard]] auto getHitPointAt(Coordinate const &coordinate) const;
+        [[nodiscard]] std::optional<HitPoint> getHitPointAt(Coordinate const &coordinate) const;
 
-        [[nodiscard]] auto getHitPointAt(Coordinate const &coordinate);
+        [[nodiscard]] std::optional<std::reference_wrapper<HitPoint>> getHitPointAt(Coordinate const &coordinate);
         PlacementResult placeShip(Ship const &ship);
         HitResult fireAt(Coordinate const &coordinate);
     };

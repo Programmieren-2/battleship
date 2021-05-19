@@ -59,7 +59,7 @@ namespace proto {
         GameState getStatus();
         models::HitResult fireAt(models::Coordinate const &target);
 
-        bool isLoggedIn() const;
+        [[nodiscard]] bool isLoggedIn() const;
         void teardown();
     };
 }
