@@ -6,7 +6,7 @@
 #define BATTLESHIP_OS_H
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
-#define WINDOWS
+#define __windows__
 #include <SDKDDKVer.h>
 #elif __APPLE__
 #include <TargetConditionals.h>
@@ -26,7 +26,7 @@
 #elif defined(_POSIX_VERSION)
     // POSIX
 #else
-#   error "Unknown compiler"
+#   error "Unknown platform"
 #endif
 
 #endif //BATTLESHIP_OS_H

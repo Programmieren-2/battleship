@@ -125,7 +125,7 @@ namespace util {
         if (src.size() > maxSize)
             cerr << "String exceeds " << maxSize << " bytes, so it will be truncated.\n";
 
-#ifdef WINDOWS
+#ifdef __windows__
         return strncpy_s(dest, size, src.c_str(), maxSize);
 #else
         strncpy(dest, src.c_str(), maxSize);
