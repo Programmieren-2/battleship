@@ -4,6 +4,7 @@
 
 #include <iostream>
 using std::cerr;
+using std::cin;
 using std::cout;
 
 #include <optional>
@@ -307,8 +308,11 @@ namespace proto {
         while (true) {
             commandLine = readCommandLine("% ");
 
-            if (commandLine.empty())
+            if (cin.eof())
                 break;
+
+            if (commandLine.empty())
+                continue;
 
             string command = commandLine[0];
 
