@@ -22,7 +22,7 @@ namespace util {
     bool isExitCommand(std::string const &command);
     bool isNumber(std::string const &str);
     int copyString(char *dest, std::string const &src, size_t size);
-    std::optional<variables_map> parseArgDesc(int argc, const char *argv[], options_description desc);
+    std::optional<variables_map> parseArgDesc(int argc, const char *argv[], options_description const &desc);
 
     template <typename ElementType>
     bool contains(std::vector<ElementType> const &haystack, ElementType const &needle)
