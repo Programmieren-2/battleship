@@ -21,6 +21,7 @@ using std::string;
 #include <vector>
 using std::vector;
 
+#include <SDKDDKVer.h>
 #include <boost/program_options.hpp>
 using boost::program_options::notify;
 using boost::program_options::options_description;

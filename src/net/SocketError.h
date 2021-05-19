@@ -7,6 +7,7 @@
 
 #include <exception>
 
+#include <SDKDDKVer.h>
 #include <boost/asio.hpp>
 
 namespace net {

@@ -8,6 +8,7 @@ using std::string;
 #include <vector>
 using std::vector;
 
+#include <SDKDDKVer.h>
 #include <boost/config.hpp>
 
 #include "BasicShip.h"

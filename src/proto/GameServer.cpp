@@ -11,6 +11,7 @@ using std::optional;
 #include <string>
 using std::string;
 
+#include <SDKDDKVer.h>
 #include <boost/config.hpp>
 
 #include "Net.h"

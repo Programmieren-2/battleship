@@ -5,6 +5,7 @@
 #include <string>
 using std::string;
 
+#include <SDKDDKVer.h>
 #include <boost/asio.hpp>
 using boost::asio::ip::tcp;
 

@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include <SDKDDKVer.h>
 #include <boost/asio.hpp>
 
 #include "Net.h"

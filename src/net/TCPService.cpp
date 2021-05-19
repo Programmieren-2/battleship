@@ -8,6 +8,7 @@ using std::string;
 #include <utility>
 using std::move;
 
+#include <SDKDDKVer.h>
 #include <boost/asio.hpp>
 using boost::asio::buffer;
 using boost::asio::buffer_cast;

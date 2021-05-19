@@ -9,6 +9,7 @@
 #include <iostream>
 #include <string>
 
+#include <SDKDDKVer.h>
 #include <boost/asio.hpp>
 
 #include "BasicShip.h"
