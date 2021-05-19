@@ -308,7 +308,7 @@ namespace proto {
             commandLine = readCommandLine("% ");
 
             if (commandLine.empty())
-                continue;
+                break;
 
             string command = commandLine[0];
 
