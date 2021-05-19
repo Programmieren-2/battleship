@@ -107,7 +107,7 @@ namespace util {
         return splitString(readWithPrompt(prompt));
     }
 
-    bool isExitCommand(std::string const &command)
+    bool isExitCommand(string const &command)
     {
         return contains({"exit", "quit"}, command);
     }
