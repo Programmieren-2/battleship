@@ -305,11 +305,8 @@ namespace proto {
     {
         vector<string> commandLine;
 
-        while (true) {
+        while (!cin.eof()) {
             commandLine = readCommandLine("% ");
-
-            if (cin.eof())
-                break;
 
             if (commandLine.empty())
                 continue;
