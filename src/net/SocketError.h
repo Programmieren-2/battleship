@@ -10,7 +10,7 @@
 #include <boost/asio.hpp>
 
 namespace net {
-    class SocketError : std::exception {
+    class SocketError : public std::exception {
     private:
         const boost::system::error_code error;
     public:

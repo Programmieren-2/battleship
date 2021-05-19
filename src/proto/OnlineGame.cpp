@@ -78,13 +78,15 @@ namespace proto {
 
     bool OnlineGame::allShipsPlaced(Sea const &sea)
     {
-        ShipTypes shipTypes = getShipTypes();
-        return all_of(shipTypes.begin(), shipTypes.end(), [sea] (auto &pair) { return sea.hasShip(pair.first); });
+        ShipTypes availableShipTypes = getShipTypes();
+        return all_of(availableShipTypes.begin(), availableShipTypes.end(), [sea] (auto &pair) {
+            return sea.hasShip(pair.first);
+        });
     }
 
     LoginResponse OnlineGame::processLoginRequest(LoginRequest const &request)
     {
-        unsigned long playerId = getPlayers().size() + 1;
+        unsigned long playerId = static_cast<uint32_t>(getPlayers().size() + 1);
         bool success = addPlayer(OnlinePlayer(playerId, request.playerName, makeSea()));
         return LoginResponse(id, success ? playerId : 0, success);
     }
@@ -111,16 +113,12 @@ namespace proto {
 
     string OnlineGame::processShipTypesRequest(ShipTypesRequest const &request)
     {
-        ShipTypesResponse response;
-        response.header.playerId = request.header.playerId;
-        ShipTypes shipTypes = getShipTypes();
-        response.ships = static_cast<uint8_t>(shipTypes.size());
+        ShipTypes availableShipTypes = getShipTypes();
+        ShipTypesResponse response(id, request.header.playerId, static_cast<uint8_t>(availableShipTypes.size()));
         string buf = serialize(response);
 
-        for (auto &[name, size] : shipTypes) {
-            ShipType shipType(name, static_cast<uint8_t>(size));
-            buf += serialize(shipType);
-        }
+        for (auto &[name, size] : availableShipTypes)
+            buf += serialize(ShipType(name, static_cast<uint8_t>(size)));
 
         return buf;
     }
@@ -140,7 +138,10 @@ namespace proto {
         OnlinePlayer &player = candidate.value();
         Sea &sea = player.getSea();
         string map = sea.toString(request.own);
-        MapResponse response(id, player.getId(), sea.getWidth(), sea.getHeight(), static_cast<uint32_t>(map.size()));
+        MapResponse response(id, player.getId(),
+                             static_cast<uint8_t>(sea.getWidth()),
+                             static_cast<uint8_t>(sea.getHeight()),
+                             static_cast<uint32_t>(map.size()));
         return serialize(response) + map;
     }
 
@@ -164,13 +165,13 @@ namespace proto {
         string type = request.type;
         PlacementResult result;
 
-        ShipTypes shipTypes = getShipTypes();
-        if (BOOST_UNLIKELY(shipTypes.count(type) == 0)) {
+        ShipTypes availableShipTypes = getShipTypes();
+        if (BOOST_UNLIKELY(availableShipTypes.count(type) == 0)) {
             result = PlacementResult::INVALID_SHIP_TYPE;
         } else if (BOOST_UNLIKELY(sea.hasShip(type))) {
             result = PlacementResult::ALREADY_PLACED;
         } else {
-            Ship ship(type, Coordinate(request.x, request.y), shipTypes.at(type), request.orientation);
+            Ship ship(type, Coordinate(request.x, request.y), availableShipTypes.at(type), request.orientation);
             result = sea.placeShip(ship);
         }
 

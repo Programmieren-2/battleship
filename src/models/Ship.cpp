@@ -32,14 +32,14 @@ namespace models {
         optional<HitPoint> hitPoint;
 
         for (unsigned short offset = 0; offset < length; offset++) {
-            Coordinate anchorPoint = getAnchorPoint();
+            Coordinate coordinate = getAnchorPoint();
 
             switch (getOrientation()) {
                 case Orientation::X:
-                    hitPoint = HitPoint(anchorPoint.getX() + offset, anchorPoint.getY());
+                    hitPoint = HitPoint(coordinate.getX() + offset, coordinate.getY());
                     break;
                 case Orientation::Y:
-                    hitPoint = HitPoint(anchorPoint.getX(), anchorPoint.getY() + offset);
+                    hitPoint = HitPoint(coordinate.getX(), coordinate.getY() + offset);
                     break;
                 }
 
@@ -55,14 +55,16 @@ namespace models {
 
     Coordinate Ship::getEndPoint() const
     {
-        Coordinate anchorPoint = getAnchorPoint();
+        Coordinate coordinate = getAnchorPoint();
 
         switch (getOrientation()) {
             case Orientation::X:
-                return Coordinate(anchorPoint.getX() + length - 1, anchorPoint.getY());
+                return Coordinate(coordinate.getX() + length - 1, coordinate.getY());
             case Orientation::Y:
-                return Coordinate(anchorPoint.getX(), anchorPoint.getY() + length - 1);
+                return Coordinate(coordinate.getX(), coordinate.getY() + length - 1);
         }
+
+        throw "Invalid orientation.";
     }
 
     bool Ship::occupies(const Coordinate &coordinate) const

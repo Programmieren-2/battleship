@@ -53,11 +53,14 @@ namespace proto {
 
     string GameServer::processListGamesRequest()
     {
-        ListGamesResponse response(games.size());
+        ListGamesResponse response(static_cast<uint32_t>(games.size()));
         string buf = serialize(response);
 
         for (auto const &game : games) {
-            ListedGame listedGame(game.getId(), game.getWidth(), game.getHeight(), game.getPlayerCount());
+            ListedGame listedGame(game.getId(),
+                                  static_cast<uint8_t>(game.getWidth()),
+                                  static_cast<uint8_t>(game.getHeight()),
+                                  static_cast<uint8_t>(game.getPlayerCount()));
             buf += serialize(listedGame);
         }
 

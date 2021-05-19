@@ -11,7 +11,7 @@
 #include "Messages.h"
 
 namespace proto {
-    class ProtocolError : std::exception {
+    class ProtocolError : public std::exception {
     private:
         ErrorType type;
         std::string message;

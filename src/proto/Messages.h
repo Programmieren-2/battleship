@@ -304,8 +304,10 @@ namespace proto {
         }
 
         ShipPlacementRequest(uint32_t gameId, uint32_t playerId, models::BasicShip const &ship)
-            : ShipPlacementRequest(gameId, playerId, ship.getType(), ship.getAnchorPoint().getX(),
-                                   ship.getAnchorPoint().getY(), ship.getOrientation())
+            : ShipPlacementRequest(gameId, playerId, ship.getType(),
+                                   static_cast<uint8_t>(ship.getAnchorPoint().getX()),
+                                   static_cast<uint8_t>(ship.getAnchorPoint().getY()),
+                                   ship.getOrientation())
         {}
 
         ShipPlacementRequest()

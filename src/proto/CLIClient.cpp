@@ -43,8 +43,8 @@ namespace proto {
         if (args.empty()) {
             cout << "Available commands:\n";
 
-            for (auto &[command, _] : COMMANDS)
-                cout << "* " << command << "\n";
+            for (auto &[cmd, _] : COMMANDS)
+                cout << "* " << cmd << "\n";
 
             return;
         }
@@ -109,17 +109,17 @@ namespace proto {
             return;
         }
 
-        unsigned long gameId = 0;
+        unsigned long newGameId = 0;
 
         try {
-            gameId = stoul(args[0]);
+            newGameId = stoul(args[0]);
         } catch (invalid_argument&) {
             cerr << "Invalid game ID.\n";
             return;
         }
 
-        if (join(gameId, args[1]))
-            cout << "Joined game #" << gameId << ".\n";
+        if (join(newGameId, args[1]))
+            cout << "Joined game #" << newGameId << ".\n";
         else
             cerr << "Failed to join game.\n";
     }
