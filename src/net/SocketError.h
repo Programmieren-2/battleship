@@ -5,11 +5,9 @@
 #ifndef BATTLESHIP_SOCKETERROR_H
 #define BATTLESHIP_SOCKETERROR_H
 
-#include "os.h"
-
 #include <exception>
 
-#include <boost/asio.hpp>
+#include "boostwrap.h"
 
 namespace net {
     class SocketError : public std::exception {

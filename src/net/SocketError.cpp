@@ -2,9 +2,7 @@
 // Created by rne on 12.05.21.
 //
 
-#include "os.h"
-
-#include <boost/asio.hpp>
+#include "boostwrap.h"
 using boost::system::error_code;
 
 #include "SocketError.h"

@@ -2,15 +2,13 @@
 // Created by rne on 08.05.21.
 //
 
-#include "os.h"
-
 #include <string>
 using std::string;
 
 #include <vector>
 using std::vector;
 
-#include <boost/config.hpp>
+#include "boostwrap.h"
 
 #include "BasicShip.h"
 using models::BasicShip;

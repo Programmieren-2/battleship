@@ -2,8 +2,6 @@
 // Created by rne on 07.05.21.
 //
 
-#include "os.h"
-
 #include <algorithm>
 using std::copy;
 
@@ -16,8 +14,6 @@ using std::end;
 using std::cerr;
 using std::cin;
 using std::cout;
-
-#include <netdb.h>
 
 #include <optional>
 using std::optional;
@@ -34,15 +30,15 @@ using std::length_error;
 using std::getline;
 using std::string;
 
-#include <sys/socket.h>
-
 #include <vector>
 using std::vector;
 
-#include <boost/asio.hpp>
+#include "boostwrap.h"
 using boost::asio::ip::address;
 using boost::asio::ip::address_v4;
 using boost::asio::ip::address_v6;
+
+#include "sockwrap.h"
 
 #include <boost/program_options.hpp>
 using boost::program_options::notify;
@@ -51,6 +47,8 @@ using boost::program_options::parse_command_line;
 using boost::program_options::store;
 using boost::program_options::unknown_option;
 using boost::program_options::variables_map;
+
+#include "sockwrap.h"
 
 #include "util.h"
 

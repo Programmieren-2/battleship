@@ -2,8 +2,6 @@
 // Created by rne on 08.05.21.
 //
 
-#include "os.h"
-
 #include <functional>
 using std::reference_wrapper;
 
@@ -13,7 +11,7 @@ using std::optional;
 #include <string>
 using std::string;
 
-#include <boost/config.hpp>
+#include "boostwrap.h"
 
 #include "Net.h"
 using net::IPAddress;

@@ -5,9 +5,7 @@
 #ifndef BATTLESHIP_NET_H
 #define BATTLESHIP_NET_H
 
-#include "os.h"
-
-#include <boost/asio.hpp>
+#include "boostwrap.h"
 
 namespace net {
     typedef boost::asio::ip::address        IPAddress;

@@ -7,7 +7,6 @@
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
 #define __windows__
-#include <SDKDDKVer.h>
 #elif __APPLE__
 #include <TargetConditionals.h>
     #if TARGET_IPHONE_SIMULATOR

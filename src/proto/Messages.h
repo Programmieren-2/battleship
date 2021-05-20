@@ -5,14 +5,12 @@
 #ifndef BATTLESHIP_MESSAGES_H
 #define BATTLESHIP_MESSAGES_H
 
-#include "os.h"
-
 #include <cstring>
 #include <exception>
 #include <iostream>
 #include <string>
 
-#include <boost/asio.hpp>
+#include "boostwrap.h"
 
 #include "BasicShip.h"
 #include "Models.h"

@@ -2,15 +2,15 @@
 // Created by rne on 08.05.21.
 //
 
-#include "os.h"
-
 #include <string>
 using std::string;
 
 #include <utility>
 using std::move;
 
-#include <boost/asio.hpp>
+#include "base64.h"
+
+#include "boostwrap.h"
 using boost::asio::buffer;
 using boost::asio::buffer_cast;
 using boost::asio::error::eof;
@@ -20,9 +20,6 @@ using boost::asio::read_until;
 using boost::asio::streambuf;
 using boost::asio::write;
 using boost::system::error_code;
-
-#include <boost/config.hpp>
-#include "base64.h"
 
 #include "Net.h"
 #include "SocketError.h"

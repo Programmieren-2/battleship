@@ -5,12 +5,10 @@
 #ifndef BATTLESHIP_UTIL_H
 #define BATTLESHIP_UTIL_H
 
-#include "os.h"
-
 #include <string>
 #include <vector>
 
-#include <boost/asio.hpp>
+#include "boostwrap.h"
 using boost::asio::ip::address;
 
 #include <boost/program_options.hpp>
