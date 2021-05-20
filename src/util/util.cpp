@@ -182,8 +182,7 @@ namespace util {
 
     static address_v6 sin6toav6(struct sockaddr_in6* sin6)
     {
-        array<uint8_t, 16> bytes{};
-        copy(begin(sin6->sin6_addr.s6_addr), end(sin6->sin6_addr.s6_addr), begin(bytes));
+        auto &bytes = reinterpret_cast<std::array<unsigned char,16>&>(sin6->sin6_addr.s6_addr);
         return address_v6(bytes, sin6->sin6_scope_id);
     }
 
