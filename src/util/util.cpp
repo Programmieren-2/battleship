@@ -219,11 +219,7 @@ namespace util {
 
     address getAddress(string const &hostname, int family, int socktype)
     {
-        vector<address> addresses = getAddresses(hostname, family, socktype);
-        if (addresses.empty())
-            throw length_error("No addresses found for host name.");
-
-        return addresses[0];
+        return getAddresses(hostname, family, socktype).at(0);
     }
 
     address getAddress(string const &hostname)
