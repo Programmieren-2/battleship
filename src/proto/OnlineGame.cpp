@@ -133,7 +133,7 @@ namespace proto {
         auto playerId = static_cast<unsigned long>(request.header.playerId);
         auto candidate = request.own ? getPlayer(playerId) : getOpponent(playerId);
         if (BOOST_UNLIKELY(!candidate.has_value()))
-            throw InvalidRequest(NO_SUCH_PLAYER);
+            throw InvalidRequest(request.own ? NO_SUCH_PLAYER : NO_OPPONENT);
 
         OnlinePlayer &player = candidate.value();
         Sea &sea = player.getSea();

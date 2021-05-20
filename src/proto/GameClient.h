@@ -13,6 +13,7 @@
 #include "Net.h"
 #include "Client.h"
 #include "Messages.h"
+#include "ProtocolError.h"
 
 namespace proto {
     class GameClient : public net::Client {
@@ -29,8 +30,10 @@ namespace proto {
         {
             std::string buf = communicate(serialize(request));
             auto header = deserialize<ResponseHeader>(buf, true);
-            if (header.type == ResponseType::INVALID_REQUEST)
-                throw deserialize<InvalidRequest>(buf, true);
+            if (header.type == ResponseType::INVALID_REQUEST) {
+                auto invalidRequest = deserialize<InvalidRequest>(buf);
+                throw ProtocolError(invalidRequest.error);
+            }
 
             return buf;
         }

@@ -300,6 +300,50 @@ namespace proto {
         }
     }
 
+    void CLIClient::handleProtocolError(ProtocolError const &error)
+    {
+        cerr << "[ERROR] ";
+
+        switch (error.getType()) {
+            case NO_SUCH_GAME:
+                cerr << "No such game.\n";
+                break;
+            case NO_SUCH_PLAYER:
+                cerr << "No such player.\n";
+                break;
+            case NO_OPPONENT:
+                cerr << "No opponent.\n";
+                break;
+            case NOT_YOUR_TURN:
+                cerr << "It is not your turn.\n";
+                break;
+            case OPPONENT_NOT_READY:
+                cerr << "Your opponent is not ready.\n";
+                break;
+            case UNEXPECTED_RESPONSE_TYPE:
+                cerr << "Unexpected response type. Complain to Richard.\n";
+                break;
+            case ALREADY_LOGGED_IN:
+                cerr << "You are already logged into a game.\n";
+                break;
+            case GAME_OVER:
+                cerr << "The game has ended.\n";
+                break;
+            default:
+                cerr << "Unknown error: " << error.getType() << "\n";
+                break;
+        }
+    }
+
+    void CLIClient::handleCommandSafely(string const &command, vector<string> const &args)
+    {
+        try {
+            handleCommand(command, args);
+        } catch (ProtocolError &error) {
+            handleProtocolError(error);
+        }
+    }
+
     Command CLIClient::getCommand(string const &command)
     {
         try {
@@ -325,7 +369,7 @@ namespace proto {
                 break;
 
             vector<string> args(commandLine.begin() + 1, commandLine.end());
-            handleCommand(command, args);
+            handleCommandSafely(command, args);
         }
 
         teardown();

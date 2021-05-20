@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "GameClient.h"
+#include "ProtocolError.h"
 
 namespace proto {
     enum Command {
@@ -61,6 +62,8 @@ namespace proto {
         void makeTurn(std::string const &command, std::vector<std::string> const &args);
         void getStatus(std::string const &command, std::vector<std::string> const &args);
         void handleCommand(std::string const &command, std::vector<std::string>const &args);
+        void handleProtocolError(ProtocolError const &error);
+        void handleCommandSafely(std::string const &command, std::vector<std::string>const &args);
 
         static Command getCommand(std::string const &command);
     public:
