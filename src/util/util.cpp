@@ -4,8 +4,13 @@
 
 #include "os.h"
 
+#include <algorithm>
+using std::copy;
+
 #include <array>
 using std::array;
+using std::begin;
+using std::end;
 
 #include <iostream>
 using std::cerr;
@@ -179,24 +184,8 @@ namespace util {
 
     static address_v6 sin6toav6(struct sockaddr_in6* sin6)
     {
-        array<unsigned char, 16> bytes = {
-            sin6->sin6_addr.s6_addr[0],
-            sin6->sin6_addr.s6_addr[1],
-            sin6->sin6_addr.s6_addr[2],
-            sin6->sin6_addr.s6_addr[3],
-            sin6->sin6_addr.s6_addr[4],
-            sin6->sin6_addr.s6_addr[5],
-            sin6->sin6_addr.s6_addr[6],
-            sin6->sin6_addr.s6_addr[7],
-            sin6->sin6_addr.s6_addr[8],
-            sin6->sin6_addr.s6_addr[9],
-            sin6->sin6_addr.s6_addr[10],
-            sin6->sin6_addr.s6_addr[11],
-            sin6->sin6_addr.s6_addr[12],
-            sin6->sin6_addr.s6_addr[13],
-            sin6->sin6_addr.s6_addr[14],
-            sin6->sin6_addr.s6_addr[15]
-        };
+        array<uint8_t, 16> bytes{};
+        copy(begin(sin6->sin6_addr.s6_addr), end(sin6->sin6_addr.s6_addr), begin(bytes));
         return address_v6(bytes, sin6->sin6_scope_id);
     }
 
