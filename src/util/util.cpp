@@ -2,9 +2,6 @@
 // Created by rne on 07.05.21.
 //
 
-#include <algorithm>
-using std::copy;
-
 #include <array>
 using std::array;
 using std::begin;
@@ -40,6 +37,8 @@ using boost::program_options::parse_command_line;
 using boost::program_options::store;
 using boost::program_options::unknown_option;
 using boost::program_options::variables_map;
+
+#include "os.h" // Needed for __windows__ check
 
 #include "util.h"
 
