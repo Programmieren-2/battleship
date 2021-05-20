@@ -6,11 +6,11 @@
 using std::all_of;
 using std::any_of;
 
-#include <exception>
-using std::invalid_argument;
-
 #include <optional>
 using std::optional;
+
+#include <stdexcept>
+using std::invalid_argument;
 
 #include <string>
 using std::string;
