@@ -31,6 +31,7 @@ using std::string;
 using std::vector;
 
 #include <boost/program_options.hpp>
+using boost::program_options::invalid_command_line_syntax;
 using boost::program_options::notify;
 using boost::program_options::options_description;
 using boost::program_options::parse_command_line;
@@ -152,6 +153,9 @@ namespace util {
         } catch (unknown_option const &error) {
             cerr << "Invalid option: " << error.get_option_name() << "\n";
             cerr << desc << "\n";
+            return args;
+        } catch (invalid_command_line_syntax &error) {
+            cerr << "Syntax error: " << error.what() << "\n";
             return args;
         }
 
