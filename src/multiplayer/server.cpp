@@ -15,8 +15,10 @@ using boost::program_options::value;
 using net::Defaults::ADDRESS;
 using net::Defaults::PORT;
 
+#include "ip.h"
+using ip::getAddress;
+
 #include "util.h"
-using util::getAddress;
 using util::parseArgDesc;
 
 #include "GameServer.h"
