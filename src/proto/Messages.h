@@ -318,7 +318,7 @@ namespace proto {
         models::PlacementResult result;
 
         ShipPlacementResponse(uint32_t gameId, uint32_t playerId, models::PlacementResult result)
-            : Response(SHIP_TYPES_RESPONSE, gameId, playerId), result(result)
+            : Response(SHIP_PLACEMENT_RESPONSE, gameId, playerId), result(result)
         {}
 
         ShipPlacementResponse()
