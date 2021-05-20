@@ -16,17 +16,16 @@
 namespace net {
     class TCPService {
     private:
-        std::string host;
+        IPAddress ipAddress;
         unsigned short port;
     protected:
         boost::asio::io_service service;
         Socket socket;
         [[nodiscard]] boost::asio::ip::tcp::endpoint getEndpoint() const;
     public:
-        TCPService(std::string host, unsigned short port);
-        TCPService();
+        TCPService(IPAddress ipAddress, unsigned short port);
 
-        [[nodiscard]] std::string getHost() const;
+        [[nodiscard]] IPAddress getAddress() const;
         [[nodiscard]] unsigned int getPort() const;
 
         [[nodiscard]] std::string receive(string const &terminator);

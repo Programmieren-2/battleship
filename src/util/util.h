@@ -10,6 +10,9 @@
 #include <string>
 #include <vector>
 
+#include <boost/asio.hpp>
+using boost::asio::ip::address;
+
 #include <boost/program_options.hpp>
 using boost::program_options::options_description;
 using boost::program_options::variables_map;
@@ -23,6 +26,8 @@ namespace util {
     bool isNumber(std::string const &str);
     int copyString(char *dest, std::string const &src, size_t size);
     std::optional<variables_map> parseArgDesc(int argc, const char *argv[], options_description const &desc);
+    std::vector<boost::asio::ip::address> getAddresses(std::string const &hostname);
+    boost::asio::ip::address getAddress(std::string const &hostname);
 
     template <typename ElementType>
     bool contains(std::vector<ElementType> const &haystack, ElementType const &needle)

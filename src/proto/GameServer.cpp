@@ -16,6 +16,8 @@ using std::string;
 #include <boost/config.hpp>
 
 #include "Net.h"
+using net::IPAddress;
+
 #include "Server.h"
 using net::Server;
 
@@ -27,12 +29,8 @@ using net::Server;
 namespace proto {
     unsigned long GameServer::gameId = 0;
 
-    GameServer::GameServer(const string &host, unsigned short port)
-        : Server(host, port), games(Games())
-    {}
-
-    GameServer::GameServer()
-        : GameServer(net::Defaults::HOST, net::Defaults::PORT)
+    GameServer::GameServer(IPAddress ipAddress, unsigned short port)
+        : Server(ipAddress, port), games(Games())
     {}
 
     optional<reference_wrapper<OnlineGame>> GameServer::getGame(unsigned long id)

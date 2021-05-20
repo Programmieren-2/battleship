@@ -15,7 +15,6 @@ using boost::asio::buffer;
 using boost::asio::buffer_cast;
 using boost::asio::error::eof;
 using boost::asio::io_service;
-using boost::asio::ip::address;
 using boost::asio::ip::tcp;
 using boost::asio::read_until;
 using boost::asio::streambuf;
@@ -30,17 +29,13 @@ using boost::system::error_code;
 #include "TCPService.h"
 
 namespace net {
-    TCPService::TCPService(string host, unsigned short port)
-            : host(move(host)), port(port), service(io_service()), socket(Socket(service))
+    TCPService::TCPService(IPAddress ipAddress, unsigned short port)
+            : ipAddress(move(ipAddress)), port(port), service(io_service()), socket(Socket(service))
     {}
 
-    TCPService::TCPService()
-            : TCPService(Defaults::HOST, Defaults::PORT)
-    {}
-
-    string TCPService::getHost() const
+    IPAddress TCPService::getAddress() const
     {
-        return host;
+        return ipAddress;
     }
 
     unsigned int TCPService::getPort() const
@@ -50,7 +45,7 @@ namespace net {
 
     tcp::endpoint TCPService::getEndpoint() const
     {
-        return tcp::endpoint(address::from_string(host), port);
+        return tcp::endpoint(ipAddress, port);
     }
 
     string TCPService::receive(string const &terminator)

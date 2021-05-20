@@ -4,10 +4,15 @@
 
 #include "os.h"
 
+#include <array>
+using std::array;
+
 #include <iostream>
 using std::cerr;
 using std::cin;
 using std::cout;
+
+#include <netdb.h>
 
 #include <optional>
 using std::optional;
@@ -16,12 +21,23 @@ using std::optional;
 using std::regex;
 using std::regex_match;
 
+#include <stdexcept>
+using std::domain_error;
+using std::length_error;
+
+#include <sys/socket.h>
+
 #include <string>
 using std::getline;
 using std::string;
 
 #include <vector>
 using std::vector;
+
+#include <boost/asio.hpp>
+using boost::asio::ip::address;
+using boost::asio::ip::address_v4;
+using boost::asio::ip::address_v6;
 
 #include <boost/program_options.hpp>
 using boost::program_options::notify;
@@ -154,5 +170,44 @@ namespace util {
         }
 
         return args = varMap;
+    }
+
+    vector<address> getAddresses(string const &hostname)
+    {
+        struct addrinfo req = {.ai_family = AF_UNSPEC, .ai_socktype = SOCK_STREAM};
+        struct addrinfo *pai;
+        int error = getaddrinfo(hostname.c_str(), nullptr, &req, &pai);
+        if (error)
+            throw domain_error("Could not resolve host name.");
+
+        vector<address> addresses;
+
+        for(struct addrinfo *info = pai; info != nullptr; info = info->ai_next) {
+            if (info->ai_family == AF_INET) {
+                auto ipv4socket = reinterpret_cast<struct sockaddr_in*>(info->ai_addr);
+                auto ipv4addr = address_v4(htonl(ipv4socket->sin_addr.s_addr));
+                addresses.emplace_back(ipv4addr);
+            }
+            /*
+             * TODO: Implement IPv6 support.
+            else {
+                auto ipv6socket = reinterpret_cast<struct sockaddr_in6*>(info->ai_addr);
+                auto ipv6base = reinterpret_cast<array<unsigned char, 16>>(ipv6socket->sin6_addr.__in6_u);
+                auto ipv6addr = address_v6(ipv6base, ipv6socket->sin6_scope_id);
+                addresses.emplace_back(ipv6addr);
+            }
+            */
+        }
+
+        return addresses;
+    }
+
+    address getAddress(string const &hostname)
+    {
+        vector<address> addresses = getAddresses(hostname);
+        if (addresses.empty())
+            throw length_error("No addresses found for host name.");
+
+        return addresses[0];
     }
 }

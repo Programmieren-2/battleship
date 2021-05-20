@@ -41,8 +41,7 @@ namespace proto {
             return deserialize<ResponseType>(sendMessage(request));
         }
     public:
-        GameClient(std::string const &host, unsigned short port);
-        GameClient();
+        GameClient(net::IPAddress ipAddress, unsigned short port);
 
         [[nodiscard]] unsigned long getGameId() const;
         [[nodiscard]] unsigned long getPlayerId() const;

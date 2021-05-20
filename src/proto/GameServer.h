@@ -10,6 +10,8 @@
 #include <string>
 #include <vector>
 
+#include "Net.h"
+
 #include "Game.h"
 #include "Ship.h"
 
@@ -35,8 +37,7 @@ namespace proto {
         [[nodiscard]] std::string processListGamesRequest();
         [[nodiscard]] std::string handleRequest(std::string const &buf) override;
     public:
-        GameServer(string const &host, unsigned short port);
-        GameServer();
+        GameServer(net::IPAddress ipAddress, unsigned short port);
     };
 }
 

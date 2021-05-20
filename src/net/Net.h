@@ -10,11 +10,12 @@
 #include <boost/asio.hpp>
 
 namespace net {
+    typedef boost::asio::ip::address        IPAddress;
     typedef boost::asio::ip::tcp::socket    Socket;
 
     namespace Defaults {
-        static const char*          HOST = "127.0.0.1";
-        static const unsigned long  PORT = 9000;
+        static const char *ADDRESS = "127.0.0.1";
+        static const unsigned short PORT = 9000;
     }
 }
 

@@ -26,18 +26,17 @@ using models::ShipTypes;
 #include "Client.h"
 using net::Client;
 
+#include "Net.h"
+using net::IPAddress;
+
 #include "Messages.h"
 #include "ProtocolError.h"
 
 #include "GameClient.h"
 
 namespace proto {
-    GameClient::GameClient(string const &host, unsigned short port)
-            : Client(host, port), gameId(0), playerId(0), gameOver(false), won(false)
-    {}
-
-    GameClient::GameClient()
-            : Client(), gameId(0), playerId(0)
+    GameClient::GameClient(IPAddress ipAddress, unsigned short port)
+            : Client(ipAddress, port), gameId(0), playerId(0), gameOver(false), won(false)
     {}
 
     unsigned long GameClient::getGameId() const
