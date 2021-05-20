@@ -106,7 +106,7 @@ namespace proto {
     void CLIClient::joinGame(string const &command, vector<string> const &args)
     {
         if (args.size() != 2) {
-            cerr << "Usage '" << command << " <gameID> <playerName>' to join a game.\n";
+            cerr << "Usage: '" << command << " <gameID> <playerName>' to join a game.\n";
             return;
         }
 
@@ -193,10 +193,18 @@ namespace proto {
 
     void CLIClient::getMap(string const &command, vector<string> const &args)
     {
-        if (!args.empty())
-            cerr << "Command '" << command << "' expects no arguments.\n";
+        bool own;
 
-        cout << getMap();
+        if (args.empty()) {
+            own = false;
+        } else if (args.size() == 1 && args[0] == "own") {
+            own = true;
+        } else {
+            cerr << "Usage: '" << command << " (own)'.\n";
+            return;
+        }
+
+        cout << getMap(own);
     }
 
     void CLIClient::makeTurn(string const &command, vector<string> const &args)
