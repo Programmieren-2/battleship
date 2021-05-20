@@ -25,11 +25,11 @@ using std::regex_match;
 using std::domain_error;
 using std::length_error;
 
-#include <sys/socket.h>
-
 #include <string>
 using std::getline;
 using std::string;
+
+#include <sys/socket.h>
 
 #include <vector>
 using std::vector;
@@ -172,9 +172,37 @@ namespace util {
         return args = varMap;
     }
 
-    vector<address> getAddresses(string const &hostname)
+    static address_v4 sintoav4(struct sockaddr_in* sin4)
     {
-        struct addrinfo req = {.ai_family = AF_UNSPEC, .ai_socktype = SOCK_STREAM};
+        return address_v4(htonl(sin4->sin_addr.s_addr));
+    }
+
+    static address_v6 sin6toav6(struct sockaddr_in6* sin6)
+    {
+        array<unsigned char, 16> bytes = {
+            sin6->sin6_addr.s6_addr[0],
+            sin6->sin6_addr.s6_addr[1],
+            sin6->sin6_addr.s6_addr[2],
+            sin6->sin6_addr.s6_addr[3],
+            sin6->sin6_addr.s6_addr[4],
+            sin6->sin6_addr.s6_addr[5],
+            sin6->sin6_addr.s6_addr[6],
+            sin6->sin6_addr.s6_addr[7],
+            sin6->sin6_addr.s6_addr[8],
+            sin6->sin6_addr.s6_addr[9],
+            sin6->sin6_addr.s6_addr[10],
+            sin6->sin6_addr.s6_addr[11],
+            sin6->sin6_addr.s6_addr[12],
+            sin6->sin6_addr.s6_addr[13],
+            sin6->sin6_addr.s6_addr[14],
+            sin6->sin6_addr.s6_addr[15]
+        };
+        return address_v6(bytes, sin6->sin6_scope_id);
+    }
+
+    vector<address> getAddresses(string const &hostname, int family, int socktype)
+    {
+        struct addrinfo req = {.ai_family = family, .ai_socktype = socktype};
         struct addrinfo *pai;
         int error = getaddrinfo(hostname.c_str(), nullptr, &req, &pai);
         if (error)
@@ -185,29 +213,32 @@ namespace util {
         for(struct addrinfo *info = pai; info != nullptr; info = info->ai_next) {
             if (info->ai_family == AF_INET) {
                 auto ipv4socket = reinterpret_cast<struct sockaddr_in*>(info->ai_addr);
-                auto ipv4addr = address_v4(htonl(ipv4socket->sin_addr.s_addr));
-                addresses.emplace_back(ipv4addr);
-            }
-            /*
-             * TODO: Implement IPv6 support.
-            else {
+                addresses.emplace_back(sintoav4(ipv4socket));
+            } else if (info->ai_family == AF_INET6) {
                 auto ipv6socket = reinterpret_cast<struct sockaddr_in6*>(info->ai_addr);
-                auto ipv6base = reinterpret_cast<array<unsigned char, 16>>(ipv6socket->sin6_addr.__in6_u);
-                auto ipv6addr = address_v6(ipv6base, ipv6socket->sin6_scope_id);
-                addresses.emplace_back(ipv6addr);
+                addresses.emplace_back(sin6toav6(ipv6socket));
             }
-            */
         }
 
         return addresses;
     }
 
-    address getAddress(string const &hostname)
+    vector<address> getAddresses(string const &hostname)
     {
-        vector<address> addresses = getAddresses(hostname);
+        return getAddresses(hostname, AF_UNSPEC, SOCK_STREAM);
+    }
+
+    address getAddress(string const &hostname, int family, int socktype)
+    {
+        vector<address> addresses = getAddresses(hostname, family, socktype);
         if (addresses.empty())
             throw length_error("No addresses found for host name.");
 
         return addresses[0];
+    }
+
+    address getAddress(string const &hostname)
+    {
+        return getAddress(hostname, AF_UNSPEC, SOCK_STREAM);
     }
 }
