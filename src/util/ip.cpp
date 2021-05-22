@@ -54,14 +54,8 @@ namespace ip {
         throw invalid_argument("Not an IPv4 or IPv6 address.");
     }
 
-    vector<address> getAddresses(string const &hostname, int family, int socketType)
+    static vector<address> getAddresses(struct addrinfo *pai)
     {
-        struct addrinfo req = {.ai_family = family, .ai_socktype = socketType};
-        struct addrinfo *pai;
-        int error = getaddrinfo(hostname.c_str(), nullptr, &req, &pai);
-        if (error)
-            throw domain_error("Could not resolve host name.");
-
         vector<address> addresses;
 
         for(struct addrinfo *info = pai; info != nullptr; info = info->ai_next) {
@@ -73,6 +67,17 @@ namespace ip {
         }
 
         return addresses;
+    }
+
+    vector<address> getAddresses(string const &hostname, int family, int socketType)
+    {
+        struct addrinfo req = {.ai_family = family, .ai_socktype = socketType};
+        struct addrinfo *pai;
+        int error = getaddrinfo(hostname.c_str(), nullptr, &req, &pai);
+        if (error)
+            throw domain_error("Could not resolve host name.");
+
+        return getAddresses(pai);
     }
 
     vector<address> getAddresses(string const &hostname)
