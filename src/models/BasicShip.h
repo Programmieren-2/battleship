@@ -2,8 +2,7 @@
 // Created by rne on 15.05.21.
 //
 
-#ifndef BATTLESHIP_BASICSHIP_H
-#define BATTLESHIP_BASICSHIP_H
+#pragma once
 
 #include <string>
 
@@ -26,5 +25,3 @@ namespace models {
         bool operator!=(BasicShip const &other) const;
     };
 }
-
-#endif //BATTLESHIP_BASICSHIP_H

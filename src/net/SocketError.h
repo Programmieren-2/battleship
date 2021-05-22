@@ -2,8 +2,7 @@
 // Created by rne on 12.05.21.
 //
 
-#ifndef BATTLESHIP_SOCKETERROR_H
-#define BATTLESHIP_SOCKETERROR_H
+#pragma once
 
 #include <exception>
 
@@ -19,5 +18,3 @@ namespace net {
         [[nodiscard]] const char *what() const noexcept override;
     };
 }
-
-#endif //BATTLESHIP_SOCKETERROR_H

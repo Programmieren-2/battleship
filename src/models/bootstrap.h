@@ -2,8 +2,7 @@
 // Created by rne on 08.05.21.
 //
 
-#ifndef BATTLESHIP_BOOTSTRAP_H
-#define BATTLESHIP_BOOTSTRAP_H
+#pragma once
 
 #include <string>
 
@@ -44,6 +43,3 @@ namespace bootstrap {
         return game;
     }
 }
-
-
-#endif //BATTLESHIP_BOOTSTRAP_H

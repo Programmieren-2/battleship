@@ -2,8 +2,7 @@
 // Created by rne on 07.05.21.
 //
 
-#ifndef BATTLESHIP_SEA_H
-#define BATTLESHIP_SEA_H
+#pragma once
 
 #include <functional>
 #include <optional>
@@ -44,5 +43,3 @@ namespace models {
         HitResult fireAt(Coordinate const &coordinate);
     };
 }
-
-#endif //BATTLESHIP_SEA_H

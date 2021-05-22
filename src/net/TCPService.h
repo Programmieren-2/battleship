@@ -2,8 +2,7 @@
 // Created by rne on 08.05.21.
 //
 
-#ifndef BATTLESHIP_TCPSERVICE_H
-#define BATTLESHIP_TCPSERVICE_H
+#pragma once
 
 #include <string>
 
@@ -32,5 +31,3 @@ namespace net {
         void send(string const &message);
     };
 }
-
-#endif //BATTLESHIP_TCPSERVICE_H

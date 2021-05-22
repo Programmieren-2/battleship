@@ -2,8 +2,7 @@
 // Created by rne on 07.05.21.
 //
 
-#ifndef BATTLESHIP_MODELS_H
-#define BATTLESHIP_MODELS_H
+#pragma once
 
 #include <map>
 #include <string>
@@ -30,5 +29,3 @@ namespace models {
     template <typename T>
     using Matrix = std::vector<std::vector<T>>;
 }
-
-#endif //BATTLESHIP_MODELS_H

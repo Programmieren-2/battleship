@@ -2,8 +2,7 @@
 // Created by rne on 15.05.21.
 //
 
-#ifndef BATTLESHIP_ONLINEGAME_H
-#define BATTLESHIP_ONLINEGAME_H
+#pragma once
 
 #include <optional>
 #include <string>
@@ -55,5 +54,3 @@ namespace proto {
         [[nodiscard]] std::string processTurnRequest(std::string const &buf);
     };
 }
-
-#endif //BATTLESHIP_ONLINEGAME_H

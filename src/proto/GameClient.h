@@ -2,8 +2,7 @@
 // Created by rne on 08.05.21.
 //
 
-#ifndef BATTLESHIP_GAMECLIENT_H
-#define BATTLESHIP_GAMECLIENT_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -65,5 +64,3 @@ namespace proto {
         void teardown();
     };
 }
-
-#endif //BATTLESHIP_GAMECLIENT_H

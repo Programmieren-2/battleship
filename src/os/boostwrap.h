@@ -2,8 +2,7 @@
 // Created by rne on 20.05.21.
 //
 
-#ifndef BATTLESHIP_BOOSTWRAP_H
-#define BATTLESHIP_BOOSTWRAP_H
+#pragma once
 
 #include "os.h"
 
@@ -13,5 +12,3 @@
 
 #include <boost/asio.hpp>
 #include <boost/config.hpp>
-
-#endif //BATTLESHIP_BOOSTWRAP_H

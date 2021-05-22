@@ -2,8 +2,7 @@
 // Created by rne on 15.05.21.
 //
 
-#ifndef BATTLESHIP_CLICLIENT_H
-#define BATTLESHIP_CLICLIENT_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -72,5 +71,3 @@ namespace proto {
         void loop();
     };
 }
-
-#endif //BATTLESHIP_CLICLIENT_H

@@ -2,8 +2,7 @@
 // Created by rne on 15.05.21.
 //
 
-#ifndef BATTLESHIP_PROTOCOLERROR_H
-#define BATTLESHIP_PROTOCOLERROR_H
+#pragma once
 
 #include <exception>
 #include <string>
@@ -22,5 +21,3 @@ namespace proto {
         [[nodiscard]] const char *what() const noexcept;
     };
 }
-
-#endif //BATTLESHIP_PROTOCOLERROR_H

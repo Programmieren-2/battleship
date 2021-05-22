@@ -2,8 +2,7 @@
 // Created by rne on 12.05.21.
 //
 
-#ifndef BATTLESHIP_PLAYER_H
-#define BATTLESHIP_PLAYER_H
+#pragma once
 
 #include <string>
 
@@ -23,5 +22,3 @@ namespace models {
         [[nodiscard]] models::Sea& getSea();
     };
 }
-
-#endif //BATTLESHIP_PLAYER_H

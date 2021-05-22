@@ -2,8 +2,7 @@
 // Created by rne on 08.05.21.
 //
 
-#ifndef BATTLESHIP_NET_H
-#define BATTLESHIP_NET_H
+#pragma once
 
 #include "boostwrap.h"
 
@@ -16,5 +15,3 @@ namespace net {
         static const unsigned short PORT = 9000;
     }
 }
-
-#endif

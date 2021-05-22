@@ -2,8 +2,7 @@
 // Created by rne on 08.05.21.
 //
 
-#ifndef BATTLESHIP_GAMESERVER_H
-#define BATTLESHIP_GAMESERVER_H
+#pragma once
 
 #include <functional>
 #include <optional>
@@ -40,5 +39,3 @@ namespace proto {
         GameServer(net::IPAddress ipAddress, unsigned short port);
     };
 }
-
-#endif //BATTLESHIP_GAMESERVER_H

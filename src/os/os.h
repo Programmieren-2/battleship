@@ -2,8 +2,7 @@
 // Created by rne on 19.05.21.
 //
 
-#ifndef BATTLESHIP_OS_H
-#define BATTLESHIP_OS_H
+#pragma once
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
 #define __windows__
@@ -27,5 +26,3 @@
 #else
 #   error "Unknown platform"
 #endif
-
-#endif //BATTLESHIP_OS_H

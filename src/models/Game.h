@@ -2,8 +2,7 @@
 // Created by rne on 15.05.21.
 //
 
-#ifndef BATTLESHIP_GAME_H
-#define BATTLESHIP_GAME_H
+#pragma once
 
 #include <algorithm>
 #include <array>
@@ -140,5 +139,3 @@ namespace models {
         }
     };
 }
-
-#endif //BATTLESHIP_GAME_H

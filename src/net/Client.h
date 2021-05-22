@@ -2,8 +2,7 @@
 // Created by rne on 08.05.21.
 //
 
-#ifndef BATTLESHIP_CLIENT_H
-#define BATTLESHIP_CLIENT_H
+#pragma once
 
 #include <string>
 
@@ -20,5 +19,3 @@ namespace net {
         std::string communicate(std::string const &message);
     };
 }
-
-#endif //BATTLESHIP_CLIENT_H

@@ -2,8 +2,7 @@
 // Created by rne on 20.05.21.
 //
 
-#ifndef BATTLESHIP_IP_H
-#define BATTLESHIP_IP_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -18,6 +17,3 @@ namespace ip {
     boost::asio::ip::address getAddress(std::string const &hostname, int family, int socketType);
     boost::asio::ip::address getAddress(std::string const &hostname);
 };
-
-
-#endif //BATTLESHIP_IP_H

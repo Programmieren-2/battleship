@@ -2,8 +2,7 @@
 // Created by rne on 08.05.21.
 //
 
-#ifndef BATTLESHIP_MESSAGES_H
-#define BATTLESHIP_MESSAGES_H
+#pragma once
 
 #include <cstring>
 #include <exception>
@@ -426,5 +425,3 @@ namespace proto {
         return std::string(ptr, ptr + sizeof msg);
     }
 }
-
-#endif //BATTLESHIP_MESSAGES_H

@@ -2,8 +2,7 @@
 // Created by rne on 07.05.21.
 //
 
-#ifndef BATTLESHIP_UTIL_H
-#define BATTLESHIP_UTIL_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -28,5 +27,3 @@ namespace util {
         return std::find(haystack.begin(), haystack.end(), needle) != haystack.end();
     }
 }
-
-#endif //BATTLESHIP_UTIL_H

@@ -2,8 +2,7 @@
 // Created by rne on 08.05.21.
 //
 
-#ifndef BATTLESHIP_SERVER_H
-#define BATTLESHIP_SERVER_H
+#pragma once
 
 #include <string>
 
@@ -29,5 +28,3 @@ namespace net {
         [[noreturn]] void listen();
     };
 }
-
-#endif //BATTLESHIP_SERVER_H

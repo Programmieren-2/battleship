@@ -2,8 +2,7 @@
 // Created by rne on 15.05.21.
 //
 
-#ifndef BATTLESHIP_ONLINEPLAYER_H
-#define BATTLESHIP_ONLINEPLAYER_H
+#pragma once
 
 #include <chrono>
 #include <functional>
@@ -31,5 +30,3 @@ namespace proto {
 
     typedef std::reference_wrapper<OnlinePlayer> OnlinePlayerReference;
 }
-
-#endif //BATTLESHIP_ONLINEPLAYER_H

@@ -2,8 +2,7 @@
 // Created by rne on 07.05.21.
 //
 
-#ifndef BATTLESHIP_HITPOINT_H
-#define BATTLESHIP_HITPOINT_H
+#pragma once
 
 #include "Models.h"
 #include "Coordinate.h"
@@ -20,5 +19,3 @@ namespace models {
         [[nodiscard]] HitResult doHit();
     };
 }
-
-#endif //BATTLESHIP_HITPOINT_H

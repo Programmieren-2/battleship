@@ -2,8 +2,7 @@
 // Created by rne on 07.05.21.
 //
 
-#ifndef BATTLESHIP_COORDINATE_H
-#define BATTLESHIP_COORDINATE_H
+#pragma once
 
 #include <optional>
 #include <string>
@@ -27,6 +26,3 @@ namespace models {
         bool operator==(Coordinate const &coordinate) const;
     };
 }
-
-
-#endif //BATTLESHIP_COORDINATE_H

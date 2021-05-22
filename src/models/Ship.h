@@ -2,8 +2,7 @@
 // Created by rne on 07.05.21.
 //
 
-#ifndef BATTLESHIP_SHIP_H
-#define BATTLESHIP_SHIP_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -33,5 +32,3 @@ namespace models {
         HitResult fireAt(Coordinate const &coordinate);
     };
 }
-
-#endif //BATTLESHIP_SHIP_H
