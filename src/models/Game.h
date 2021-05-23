@@ -20,9 +20,9 @@
 namespace models {
     template <typename PlayerType>
     class Game {
-        typedef std::optional<PlayerType> OptionalPlayer;
-        typedef std::array<OptionalPlayer, 2> OptionalPlayers;
-        typedef std::reference_wrapper<PlayerType> PlayerReference;
+        using OptionalPlayer = std::optional<PlayerType>;
+        using OptionalPlayers = std::array<OptionalPlayer, 2>;
+        using PlayerReference = std::reference_wrapper<PlayerType>;
     private:
         unsigned short width;
         unsigned short height;

@@ -20,7 +20,7 @@
 #include "OnlineGame.h"
 
 namespace proto {
-    typedef std::vector<OnlineGame> Games;
+    using Games = std::vector<OnlineGame>;
 
     class GameServer : public net::Server {
     private:

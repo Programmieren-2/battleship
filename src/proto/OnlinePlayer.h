@@ -11,7 +11,7 @@
 #include "Sea.h"
 
 namespace proto {
-    typedef std::chrono::time_point<std::chrono::system_clock> Timestamp;
+    using Timestamp = std::chrono::time_point<std::chrono::system_clock>;
 
     class OnlinePlayer : public models::Player {
     private:
@@ -28,5 +28,5 @@ namespace proto {
         bool operator==(OnlinePlayer const &other) const;
     };
 
-    typedef std::reference_wrapper<OnlinePlayer> OnlinePlayerReference;
+    using OnlinePlayerReference = std::reference_wrapper<OnlinePlayer>;
 }

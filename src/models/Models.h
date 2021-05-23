@@ -12,7 +12,7 @@ namespace models {
     enum PlacementResult { SUCCESS, NOT_ON_BOARD, COLLISION, ALREADY_PLACED, INVALID_SHIP_TYPE };
     enum HitResult { HIT, ALREADY_HIT, MISSED };
 
-    typedef std::map<std::string, unsigned short> ShipTypes;
+    using ShipTypes = std::map<std::string, unsigned short>;
 
     namespace Defaults {
         static const unsigned short WIDTH = 10;

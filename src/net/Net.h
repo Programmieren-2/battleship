@@ -7,8 +7,8 @@
 #include "boostwrap.h"
 
 namespace net {
-    typedef boost::asio::ip::address        IPAddress;
-    typedef boost::asio::ip::tcp::socket    Socket;
+    using IPAddress = boost::asio::ip::address;
+    using Socket = boost::asio::ip::tcp::socket;
 
     namespace Defaults {
         static const char *ADDRESS = "127.0.0.1";
