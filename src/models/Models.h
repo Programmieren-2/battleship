@@ -2,19 +2,19 @@
 // Created by rne on 07.05.21.
 //
 
-#ifndef BATTLESHIP_CONSTANTS_H
-#define BATTLESHIP_CONSTANTS_H
+#pragma once
 
 #include <map>
 #include <string>
 #include <vector>
 
-#include "Ship.h"
-
 namespace models {
-    typedef std::map<std::string, unsigned short> ShipTypes;
+    enum PlacementResult { SUCCESS, NOT_ON_BOARD, COLLISION, ALREADY_PLACED, INVALID_SHIP_TYPE };
+    enum HitResult { HIT, ALREADY_HIT, MISSED };
 
-    namespace Constants {
+    using ShipTypes = std::map<std::string, unsigned short>;
+
+    namespace Defaults {
         static const unsigned short WIDTH = 10;
         static const unsigned short HEIGHT = 10;
         static const ShipTypes SHIP_TYPES = {
@@ -25,5 +25,7 @@ namespace models {
                 {"Aircraft Carrier", static_cast<unsigned short>(5)},
         };
     }
+
+    template <typename T>
+    using Matrix = std::vector<std::vector<T>>;
 }
-#endif //BATTLESHIP_CONSTANTS_H

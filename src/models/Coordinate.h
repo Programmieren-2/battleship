@@ -2,9 +2,9 @@
 // Created by rne on 07.05.21.
 //
 
-#ifndef BATTLESHIP_COORDINATE_H
-#define BATTLESHIP_COORDINATE_H
+#pragma once
 
+#include <optional>
 #include <string>
 
 namespace models {
@@ -21,9 +21,8 @@ namespace models {
         [[nodiscard]] unsigned short getX() const;
         [[nodiscard]] unsigned short getY() const;
 
+        static std::optional<Coordinate> fromString(std::string const &strX, std::string const &strY);
+
         bool operator==(Coordinate const &coordinate) const;
     };
 }
-
-
-#endif //BATTLESHIP_COORDINATE_H

@@ -4,9 +4,13 @@
 
 #include <algorithm>
 using std::all_of;
+using std::any_of;
 
 #include <optional>
 using std::optional;
+
+#include <stdexcept>
+using std::invalid_argument;
 
 #include <string>
 using std::string;
@@ -14,51 +18,56 @@ using std::string;
 #include <utility>
 using std::move;
 
+#include "BasicShip.h"
 #include "Coordinate.h"
 #include "HitPoint.h"
 #include "Ship.h"
 
 namespace models {
-    Ship::Ship(string type, Coordinate const &anchorPoint, unsigned short length, Orientation orientation)
-            : type(move(type)), anchorPoint(anchorPoint), length(length), orientation(orientation), hitPoints(HitPoints())
+    Ship::Ship(string const &type, Coordinate const &anchorPoint, unsigned short length, Orientation orientation)
+        : BasicShip(type, anchorPoint, orientation), length(length)
     {
-        initializeGrid();
+        initializeHitPoints();
     }
 
-    void Ship::initializeGrid()
+    void Ship::initializeHitPoints()
     {
         optional<HitPoint> hitPoint;
 
-        for (unsigned short offset = 0; offset < length; offset++) {
-            switch (orientation) {
-            case Orientation::X:
-                hitPoint = HitPoint(anchorPoint.getX() + offset, anchorPoint.getY());
-                break;
-            case Orientation::Y:
-                hitPoint = HitPoint(anchorPoint.getX(), anchorPoint.getY() + offset);
-                break;
-            }
+        for (unsigned short offset = 0; offset < length; ++offset) {
+            Coordinate coordinate = getAnchorPoint();
 
-            hitPoints.push_back(hitPoint.value());
+            switch (getOrientation()) {
+                case Orientation::X:
+                    hitPoint = HitPoint(coordinate.getX() + offset, coordinate.getY());
+                    break;
+                case Orientation::Y:
+                    hitPoint = HitPoint(coordinate.getX(), coordinate.getY() + offset);
+                    break;
+                }
+
+            if (hitPoint.has_value())
+                hitPoints.push_back(hitPoint.value());
         }
     }
 
-    Coordinate Ship::getAnchorPoint() const
+    unsigned short Ship::getLength() const
     {
-        return anchorPoint;
+        return length;
     }
 
     Coordinate Ship::getEndPoint() const
     {
-        if (orientation == Orientation::X)
-            return Coordinate(anchorPoint.getX() + length - 1, anchorPoint.getY());
+        Coordinate coordinate = getAnchorPoint();
 
-        return Coordinate(anchorPoint.getX(), anchorPoint.getY() + length - 1);
-    }
+        switch (getOrientation()) {
+            case Orientation::X:
+                return Coordinate(coordinate.getX() + length - 1, coordinate.getY());
+            case Orientation::Y:
+                return Coordinate(coordinate.getX(), coordinate.getY() + length - 1);
+        }
 
-    HitPoints Ship::getHitPoints() const
-    {
-        return hitPoints;
+        throw invalid_argument("Invalid orientation.");
     }
 
     bool Ship::occupies(const Coordinate &coordinate) const
@@ -91,26 +100,11 @@ namespace models {
 
     HitResult Ship::fireAt(const Coordinate &coordinate)
     {
-        for (HitPoint &hitPoint : hitPoints) {
+        for (auto &hitPoint : hitPoints) {
             if (hitPoint == coordinate)
                 return hitPoint.doHit();
         }
 
         return HitResult::MISSED;
-    }
-
-    string Ship::getType() const
-    {
-        return type;
-    }
-
-    bool Ship::operator==(Ship const &other) const
-    {
-        return type == other.getType();
-    }
-
-    bool Ship::operator!=(Ship const &other) const
-    {
-        return !(*this == other);
     }
 }

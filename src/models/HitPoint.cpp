@@ -11,6 +11,11 @@ namespace models {
             : Coordinate(x, y), hit(false)
     {}
 
+    bool HitPoint::isHit() const
+    {
+        return hit;
+    }
+
     HitResult HitPoint::doHit()
     {
         if (hit)
@@ -18,10 +23,5 @@ namespace models {
 
         hit = true;
         return HitResult::HIT;
-    }
-
-    bool HitPoint::isHit() const
-    {
-        return hit;
     }
 }

@@ -13,19 +13,24 @@ using std::to_string;
 #include <vector>
 using std::vector;
 
-#include "Constants.h"
+#include "Models.h"
 
 #include "Coordinate.h"
 using models::Coordinate;
 using models::Orientation;
 
-#include "PlayerBoard.h"
+#include "Game.h"
+using models::Game;
+
+#include "Player.h"
+using models::Player;
+
+#include "Sea.h"
 using models::PlacementResult;
-using models::PlayerBoard;
+using models::Sea;
 
 #include "Ship.h"
 using models::Ship;
-using models::Ships;
 
 #include "util.h"
 using util::isNumber;
@@ -86,41 +91,41 @@ namespace bootstrap {
         return readOrientation("Orientation (x or y): ");
     }
 
-    static void readShip(PlayerBoard &playerBoard, string type, unsigned short length) {
+    static void readShip(Sea &sea, string const &type, unsigned short length) {
         Coordinate anchorPoint = readCoordinate();
         Orientation orientation = readOrientation();
 
         Ship ship(type, anchorPoint, length, orientation);
 
-        switch (playerBoard.placeShip(ship)) {
+        switch (sea.placeShip(ship)) {
+            case PlacementResult::SUCCESS:
+                return;
             case PlacementResult::NOT_ON_BOARD:
                 cerr << "Ship is not on the board.\n";
-                readShip(playerBoard, type, length);
+                readShip(sea, type, length);
                 return;
             case PlacementResult::COLLISION:
                 cerr << "Ship collides with another ship.\n";
-                readShip(playerBoard, type, length);
+                readShip(sea, type, length);
                 return;
-            case PlacementResult::SUCCESS:
+            case PlacementResult::ALREADY_PLACED:
+                cerr << "You already placed this this.\n";
+                return;
+            case PlacementResult::INVALID_SHIP_TYPE:
+                cerr << "Invalid ship type.\n";
                 return;
         }
     }
 
-    static void readShips(PlayerBoard &playerBoard) {
-        for (auto const &[type, length] : models::Constants::SHIP_TYPES) {
+    Sea readSea(unsigned short width, unsigned short height) {
+        Sea sea(width, height);
+
+        for (auto const &[type, length] : models::Defaults::SHIP_TYPES) {
+            cout << sea.toString(true);
             cout << "Place your " << type << " (size " << length << ").\n";
-            readShip(playerBoard, type, length);
-            cout << playerBoard.toString(true);
+            readShip(sea, type, length);
         }
-    }
 
-    PlayerBoard readPlayerBoard() {
-        static unsigned short playerNum = 0;
-        playerNum++;
-        string name = readWithPrompt("Enter name of player #" + to_string(playerNum) + ": ");
-        PlayerBoard playerBoard(name);
-        cout << playerBoard.toString(true);
-        readShips(playerBoard);
-        return playerBoard;
+        return sea;
     }
 }
