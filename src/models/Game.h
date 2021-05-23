@@ -64,7 +64,7 @@ namespace models {
         {
             std::vector<PlayerType> result;
 
-            for (auto &player : players) {
+            for (auto const &player : players) {
                 if (player.has_value())
                     result.push_back(player.value());
             }
@@ -123,7 +123,7 @@ namespace models {
         }
 
         [[nodiscard]] bool hasPlayers() const {
-            return any_of(players.begin(), players.end(), [](auto &player) { return player.has_value(); });
+            return any_of(players.begin(), players.end(), [](auto const &player) { return player.has_value(); });
         }
 
         bool addPlayer(PlayerType const &newPlayer) {
