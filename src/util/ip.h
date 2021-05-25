@@ -16,4 +16,4 @@ namespace ip {
     std::vector<boost::asio::ip::address> getAddresses(std::string const &hostname);
     boost::asio::ip::address getAddress(std::string const &hostname, int family, int socketType);
     boost::asio::ip::address getAddress(std::string const &hostname);
-};
+}
