@@ -11,10 +11,6 @@ using std::string;
 using boost::program_options::options_description;
 using boost::program_options::value;
 
-#include "Net.h"
-using net::Defaults::ADDRESS;
-using net::Defaults::PORT;
-
 #include "ip.h"
 using ip::getAddress;
 
@@ -24,14 +20,20 @@ using util::parseArgDesc;
 #include "CLIClient.h"
 using proto::CLIClient;
 
+#include "defaults.h"
+
 static auto parseArgs(int argc, const char *argv[])
 {
     options_description desc("Command line options");
     desc.add_options()
             ("help,h", "Show this page")
-            ("address,a", value<string>()->default_value(ADDRESS)->value_name("ip_address"),
+            ("address,a", value<string>()
+                ->default_value(Defaults::ADDRESS)
+                ->value_name("ip_address"),
                     "IP address to connect to")
-            ("port,p", value<unsigned short>()->default_value(PORT)->value_name("portnum"),
+            ("port,p", value<unsigned short>()
+                ->default_value(Defaults::PORT)
+                ->value_name("portnum"),
                     "Port to connect to");
     return parseArgDesc(argc, argv, desc);
 }

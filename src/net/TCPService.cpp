@@ -15,22 +15,23 @@ using boost::asio::buffer;
 using boost::asio::buffer_cast;
 using boost::asio::error::eof;
 using boost::asio::io_service;
+using boost::asio::ip::address;
 using boost::asio::ip::tcp;
 using boost::asio::read_until;
 using boost::asio::streambuf;
 using boost::asio::write;
 using boost::system::error_code;
+using Socket = boost::asio::ip::tcp::socket;
 
-#include "Net.h"
 #include "SocketError.h"
 #include "TCPService.h"
 
 namespace net {
-    TCPService::TCPService(IPAddress ipAddress, unsigned short port)
+    TCPService::TCPService(address ipAddress, unsigned short port)
             : ipAddress(move(ipAddress)), port(port), service(io_service()), socket(Socket(service))
     {}
 
-    IPAddress TCPService::getAddress() const
+    address TCPService::getAddress() const
     {
         return ipAddress;
     }

@@ -8,21 +8,19 @@
 
 #include "boostwrap.h"
 
-#include "Net.h"
-
 namespace net {
     class TCPService {
     private:
-        IPAddress ipAddress;
+        boost::asio::ip::address ipAddress;
         unsigned short port;
     protected:
         boost::asio::io_service service;
-        Socket socket;
+        boost::asio::ip::tcp::socket socket;
         [[nodiscard]] boost::asio::ip::tcp::endpoint getEndpoint() const;
     public:
-        TCPService(IPAddress ipAddress, unsigned short port);
+        TCPService(boost::asio::ip::address ipAddress, unsigned short port);
 
-        [[nodiscard]] IPAddress getAddress() const;
+        [[nodiscard]] boost::asio::ip::address getAddress() const;
         [[nodiscard]] unsigned int getPort() const;
 
         [[nodiscard]] std::string receive(string const &terminator);

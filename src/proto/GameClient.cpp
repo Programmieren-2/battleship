@@ -9,6 +9,7 @@ using std::string;
 using std::vector;
 
 #include "boostwrap.h"
+using boost::asio::ip::address;
 
 #include "BasicShip.h"
 using models::BasicShip;
@@ -24,16 +25,13 @@ using models::ShipTypes;
 #include "Client.h"
 using net::Client;
 
-#include "Net.h"
-using net::IPAddress;
-
 #include "Messages.h"
 #include "ProtocolError.h"
 
 #include "GameClient.h"
 
 namespace proto {
-    GameClient::GameClient(IPAddress ipAddress, unsigned short port)
+    GameClient::GameClient(address ipAddress, unsigned short port)
             : Client(ipAddress, port), gameId(0), playerId(0), gameOver(false), won(false)
     {}
 

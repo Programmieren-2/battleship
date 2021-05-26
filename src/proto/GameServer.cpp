@@ -12,9 +12,7 @@ using std::optional;
 using std::string;
 
 #include "boostwrap.h"
-
-#include "Net.h"
-using net::IPAddress;
+using boost::asio::ip::address;
 
 #include "Server.h"
 using net::Server;
@@ -27,7 +25,7 @@ using net::Server;
 namespace proto {
     unsigned long GameServer::gameId = 0;
 
-    GameServer::GameServer(IPAddress ipAddress, unsigned short port)
+    GameServer::GameServer(address ipAddress, unsigned short port)
         : Server(ipAddress, port), games(Games())
     {}
 

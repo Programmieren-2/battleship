@@ -7,9 +7,10 @@
 #include <string>
 #include <vector>
 
+#include "boostwrap.h"
+
 #include "BasicShip.h"
 #include "Coordinate.h"
-#include "Net.h"
 #include "Client.h"
 #include "Messages.h"
 #include "ProtocolError.h"
@@ -43,7 +44,7 @@ namespace proto {
             return deserialize<ResponseType>(sendMessage(request));
         }
     public:
-        GameClient(net::IPAddress ipAddress, unsigned short port);
+        GameClient(boost::asio::ip::address ipAddress, unsigned short port);
 
         [[nodiscard]] unsigned long getGameId() const;
         [[nodiscard]] unsigned long getPlayerId() const;

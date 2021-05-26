@@ -9,8 +9,6 @@
 #include <string>
 #include <vector>
 
-#include "Net.h"
-
 #include "Game.h"
 #include "Ship.h"
 
@@ -18,6 +16,8 @@
 
 #include "Messages.h"
 #include "OnlineGame.h"
+
+#include "boostwrap.h"
 
 namespace proto {
     using Games = std::vector<OnlineGame>;
@@ -36,6 +36,6 @@ namespace proto {
         [[nodiscard]] std::string processListGamesRequest();
         [[nodiscard]] std::string handleRequest(std::string const &buf) override;
     public:
-        GameServer(net::IPAddress ipAddress, unsigned short port);
+        GameServer(boost::asio::ip::address ipAddress, unsigned short port);
     };
 }
