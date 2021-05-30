@@ -8,7 +8,7 @@ using std::string;
 #include "Client.h"
 
 namespace net {
-    string Client::communicate(string const &bytes)
+    string Client::communicate(string const &bytes) const
     {
         socket.connect(getEndpoint());
         send(bytes);

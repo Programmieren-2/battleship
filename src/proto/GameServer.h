@@ -33,7 +33,7 @@ namespace proto {
         [[nodiscard]] NewGameResponse processNewGameRequest(NewGameRequest const &request);
         [[nodiscard]] std::string processNewGameRequest(std::string const &buf);
 
-        [[nodiscard]] std::string processListGamesRequest();
+        [[nodiscard]] std::string processListGamesRequest() const;
         [[nodiscard]] std::string handleRequest(std::string const &buf) override;
     public:
         GameServer(boost::asio::ip::address ipAddress, unsigned short port);

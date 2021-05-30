@@ -26,7 +26,7 @@ namespace proto {
         bool won;
 
         template <typename RequestType>
-        std::string sendMessage(RequestType const &request)
+        std::string sendMessage(RequestType const &request) const
         {
             std::string buf = communicate(serialize(request));
             auto header = deserialize<ResponseHeader>(buf, true);
@@ -39,7 +39,7 @@ namespace proto {
         }
 
         template <typename RequestType, typename ResponseType>
-        ResponseType exchangeMessage(RequestType const &request)
+        ResponseType exchangeMessage(RequestType const &request) const
         {
             return deserialize<ResponseType>(sendMessage(request));
         }
@@ -51,14 +51,14 @@ namespace proto {
         void setGameId(unsigned long newGameId);
         void setPlayerId(unsigned long newPlayerId);
 
-        std::vector<ListedGame> listGames();
+        std::vector<ListedGame> listGames() const;
         unsigned long newGame(unsigned short width, unsigned short height);
         bool join(unsigned long gameId, std::string const &name);
         bool logout();
-        models::ShipTypes getShipTypes();
-        std::string getMap(bool own = false);
+        models::ShipTypes getShipTypes() const;
+        std::string getMap(bool own = false) const;
         models::PlacementResult placeShip(models::BasicShip const &ship);
-        GameState getStatus();
+        GameState getStatus() const;
         models::HitResult fireAt(models::Coordinate const &target);
 
         [[nodiscard]] bool isLoggedIn() const;

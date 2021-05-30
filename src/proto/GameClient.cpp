@@ -55,7 +55,7 @@ namespace proto {
         playerId = newPlayerId;
     }
 
-    vector<ListedGame> GameClient::listGames()
+    vector<ListedGame> GameClient::listGames() const
     {
         ListGamesRequest request;
         string buf = sendMessage(request);
@@ -112,7 +112,7 @@ namespace proto {
         return response.accepted;
     }
 
-    ShipTypes GameClient::getShipTypes()
+    ShipTypes GameClient::getShipTypes() const
     {
         ShipTypesRequest request(gameId, playerId);
         string buf = sendMessage(request);
@@ -130,7 +130,7 @@ namespace proto {
         return shipTypes;
     }
 
-    string GameClient::getMap(bool own)
+    string GameClient::getMap(bool own) const
     {
         MapRequest request(gameId, playerId, own);
         string buf = sendMessage(request);
@@ -156,7 +156,7 @@ namespace proto {
         return response.result;
     }
 
-    GameState GameClient::getStatus()
+    GameState GameClient::getStatus() const
     {
         StatusRequest request(gameId, playerId);
         auto response = exchangeMessage<StatusRequest, StatusResponse>(request);

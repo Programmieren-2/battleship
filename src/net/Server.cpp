@@ -11,7 +11,7 @@ using boost::asio::ip::tcp;
 #include "Server.h"
 
 namespace net {
-    tcp::acceptor Server::getAcceptor()
+    tcp::acceptor Server::getAcceptor() const
     {
         return tcp::acceptor(service, getEndpoint());
     }

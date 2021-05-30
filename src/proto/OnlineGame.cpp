@@ -52,12 +52,36 @@ namespace proto {
         return id;
     }
 
+    optional<OnlinePlayerReference> OnlineGame::getOpponent(unsigned long playerId) const
+    {
+        optional<OnlinePlayerReference> result;
+
+        for (auto &player : getPlayers()) {
+            if (player.getId() != playerId)
+                return result = player;
+        }
+
+        return result;
+    }
+
     optional<OnlinePlayerReference> OnlineGame::getOpponent(unsigned long playerId)
     {
         optional<OnlinePlayerReference> result;
 
         for (auto &player : getPlayers()) {
             if (player.get().getId() != playerId)
+                return result = player;
+        }
+
+        return result;
+    }
+
+    optional<OnlinePlayerReference> OnlineGame::getPlayer(unsigned long playerId) const
+    {
+        optional<OnlinePlayerReference> result;
+
+        for (auto &player : getPlayers()) {
+            if (player.getId() == playerId)
                 return result = player;
         }
 
@@ -76,7 +100,7 @@ namespace proto {
         return result;
     }
 
-    bool OnlineGame::allShipsPlaced(Sea const &sea)
+    bool OnlineGame::allShipsPlaced(Sea const &sea) const
     {
         ShipTypes availableShipTypes = getShipTypes();
         return all_of(availableShipTypes.begin(), availableShipTypes.end(), [sea] (auto &pair) {
@@ -111,7 +135,7 @@ namespace proto {
         return serialize(processLogoutRequest(deserialize<LogoutRequest>(buf)));
     }
 
-    string OnlineGame::processShipTypesRequest(ShipTypesRequest const &request)
+    string OnlineGame::processShipTypesRequest(ShipTypesRequest const &request) const
     {
         ShipTypes availableShipTypes = getShipTypes();
         ShipTypesResponse response(id, request.header.playerId, static_cast<uint8_t>(availableShipTypes.size()));
@@ -123,12 +147,12 @@ namespace proto {
         return buf;
     }
 
-    string OnlineGame::processShipTypesRequest(string const &buf)
+    string OnlineGame::processShipTypesRequest(string const &buf) const
     {
         return processShipTypesRequest(deserialize<ShipTypesRequest>(buf));
     }
 
-    string OnlineGame::processMapRequest(MapRequest const &request)
+    string OnlineGame::processMapRequest(MapRequest const &request) const
     {
         auto playerId = static_cast<unsigned long>(request.header.playerId);
         auto candidate = request.own ? getPlayer(playerId) : getOpponent(playerId);
@@ -145,7 +169,7 @@ namespace proto {
         return serialize(response) + map;
     }
 
-    string OnlineGame::processMapRequest(string const &buf)
+    string OnlineGame::processMapRequest(string const &buf) const
     {
         try {
             return processMapRequest(deserialize<MapRequest>(buf));
@@ -187,7 +211,7 @@ namespace proto {
         }
     }
 
-    StatusResponse OnlineGame::processStatusRequest(StatusRequest const &request)
+    StatusResponse OnlineGame::processStatusRequest(StatusRequest const &request) const
     {
         auto candidate = getPlayer(request.header.playerId);
         if (BOOST_UNLIKELY(!candidate.has_value()))
@@ -197,7 +221,7 @@ namespace proto {
         return StatusResponse(id, player.getId(), state);
     }
 
-    string OnlineGame::processStatusRequest(string const &buf)
+    string OnlineGame::processStatusRequest(string const &buf) const
     {
         try {
             return serialize(processStatusRequest(deserialize<StatusRequest>(buf)));

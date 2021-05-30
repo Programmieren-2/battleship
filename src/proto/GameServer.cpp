@@ -47,7 +47,7 @@ namespace proto {
         return gameId;
     }
 
-    string GameServer::processListGamesRequest()
+    string GameServer::processListGamesRequest() const
     {
         ListGamesResponse response(static_cast<uint32_t>(games.size()));
         string buf = serialize(response);

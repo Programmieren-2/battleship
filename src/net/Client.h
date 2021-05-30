@@ -16,6 +16,6 @@ namespace net {
     public:
         using TCPService::TCPService;
 
-        std::string communicate(std::string const &message);
+        std::string communicate(std::string const &message) const;
     };
 }

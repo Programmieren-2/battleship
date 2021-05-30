@@ -46,7 +46,7 @@ namespace net {
         return tcp::endpoint(ipAddress, port);
     }
 
-    string TCPService::receive(string const &terminator)
+    string TCPService::receive(string const &terminator) const
     {
         streambuf buf;
         error_code error;
@@ -59,12 +59,12 @@ namespace net {
         return raw.substr(0, raw.size() - terminator.size());
     }
 
-    string TCPService::receive()
+    string TCPService::receive() const
     {
         return base64_decode(receive("\n"));
     }
 
-    void TCPService::send(string const &message, string const &terminator)
+    void TCPService::send(string const &message, string const &terminator) const
     {
         error_code error;
         write(socket, buffer(message + terminator), error);
@@ -73,7 +73,7 @@ namespace net {
             throw SocketError(error);
     }
 
-    void TCPService::send(string const &message)
+    void TCPService::send(string const &message) const
     {
         return send(base64_encode(message), "\n");
     }

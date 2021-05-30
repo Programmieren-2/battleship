@@ -13,7 +13,7 @@
 namespace net {
     class Server : public TCPService {
     private:
-        boost::asio::ip::tcp::acceptor getAcceptor();
+        boost::asio::ip::tcp::acceptor getAcceptor() const;
     protected:
         /*
          * Abstract method to handle requests.
