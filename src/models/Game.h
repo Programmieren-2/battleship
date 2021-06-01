@@ -20,21 +20,14 @@
 namespace models {
     template <typename PlayerType>
     class Game {
-        using OptionalPlayer = std::optional<PlayerType>;
-        using OptionalPlayers = std::array<OptionalPlayer, 2>;
-        using PlayerReference = std::reference_wrapper<PlayerType>;
     private:
         unsigned short width;
         unsigned short height;
         ShipTypes shipTypes;
-        OptionalPlayers players;
+        std::array<std::optional<PlayerType>, 2> players;
     public:
-        Game(unsigned short width, unsigned short height, ShipTypes shipTypes, OptionalPlayers players)
-            : width(width), height(height), shipTypes(std::move(shipTypes)), players(players)
-        {}
-
         Game(unsigned short width, unsigned short height, ShipTypes shipTypes)
-            : Game(width, height, shipTypes, OptionalPlayers())
+            : width(width), height(height), shipTypes(std::move(shipTypes))
         {}
 
         Game(unsigned short width, unsigned short height)
@@ -72,9 +65,9 @@ namespace models {
             return result;
         }
 
-        [[nodiscard]] std::vector<PlayerReference> getPlayers()
+        [[nodiscard]] std::vector<std::reference_wrapper<PlayerType>> getPlayers()
         {
-            std::vector<PlayerReference> result;
+            std::vector<std::reference_wrapper<PlayerType>> result;
 
             for (auto &player : players) {
                 if (player.has_value())
@@ -105,12 +98,12 @@ namespace models {
             }
         }
 
-        std::optional<PlayerReference> getPlayer(unsigned short index)
+        std::optional<std::reference_wrapper<PlayerType>> getPlayer(unsigned short index)
         {
             try {
                 return *players.at(index % 2);
             } catch (std::out_of_range&) {
-                return std::optional<PlayerReference>();
+                return std::optional<std::reference_wrapper<PlayerType>>();
             }
         }
 
