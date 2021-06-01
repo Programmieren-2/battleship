@@ -122,7 +122,7 @@ namespace util {
 #endif
     }
 
-    optional<variables_map> parseArgDesc(int argc, const char *argv[], options_description const &desc)
+    optional<variables_map> parseArgDesc(int argc, char const *argv[], options_description const &desc)
     {
         optional<variables_map> args;
         variables_map varMap;
