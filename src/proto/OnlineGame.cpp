@@ -115,9 +115,9 @@ namespace proto {
 
     bool OnlineGame::allPlayersReady() const
     {
-        auto const &players = getPlayers();
-        return all_of(players.begin(), players.end(), [this] (auto const &player) {
-           return this->allShipsPlaced(player.getSea());
+        auto const &candidates = getPlayers();
+        return all_of(candidates.begin(), candidates.end(), [this] (auto const &candidate) {
+           return this->allShipsPlaced(candidate.getSea());
         });
     }
 
