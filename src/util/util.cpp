@@ -77,6 +77,9 @@ namespace util {
             text.erase(0, pos + delimiter.length());
         }
 
+        if (!text.empty())
+            result.push_back(text);
+
         return result;
     }
 
