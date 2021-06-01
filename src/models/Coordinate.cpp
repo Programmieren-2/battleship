@@ -37,21 +37,20 @@ namespace models {
 
     optional<Coordinate> Coordinate::fromString(const string &strX, const string &strY)
     {
-        optional<Coordinate> coordinate;
         unsigned short x, y;
 
         try {
             x = static_cast<unsigned short>(stoul(strX));
         } catch (invalid_argument&) {
-            return coordinate;
+            return {};
         }
 
         try {
             y = static_cast<unsigned short>(stoul(strY));
         } catch (invalid_argument&) {
-            return coordinate;
+            return {};
         }
 
-        return coordinate = Coordinate(x, y);
+        return Coordinate(x, y);
     }
 }

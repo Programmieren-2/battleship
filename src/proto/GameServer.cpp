@@ -31,14 +31,12 @@ namespace proto {
 
     optional<reference_wrapper<OnlineGame>> GameServer::getGame(unsigned long id)
     {
-        optional<reference_wrapper<OnlineGame>> result;
-
         for (auto &game : games) {
             if (game.getId() == id)
-                return result = game;
+                return game;
         }
 
-        return result;
+        return {};
     }
 
     unsigned long GameServer::addGame(unsigned short width, unsigned short height)

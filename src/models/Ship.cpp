@@ -36,6 +36,7 @@ namespace models {
 
         for (unsigned short offset = 0; offset < length; ++offset) {
             Coordinate coordinate = getAnchorPoint();
+            hitPoint.reset();
 
             switch (getOrientation()) {
                 case Orientation::X:

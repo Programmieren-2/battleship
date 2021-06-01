@@ -141,7 +141,6 @@ namespace util {
 
     optional<variables_map> parseArgDesc(int argc, char const *argv[], options_description const &desc)
     {
-        optional<variables_map> args;
         variables_map varMap;
 
         try {
@@ -149,19 +148,19 @@ namespace util {
         } catch (unknown_option const &error) {
             cerr << "Invalid option: " << error.get_option_name() << "\n";
             cerr << desc << "\n";
-            return args;
+            return {};
         } catch (invalid_command_line_syntax &error) {
             cerr << "Syntax error: " << error.what() << "\n";
-            return args;
+            return {};
         }
 
         notify(varMap);
 
         if (varMap.count("help")) {
             cout << desc << "\n";
-            return args;
+            return {};
         }
 
-        return args = varMap;
+        return varMap;
     }
 }

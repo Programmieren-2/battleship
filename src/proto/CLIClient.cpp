@@ -160,7 +160,7 @@ namespace proto {
         string strX = args[args.size() - 3];
         string strY = args[args.size() - 2];
 
-        optional<Coordinate> anchorPoint = Coordinate::fromString(strX, strY);
+        auto anchorPoint = Coordinate::fromString(strX, strY);
         if (!anchorPoint) {
             cerr << "Invalid coordinates: " << strX << "x" << strY << "\n";
             return;

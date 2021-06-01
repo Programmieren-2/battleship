@@ -63,23 +63,19 @@ namespace models {
 
     optional<HitPoint> Sea::getHitPointAt(const Coordinate &coordinate) const
     {
-        optional<HitPoint> hitPoint;
-
         try {
-            return hitPoint = grid.at(coordinate.getY()).at(coordinate.getX());
+            return grid.at(coordinate.getY()).at(coordinate.getX());
         } catch (out_of_range&) {
-            return hitPoint;
+            return {};
         }
     }
 
     optional<reference_wrapper<HitPoint>> Sea::getHitPointAt(Coordinate const &coordinate)
     {
-        optional<reference_wrapper<HitPoint>> hitPoint;
-
         try {
-            return hitPoint = grid.at(coordinate.getY()).at(coordinate.getX());
+            return grid.at(coordinate.getY()).at(coordinate.getX());
         } catch (out_of_range&) {
-            return hitPoint;
+            return {};
         }
     }
 

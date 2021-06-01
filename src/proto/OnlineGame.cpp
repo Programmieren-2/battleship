@@ -54,26 +54,22 @@ namespace proto {
 
     optional<reference_wrapper<const OnlinePlayer>> OnlineGame::getOpponent(unsigned long playerId) const
     {
-        optional<reference_wrapper<const OnlinePlayer>> result;
-
         for (auto &player : getPlayers()) {
             if (player.get().getId() != playerId)
-                return result = player;
+                return player;
         }
 
-        return result;
+        return {};
     }
 
     optional<reference_wrapper<const OnlinePlayer>> OnlineGame::getPlayer(unsigned long playerId) const
     {
-        optional<reference_wrapper<const OnlinePlayer>> result;
-
         for (auto &player : getPlayers()) {
             if (player.get().getId() == playerId)
-                return result = player;
+                return player;
         }
 
-        return result;
+        return {};
     }
 
     bool OnlineGame::allPlayersOnline() const
@@ -227,13 +223,13 @@ namespace proto {
 
     TurnResponse OnlineGame::processTurnRequest(TurnRequest const &request)
     {
-        optional<reference_wrapper<const OnlinePlayer>> playerRef = getPlayer(request.header.playerId);
+        auto playerRef = getPlayer(request.header.playerId);
         if (!playerRef)
             throw InvalidRequest(NO_SUCH_PLAYER);
 
         OnlinePlayer const &player = *playerRef;
 
-        optional<reference_wrapper<const OnlinePlayer>> opponentRef = getOpponent(request.header.playerId);
+        auto opponentRef = getOpponent(request.header.playerId);
         if (!opponentRef)
             throw InvalidRequest(NO_OPPONENT);
 
