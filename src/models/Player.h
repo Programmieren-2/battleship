@@ -12,13 +12,11 @@ namespace models {
     class Player {
     private:
         std::string name;
-        models::Sea sea;
+        mutable models::Sea sea;
     public:
         Player(std::string name, models::Sea sea);
 
         [[nodiscard]] std::string getName() const;
-        [[nodiscard]] models::Sea getSea() const;
-        
-        [[nodiscard]] models::Sea& getSea();
+        [[nodiscard]] models::Sea& getSea() const;
     };
 }
