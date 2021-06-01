@@ -109,12 +109,12 @@ namespace models {
 
         [[nodiscard]] bool hasPlayers() const
         {
-            return any_of(players.begin(), players.end(), [] (auto const &player) { return player.has_value(); });
+            return std::any_of(players.begin(), players.end(), [] (auto const &player) { return player.has_value(); });
         }
 
         [[nodiscard]] bool isFull() const
         {
-            return all_of(players.begin(), players.end(), [] (auto const &player) { return player.has_value(); });
+            return std::all_of(players.begin(), players.end(), [] (auto const &player) { return player.has_value(); });
         }
 
         bool addPlayer(PlayerType const &newPlayer)
