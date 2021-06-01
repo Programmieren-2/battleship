@@ -50,7 +50,7 @@ namespace proto {
         using GameClient::getStatus;
         using GameClient::fireAt;
 
-        void help(std::string const &string, std::vector<std::string> const &args);
+        static void help(std::string const &string, std::vector<std::string> const &args);
         void listGames(std::string const &string, std::vector<std::string> const &args);
         void newGame(std::string const &command, std::vector<std::string> const &args);
         void joinGame(std::string const &command, std::vector<std::string> const &args);
