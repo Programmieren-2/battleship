@@ -121,6 +121,22 @@ namespace proto {
         });
     }
 
+    PlacementResult OnlineGame::placeShip(ShipPlacementRequest const &request, Sea &sea)
+    {
+        ShipTypes availableShipTypes = getShipTypes();
+        if (BOOST_UNLIKELY(availableShipTypes.count(request.type) == 0))
+            return PlacementResult::INVALID_SHIP_TYPE;
+
+        if (BOOST_UNLIKELY(sea.hasShip(request.type)))
+            return PlacementResult::ALREADY_PLACED;
+
+        Ship ship(request.type,
+                  Coordinate(request.x, request.y),
+                  availableShipTypes.at(request.type),
+                  request.orientation);
+        return sea.placeShip(ship);
+    }
+
     LoginResponse OnlineGame::processLoginRequest(LoginRequest const &request)
     {
         auto playerId = static_cast<uint32_t>(getPlayers().size() + 1);
@@ -202,21 +218,7 @@ namespace proto {
             throw InvalidRequest(NO_SUCH_PLAYER);
 
         OnlinePlayer &player = candidate.value();
-        Sea &sea = player.getSea();
-        string type = request.type;
-        PlacementResult result;
-
-        ShipTypes availableShipTypes = getShipTypes();
-        if (BOOST_UNLIKELY(availableShipTypes.count(type) == 0)) {
-            result = PlacementResult::INVALID_SHIP_TYPE;
-        } else if (BOOST_UNLIKELY(sea.hasShip(type))) {
-            result = PlacementResult::ALREADY_PLACED;
-        } else {
-            Ship ship(type, Coordinate(request.x, request.y), availableShipTypes.at(type), request.orientation);
-            result = sea.placeShip(ship);
-        }
-
-        return ShipPlacementResponse(id, player.getId(), result);
+        return ShipPlacementResponse(id, player.getId(), placeShip(request, player.getSea()));
     }
 
     string OnlineGame::processShipPlacementRequest(string const &buf)

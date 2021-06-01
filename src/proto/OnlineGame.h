@@ -28,6 +28,7 @@ namespace proto {
         [[nodiscard]] bool allPlayersOnline() const;
         [[nodiscard]] bool allShipsPlaced(models::Sea const &sea) const;
         [[nodiscard]] bool allPlayersReady() const;
+        [[nodiscard]] models::PlacementResult placeShip(ShipPlacementRequest const &request, models::Sea &sea);
 
         [[nodiscard]] LoginResponse processLoginRequest(LoginRequest const &request);
         [[nodiscard]] LogoutResponse processLogoutRequest(LogoutRequest const &request);
