@@ -15,7 +15,7 @@ using models::Sea;
 
 namespace proto {
     OnlinePlayer::OnlinePlayer(unsigned long id, string const &name, Sea const &sea)
-            : Player(name, sea), id(id), keepalive(system_clock::now())
+        : Player(name, sea), id(id), keepalive(system_clock::now())
     {}
 
     unsigned long OnlinePlayer::getId() const
