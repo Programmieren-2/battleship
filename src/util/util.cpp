@@ -44,64 +44,43 @@ using boost::program_options::variables_map;
 #include "util.h"
 
 namespace util {
-    static bool isWhitespace(char const character)
-    {
-        switch (character) {
-            case ' ':
-            case '\t':
-                return true;
-            default:
-                return false;
-        }
-    }
+    static char const *WHITESPACE = " \t";
 
-    vector<string> splitString(string const &str, string const &delimiter)
-    {
-        vector<string> result;
-        string processed;
-        string lookahead;
-
-        for (char const character : str) {
-            lookahead += character;
-
-            if (lookahead.length() == delimiter.length()) {
-                if (lookahead == delimiter) {
-                    result.push_back(processed);
-                    lookahead = "";
-                    processed = "";
-                } else {
-                    processed += lookahead.substr(0, 1);
-                    lookahead = lookahead.substr(1, lookahead.length() - 1);
-                }
-            }
-        }
-
-        if (!processed.empty())
-            result.push_back(processed);
-
-        return result;
-    }
-
-    vector<string> splitString(string const &str)
+    static vector<string> splitStringByChars(string const &str, string const &delimiters)
     {
         vector<string> result;
         string item;
 
-        for (char const character : str) {
-            if (isWhitespace(character)) {
-                if (!item.empty()) {
-                    result.push_back(item);
-                    item = "";
-                }
-            } else {
-                item += character;
-            }
+        for (auto const &chr : str) {
+            if (any_of(delimiters.begin(), delimiters.end(), [chr] (auto const &delim) { return chr == delim; }))
+                result.push_back(item);
+            else
+                item += chr;
         }
 
         if (!item.empty())
             result.push_back(item);
 
         return result;
+    }
+
+    vector<string> splitString(string const &str, string const &delimiter)
+    {
+        vector<string> result;
+        string text = str;
+        size_t pos;
+
+        while ((pos = text.find(delimiter)) != string::npos) {
+            result.push_back(text.substr(0, pos));
+            text.erase(0, pos + delimiter.length());
+        }
+
+        return result;
+    }
+
+    vector<string> splitString(string const &str)
+    {
+        return splitStringByChars(str, WHITESPACE);
     }
 
     string readWithPrompt(string const &prompt)
