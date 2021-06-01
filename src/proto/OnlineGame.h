@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <functional>
 #include <optional>
 #include <string>
 
@@ -22,7 +23,7 @@ namespace proto {
 
         unsigned long id;
         GameState state;
-        std::optional<OnlinePlayer> currentPlayer;
+        std::optional<std::reference_wrapper<OnlinePlayer>> currentPlayer;
 
         [[nodiscard]] models::Sea makeSea() const;
         [[nodiscard]] bool allPlayersOnline() const;
