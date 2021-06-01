@@ -122,11 +122,13 @@ namespace models {
             }
         }
 
-        [[nodiscard]] bool hasPlayers() const {
-            return any_of(players.begin(), players.end(), [](auto const &player) { return player.has_value(); });
+        [[nodiscard]] bool hasPlayers() const
+        {
+            return any_of(players.begin(), players.end(), [] (auto const &player) { return player.has_value(); });
         }
 
-        bool addPlayer(PlayerType const &newPlayer) {
+        bool addPlayer(PlayerType const &newPlayer)
+        {
             for (auto &player : players) {
                 if (player.has_value())
                     continue;
