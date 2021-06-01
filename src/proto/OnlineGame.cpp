@@ -115,12 +115,10 @@ namespace proto {
 
     bool OnlineGame::allPlayersReady() const
     {
-        for (auto const &player : getPlayers()) {
-            if (!allShipsPlaced(player.getSea()))
-                return false;
-        }
-
-        return true;
+        auto const &players = getPlayers();
+        return all_of(players.begin(), players.end(), [this] (auto const &player) {
+           return this->allShipsPlaced(player.getSea());
+        });
     }
 
     LoginResponse OnlineGame::processLoginRequest(LoginRequest const &request)
