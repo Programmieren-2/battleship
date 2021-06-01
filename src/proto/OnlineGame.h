@@ -23,7 +23,7 @@ namespace proto {
 
         unsigned long id;
         GameState state;
-        std::optional<std::reference_wrapper<OnlinePlayer>> currentPlayer;
+        std::optional<std::reference_wrapper<const OnlinePlayer>> currentPlayer;
 
         [[nodiscard]] models::Sea makeSea() const;
         [[nodiscard]] bool allPlayersOnline() const;
@@ -46,8 +46,8 @@ namespace proto {
         OnlineGame(unsigned long id, unsigned short width, unsigned short height);
 
         [[nodiscard]] unsigned long getId() const;
-        [[nodiscard]] std::optional<OnlinePlayerReference> getOpponent(unsigned long playerId) const;
-        [[nodiscard]] std::optional<OnlinePlayerReference> getPlayer(unsigned long playerId) const;
+        [[nodiscard]] std::optional<std::reference_wrapper<const OnlinePlayer>> getOpponent(unsigned long playerId) const;
+        [[nodiscard]] std::optional<std::reference_wrapper<const OnlinePlayer>> getPlayer(unsigned long playerId) const;
 
         [[nodiscard]] std::string processLoginRequest(std::string const &buf);
         [[nodiscard]] std::string processLogoutRequest(std::string const &buf);

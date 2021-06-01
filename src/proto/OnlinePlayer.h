@@ -5,7 +5,6 @@
 #pragma once
 
 #include <chrono>
-#include <functional>
 
 #include "Player.h"
 #include "Sea.h"
@@ -27,6 +26,4 @@ namespace proto {
 
         bool operator==(OnlinePlayer const &other) const;
     };
-
-    using OnlinePlayerReference = std::reference_wrapper<OnlinePlayer>;
 }

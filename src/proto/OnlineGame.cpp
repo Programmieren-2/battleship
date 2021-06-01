@@ -52,9 +52,9 @@ namespace proto {
         return id;
     }
 
-    optional<OnlinePlayerReference> OnlineGame::getOpponent(unsigned long playerId) const
+    optional<reference_wrapper<const OnlinePlayer>> OnlineGame::getOpponent(unsigned long playerId) const
     {
-        optional<OnlinePlayerReference> result;
+        optional<reference_wrapper<const OnlinePlayer>> result;
 
         for (auto &player : getPlayers()) {
             if (player.get().getId() != playerId)
@@ -64,9 +64,9 @@ namespace proto {
         return result;
     }
 
-    optional<OnlinePlayerReference> OnlineGame::getPlayer(unsigned long playerId) const
+    optional<reference_wrapper<const OnlinePlayer>> OnlineGame::getPlayer(unsigned long playerId) const
     {
-        optional<OnlinePlayerReference> result;
+        optional<reference_wrapper<const OnlinePlayer>> result;
 
         for (auto &player : getPlayers()) {
             if (player.get().getId() == playerId)
@@ -168,7 +168,7 @@ namespace proto {
         if (BOOST_UNLIKELY(!candidate.has_value()))
             throw InvalidRequest(request.own ? NO_SUCH_PLAYER : NO_OPPONENT);
 
-        OnlinePlayer &player = candidate.value();
+        OnlinePlayer const &player = candidate.value();
         Sea &sea = player.getSea();
         string map = sea.toString(request.own);
         MapResponse response(id, player.getId(),
@@ -193,7 +193,7 @@ namespace proto {
         if (BOOST_UNLIKELY(!candidate.has_value()))
             throw InvalidRequest(NO_SUCH_PLAYER);
 
-        OnlinePlayer &player = candidate.value();
+        OnlinePlayer const &player = candidate.value();
         return ShipPlacementResponse(id, player.getId(), placeShip(request, player.getSea()));
     }
 
@@ -212,7 +212,7 @@ namespace proto {
         if (BOOST_UNLIKELY(!candidate.has_value()))
             throw InvalidRequest(NO_SUCH_PLAYER);
 
-        OnlinePlayer &player = candidate.value();
+        OnlinePlayer const &player = candidate.value();
         return StatusResponse(id, player.getId(), state);
     }
 
@@ -227,17 +227,17 @@ namespace proto {
 
     TurnResponse OnlineGame::processTurnRequest(TurnRequest const &request)
     {
-        optional<OnlinePlayerReference> playerRef = getPlayer(request.header.playerId);
+        optional<reference_wrapper<const OnlinePlayer>> playerRef = getPlayer(request.header.playerId);
         if (!playerRef.has_value())
             throw InvalidRequest(NO_SUCH_PLAYER);
 
-        OnlinePlayer &player = playerRef.value();
+        OnlinePlayer const &player = playerRef.value();
 
-        optional<OnlinePlayerReference> opponentRef = getOpponent(request.header.playerId);
+        optional<reference_wrapper<const OnlinePlayer>> opponentRef = getOpponent(request.header.playerId);
         if (!opponentRef.has_value())
             throw InvalidRequest(NO_OPPONENT);
 
-        OnlinePlayer &opponent = opponentRef.value();
+        OnlinePlayer const &opponent = opponentRef.value();
 
         if (!currentPlayer.has_value() || currentPlayer.value() != player)
             throw InvalidRequest(NOT_YOUR_TURN);
