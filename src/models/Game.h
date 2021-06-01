@@ -89,22 +89,14 @@ namespace models {
             return playerCount;
         }
 
-        std::optional<PlayerType> getPlayer(unsigned short index) const
+        [[nodiscard]] std::optional<PlayerType> getPlayer(unsigned short index) const
         {
-            try {
-                return players.at(index % 2);
-            } catch (std::out_of_range&) {
-                return std::optional<PlayerType>();
-            }
+            return players.at(index % players.size());
         }
 
-        std::optional<std::reference_wrapper<PlayerType>> getPlayer(unsigned short index)
+        [[nodiscard]] std::optional<std::reference_wrapper<PlayerType>> getPlayer(unsigned short index)
         {
-            try {
-                return *players.at(index % 2);
-            } catch (std::out_of_range&) {
-                return std::optional<std::reference_wrapper<PlayerType>>();
-            }
+            return *players.at(index % players.size());
         }
 
         void removePlayer(PlayerType const &player)
