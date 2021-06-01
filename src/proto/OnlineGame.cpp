@@ -262,7 +262,7 @@ namespace proto {
         OnlinePlayer &opponent = opponentRef.value();
 
         if (!currentPlayer.has_value() || currentPlayer.value() != player)
-            throw InvalidRequest(ErrorType::NOT_YOUR_TURN);
+            throw InvalidRequest(NOT_YOUR_TURN);
 
         Coordinate target = Coordinate(request.x, request.y);
 
