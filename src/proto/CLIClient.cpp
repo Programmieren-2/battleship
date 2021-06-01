@@ -37,6 +37,7 @@ using models::PlacementResult;
 
 #include "util.h"
 using util::isExitCommand;
+using util::joinStrings;
 using util::readCommandLine;
 
 #include "CLIClient.h"
@@ -154,7 +155,8 @@ namespace proto {
             return;
         }
 
-        string type = accumulate(args.begin(), args.begin() + args.size() - 3, string(""));
+        vector<string> typeElements(args.begin(), args.begin() + args.size() - 3);
+        string type = joinStrings(typeElements, " ");
         string strX = args[args.size() - 3];
         string strY = args[args.size() - 2];
 
@@ -180,7 +182,7 @@ namespace proto {
 
         switch (placeShip(ship)) {
             case PlacementResult::SUCCESS:
-                cout << type << " placed at " << args[1] << "x" << args[2] << " facing " << args[3] << ".\n";
+                cout << type << " placed at " << strX << "x" << strY << " facing " << orientationStr << ".\n";
                 break;
             case PlacementResult::INVALID_SHIP_TYPE:
                 cerr << "Invalid ship type: " << type << ".\n";
