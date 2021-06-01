@@ -110,7 +110,7 @@ namespace proto {
 
     LoginResponse OnlineGame::processLoginRequest(LoginRequest const &request)
     {
-        unsigned long playerId = static_cast<uint32_t>(getPlayers().size() + 1);
+        auto playerId = static_cast<uint32_t>(getPlayers().size() + 1);
         bool success = addPlayer(OnlinePlayer(playerId, request.playerName, makeSea()));
         return LoginResponse(id, success ? playerId : 0, success);
     }
