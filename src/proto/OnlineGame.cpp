@@ -141,7 +141,7 @@ namespace proto {
         ShipTypesResponse response(id, request.header.playerId, static_cast<uint8_t>(availableShipTypes.size()));
         string buf = serialize(response);
 
-        for (auto &[name, size] : availableShipTypes)
+        for (auto const &[name, size] : availableShipTypes)
             buf += serialize(ShipType(name, static_cast<uint8_t>(size)));
 
         return buf;
