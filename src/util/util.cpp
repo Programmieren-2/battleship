@@ -85,6 +85,21 @@ namespace util {
         return splitStringByChars(str, WHITESPACE);
     }
 
+    string joinStrings(vector<string> const &strings, string const &delimiter)
+    {
+        string result;
+        size_t index = 0;
+
+        for (auto const &str : strings) {
+            result += str;
+
+            if (++index < strings.size())
+                result += delimiter;
+        }
+
+        return result;
+    }
+
     string readWithPrompt(string const &prompt)
     {
         string result;
