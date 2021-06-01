@@ -112,6 +112,11 @@ namespace models {
             return any_of(players.begin(), players.end(), [] (auto const &player) { return player.has_value(); });
         }
 
+        [[nodiscard]] bool isFull() const
+        {
+            return all_of(players.begin(), players.end(), [] (auto const &player) { return player.has_value(); });
+        }
+
         bool addPlayer(PlayerType const &newPlayer)
         {
             for (auto &player : players) {
