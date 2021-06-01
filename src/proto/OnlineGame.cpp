@@ -52,36 +52,12 @@ namespace proto {
         return id;
     }
 
-    optional<OnlinePlayerReference> OnlineGame::getOpponent(unsigned long playerId) const
-    {
-        optional<OnlinePlayerReference> result;
-
-        for (auto &player : getPlayers()) {
-            if (player.getId() != playerId)
-                return result = player;
-        }
-
-        return result;
-    }
-
     optional<OnlinePlayerReference> OnlineGame::getOpponent(unsigned long playerId)
     {
         optional<OnlinePlayerReference> result;
 
         for (auto &player : getPlayers()) {
             if (player.get().getId() != playerId)
-                return result = player;
-        }
-
-        return result;
-    }
-
-    optional<OnlinePlayerReference> OnlineGame::getPlayer(unsigned long playerId) const
-    {
-        optional<OnlinePlayerReference> result;
-
-        for (auto &player : getPlayers()) {
-            if (player.getId() == playerId)
                 return result = player;
         }
 
@@ -185,7 +161,7 @@ namespace proto {
         return processShipTypesRequest(deserialize<ShipTypesRequest>(buf));
     }
 
-    string OnlineGame::processMapRequest(MapRequest const &request) const
+    string OnlineGame::processMapRequest(MapRequest const &request)
     {
         auto playerId = static_cast<unsigned long>(request.header.playerId);
         auto candidate = request.own ? getPlayer(playerId) : getOpponent(playerId);
@@ -202,7 +178,7 @@ namespace proto {
         return serialize(response) + map;
     }
 
-    string OnlineGame::processMapRequest(string const &buf) const
+    string OnlineGame::processMapRequest(string const &buf)
     {
         try {
             return processMapRequest(deserialize<MapRequest>(buf));
@@ -230,7 +206,7 @@ namespace proto {
         }
     }
 
-    StatusResponse OnlineGame::processStatusRequest(StatusRequest const &request) const
+    StatusResponse OnlineGame::processStatusRequest(StatusRequest const &request)
     {
         auto candidate = getPlayer(request.header.playerId);
         if (BOOST_UNLIKELY(!candidate.has_value()))
@@ -240,7 +216,7 @@ namespace proto {
         return StatusResponse(id, player.getId(), state);
     }
 
-    string OnlineGame::processStatusRequest(string const &buf) const
+    string OnlineGame::processStatusRequest(string const &buf)
     {
         try {
             return serialize(processStatusRequest(deserialize<StatusRequest>(buf)));
