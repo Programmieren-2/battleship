@@ -25,6 +25,7 @@ namespace proto {
         std::optional<OnlinePlayer> currentPlayer;
 
         [[nodiscard]] models::Sea makeSea() const;
+        [[nodiscard]] bool allPlayersOnline() const;
         [[nodiscard]] bool allShipsPlaced(models::Sea const &sea) const;
 
         [[nodiscard]] LoginResponse processLoginRequest(LoginRequest const &request);

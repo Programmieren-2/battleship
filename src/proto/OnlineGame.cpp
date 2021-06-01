@@ -100,6 +100,11 @@ namespace proto {
         return result;
     }
 
+    bool OnlineGame::allPlayersOnline() const
+    {
+        return getPlayers().size() == 2;
+    }
+
     bool OnlineGame::allShipsPlaced(Sea const &sea) const
     {
         ShipTypes availableShipTypes = getShipTypes();
