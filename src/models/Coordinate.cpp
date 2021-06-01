@@ -17,7 +17,7 @@ using std::to_string;
 
 namespace models {
     Coordinate::Coordinate(unsigned short x, unsigned short y)
-            : x(x), y(y)
+        : x(x), y(y)
     {}
 
     unsigned short Coordinate::getX() const

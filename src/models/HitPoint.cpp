@@ -8,7 +8,7 @@
 
 namespace models {
     HitPoint::HitPoint(unsigned short x, unsigned short y)
-            : Coordinate(x, y), hit(false)
+        : Coordinate(x, y), hit(false)
     {}
 
     bool HitPoint::isHit() const

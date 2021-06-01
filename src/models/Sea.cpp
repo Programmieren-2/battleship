@@ -30,13 +30,13 @@ using std::vector;
 
 namespace models {
     Sea::Sea(unsigned short width, unsigned short height)
-            : width(width), height(height)
+        : width(width), height(height)
     {
         initializeGrid();
     }
 
     Sea::Sea()
-            : Sea(Defaults::WIDTH, Defaults::HEIGHT)
+        : Sea(Defaults::WIDTH, Defaults::HEIGHT)
     {}
 
     void Sea::initializeGrid()
