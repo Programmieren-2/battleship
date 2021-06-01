@@ -7,6 +7,9 @@ using std::cerr;
 using std::cin;
 using std::cout;
 
+#include <numeric>
+using std::accumulate;
+
 #include <optional>
 using std::optional;
 
@@ -146,27 +149,30 @@ namespace proto {
 
     void CLIClient::placeShip(string const &command, vector<string> const &args)
     {
-        if (args.size() != 4) {
-            cerr << "Usage: '" << command << " <type> <x> <y> (x|y)\n";
+        if (args.size() < 4) {
+            cerr << "Usage: '" << command << " <type...> <x> <y> (x|y)\n";
             return;
         }
 
-        string type = args[0];
-        optional<Coordinate> anchorPoint = Coordinate::fromString(args[1], args[2]);
+        string type = accumulate(args.begin(), args.begin() + args.size() - 3, string(""));
+        string strX = args[args.size() - 3];
+        string strY = args[args.size() - 2];
 
+        optional<Coordinate> anchorPoint = Coordinate::fromString(strX, strY);
         if (!anchorPoint.has_value()) {
-            cerr << "Invalid coordinates: " << args[1] << "x" << args[2] << "\n";
+            cerr << "Invalid coordinates: " << strX << "x" << strY << "\n";
             return;
         }
 
+        string orientationStr = args[args.size() - 1];
         Orientation orientation;
 
-        if (args[3] == "x")
+        if (orientationStr == "x")
             orientation = Orientation::X;
-        else if (args[3] == "y")
+        else if (orientationStr == "y")
             orientation = Orientation::Y;
         else {
-            cerr << "Invalid orientation: '" << args[3] << "'. Use 'x' or 'y'.\n";
+            cerr << "Invalid orientation: '" << orientationStr << "'. Use 'x' or 'y'.\n";
             return;
         }
 
