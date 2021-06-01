@@ -19,7 +19,7 @@
 #include "util.h"
 
 namespace proto {
-    enum GameState {
+    enum GameState : unsigned char {
         INITIAL,
         WAITING_FOR_PLAYERS,
         WAITING_FOR_YOUR_SHIP_PLACEMENTS,
@@ -28,7 +28,7 @@ namespace proto {
         WAITING_FOR_OPPONENTS_TURN,
     };
 
-    enum RequestType {
+    enum RequestType : unsigned char {
         NOOP,
         LIST_GAMES_REQUEST,
         NEW_GAME_REQUEST,
@@ -41,7 +41,7 @@ namespace proto {
         TURN_REQUEST,
     };
 
-    enum ResponseType {
+    enum ResponseType : unsigned char {
         INVALID_REQUEST,
         LIST_GAMES_RESPONSE,
         NEW_GAME_RESPONSE,
@@ -54,7 +54,7 @@ namespace proto {
         TURN_RESPONSE,
     };
 
-    enum ErrorType {
+    enum ErrorType : unsigned char {
         UNKNOWN,
         NO_SUCH_GAME,
         NO_SUCH_PLAYER,

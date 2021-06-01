@@ -9,8 +9,18 @@
 #include <vector>
 
 namespace models {
-    enum PlacementResult { SUCCESS, NOT_ON_BOARD, COLLISION, ALREADY_PLACED, INVALID_SHIP_TYPE };
-    enum HitResult { HIT, ALREADY_HIT, MISSED };
+    enum PlacementResult : unsigned char {
+        SUCCESS,
+        NOT_ON_BOARD,
+        COLLISION,
+        ALREADY_PLACED,
+        INVALID_SHIP_TYPE
+    };
+    enum HitResult : unsigned char {
+        HIT,
+        ALREADY_HIT,
+        MISSED
+    };
 
     using ShipTypes = std::map<std::string, unsigned short>;
 

@@ -8,7 +8,7 @@
 #include <string>
 
 namespace models {
-    enum Orientation { X, Y };
+    enum Orientation : unsigned char { X, Y };
 
     class Coordinate {
     private:
