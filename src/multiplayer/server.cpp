@@ -41,10 +41,10 @@ static auto parseArgs(int argc, const char *argv[])
 int main(int argc, const char *argv[])
 {
     auto optArgs = parseArgs(argc, argv);
-    if (!optArgs.has_value())
+    if (!optArgs)
         return 1;
 
-    auto args = optArgs.value();
+    auto args = *optArgs;
     auto host = args.at("address").as<string>();
     auto address = getAddress(host);
     auto port = args.at("port").as<unsigned short>();

@@ -118,7 +118,7 @@ namespace proto {
         auto playerId = static_cast<uint32_t>(getPlayers().size() + 1);
         auto newPlayer = OnlinePlayer(playerId, request.playerName, makeSea());
         bool success = addPlayer(newPlayer);
-        if (success && !currentPlayer.has_value())
+        if (success && !currentPlayer)
             currentPlayer = newPlayer;
 
         return LoginResponse(id, success ? playerId : 0, success);
@@ -132,10 +132,10 @@ namespace proto {
     LogoutResponse OnlineGame::processLogoutRequest(LogoutRequest const &request)
     {
         auto player = getPlayer(request.header.playerId);
-        if (BOOST_UNLIKELY(!player.has_value()))
+        if (BOOST_UNLIKELY(!player))
             return LogoutResponse(request.header.gameId, request.header.playerId, false);
 
-        removePlayer(player.value());
+        removePlayer(*player);
         return LogoutResponse(request.header.gameId, request.header.playerId, true);
     }
 
@@ -165,10 +165,10 @@ namespace proto {
     {
         auto playerId = static_cast<unsigned long>(request.header.playerId);
         auto candidate = request.own ? getPlayer(playerId) : getOpponent(playerId);
-        if (BOOST_UNLIKELY(!candidate.has_value()))
+        if (BOOST_UNLIKELY(!candidate))
             throw InvalidRequest(request.own ? NO_SUCH_PLAYER : NO_OPPONENT);
 
-        OnlinePlayer const &player = candidate.value();
+        OnlinePlayer const &player = *candidate;
         Sea &sea = player.getSea();
         string map = sea.toString(request.own);
         MapResponse response(id, player.getId(),
@@ -190,10 +190,10 @@ namespace proto {
     ShipPlacementResponse OnlineGame::processShipPlacementRequest(ShipPlacementRequest const &request)
     {
         auto candidate = getPlayer(request.header.playerId);
-        if (BOOST_UNLIKELY(!candidate.has_value()))
+        if (BOOST_UNLIKELY(!candidate))
             throw InvalidRequest(NO_SUCH_PLAYER);
 
-        OnlinePlayer const &player = candidate.value();
+        OnlinePlayer const &player = *candidate;
         return ShipPlacementResponse(id, player.getId(), placeShip(request, player.getSea()));
     }
 
@@ -209,10 +209,10 @@ namespace proto {
     StatusResponse OnlineGame::processStatusRequest(StatusRequest const &request) const
     {
         auto candidate = getPlayer(request.header.playerId);
-        if (BOOST_UNLIKELY(!candidate.has_value()))
+        if (BOOST_UNLIKELY(!candidate))
             throw InvalidRequest(NO_SUCH_PLAYER);
 
-        OnlinePlayer const &player = candidate.value();
+        OnlinePlayer const &player = *candidate;
         return StatusResponse(id, player.getId(), state);
     }
 
@@ -228,18 +228,18 @@ namespace proto {
     TurnResponse OnlineGame::processTurnRequest(TurnRequest const &request)
     {
         optional<reference_wrapper<const OnlinePlayer>> playerRef = getPlayer(request.header.playerId);
-        if (!playerRef.has_value())
+        if (!playerRef)
             throw InvalidRequest(NO_SUCH_PLAYER);
 
-        OnlinePlayer const &player = playerRef.value();
+        OnlinePlayer const &player = *playerRef;
 
         optional<reference_wrapper<const OnlinePlayer>> opponentRef = getOpponent(request.header.playerId);
-        if (!opponentRef.has_value())
+        if (!opponentRef)
             throw InvalidRequest(NO_OPPONENT);
 
-        OnlinePlayer const &opponent = opponentRef.value();
+        OnlinePlayer const &opponent = *opponentRef;
 
-        if (!currentPlayer.has_value() || currentPlayer.value() != player)
+        if (!currentPlayer || *currentPlayer != player)
             throw InvalidRequest(NOT_YOUR_TURN);
 
         Coordinate target = Coordinate(request.x, request.y);

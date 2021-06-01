@@ -161,7 +161,7 @@ namespace proto {
         string strY = args[args.size() - 2];
 
         optional<Coordinate> anchorPoint = Coordinate::fromString(strX, strY);
-        if (!anchorPoint.has_value()) {
+        if (!anchorPoint) {
             cerr << "Invalid coordinates: " << strX << "x" << strY << "\n";
             return;
         }
@@ -178,7 +178,7 @@ namespace proto {
             return;
         }
 
-        BasicShip ship(type, anchorPoint.value(), orientation);
+        BasicShip ship(type, *anchorPoint, orientation);
 
         switch (placeShip(ship)) {
             case PlacementResult::SUCCESS:
@@ -224,12 +224,12 @@ namespace proto {
 
         optional<Coordinate> target = Coordinate::fromString(args[0], args[1]);
 
-        if (!target.has_value()) {
+        if (!target) {
             cerr << "Invalid coordinate: " << args[0] << "x" << args[1] << "\n";
             return;
         }
 
-        switch (fireAt(target.value())) {
+        switch (fireAt(*target)) {
             case HitResult::HIT:
                 cout << "Hit!\n";
                 break;

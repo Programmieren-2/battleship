@@ -45,13 +45,13 @@ namespace engine {
         auto playerCandidate = game.getPlayer(index);
         auto opponentCandidate = game.getPlayer((index + 1) % 2);
 
-        if (!playerCandidate.has_value() || !opponentCandidate.has_value()) {
+        if (!playerCandidate || !opponentCandidate) {
             cerr <<  "Not enough players.\n";
             return false;
         }
 
-        Player &player = playerCandidate.value();
-        Player &opponent = opponentCandidate.value();
+        Player &player = *playerCandidate;
+        Player &opponent = *opponentCandidate;
         Sea &sea = opponent.getSea();
         cout << "It's " << player.getName() << "'s turn.\n";
         cout << sea.toString();

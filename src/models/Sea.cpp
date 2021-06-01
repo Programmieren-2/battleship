@@ -167,10 +167,10 @@ namespace models {
         }
 
         auto candidate = getHitPointAt(coordinate);
-        if (!candidate.has_value())
+        if (!candidate)
             return HitResult::MISSED;
 
-        HitPoint &hitPoint = candidate.value();
+        HitPoint &hitPoint = *candidate;
 
         switch (hitPoint.doHit()) {
             case HitResult::ALREADY_HIT:

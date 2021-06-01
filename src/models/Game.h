@@ -57,9 +57,9 @@ namespace models {
         {
             std::vector<std::reference_wrapper<const PlayerType>> result;
 
-            for (auto const &player : players) {
-                if (player.has_value())
-                    result.push_back(player.value());
+            for (auto const &candidate : players) {
+                if (candidate)
+                    result.push_back(*candidate);
             }
 
             return result;
@@ -70,7 +70,7 @@ namespace models {
             unsigned short playerCount = 0;
 
             for (auto const &candidate : players) {
-                if (candidate.has_value())
+                if (candidate)
                     playerCount++;
             }
 
@@ -90,7 +90,7 @@ namespace models {
         void removePlayer(PlayerType const &player)
         {
             for (auto &candidate : players) {
-                if (candidate.has_value() && candidate.value() == player)
+                if (candidate && *candidate == player)
                     candidate.reset();
             }
         }
@@ -105,13 +105,13 @@ namespace models {
             return std::all_of(players.begin(), players.end(), [] (auto const &player) { return player.has_value(); });
         }
 
-        bool addPlayer(PlayerType const &newPlayer)
+        bool addPlayer(PlayerType const &player)
         {
-            for (auto &player : players) {
-                if (player.has_value())
+            for (auto &candidate : players) {
+                if (candidate)
                     continue;
 
-                player = newPlayer;
+                candidate = player;
                 return true;
             }
 

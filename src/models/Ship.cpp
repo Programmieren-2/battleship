@@ -46,8 +46,8 @@ namespace models {
                     break;
                 }
 
-            if (hitPoint.has_value())
-                hitPoints.push_back(hitPoint.value());
+            if (hitPoint)
+                hitPoints.push_back(*hitPoint);
         }
     }
 

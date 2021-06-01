@@ -90,7 +90,7 @@ namespace proto {
         }
 
         auto candidate = getGame(header.gameId);
-        if (BOOST_UNLIKELY(!candidate.has_value()))
+        if (BOOST_UNLIKELY(!candidate))
             return serialize(InvalidRequest(ErrorType::NO_SUCH_GAME));
 
         auto &game = candidate.value().get();
