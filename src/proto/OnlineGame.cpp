@@ -113,6 +113,14 @@ namespace proto {
         });
     }
 
+    bool OnlineGame::allPlayersReady() const
+    {
+        auto const &players = getPlayers();
+        return all_of(players.begin(), players.end() [] auto const &player {
+           return allShipsPlaced(player.getSea());
+        });
+    }
+
     LoginResponse OnlineGame::processLoginRequest(LoginRequest const &request)
     {
         auto playerId = static_cast<uint32_t>(getPlayers().size() + 1);
