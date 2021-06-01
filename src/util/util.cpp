@@ -52,10 +52,12 @@ namespace util {
         string item;
 
         for (auto const &chr : str) {
-            if (any_of(delimiters.begin(), delimiters.end(), [chr] (auto const &delim) { return chr == delim; }))
+            if (any_of(delimiters.begin(), delimiters.end(), [chr] (auto const &delim) { return chr == delim; })) {
                 result.push_back(item);
-            else
+                item = "";
+            } else {
                 item += chr;
+            }
         }
 
         if (!item.empty())
