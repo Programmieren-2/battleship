@@ -24,7 +24,7 @@ namespace models {
         unsigned short width;
         unsigned short height;
         ShipTypes shipTypes;
-        std::array<std::optional<PlayerType>, 2> players;
+        mutable std::array<std::optional<PlayerType>, 2> players;
     public:
         Game(unsigned short width, unsigned short height, ShipTypes shipTypes)
             : width(width), height(height), shipTypes(std::move(shipTypes))
@@ -53,19 +53,7 @@ namespace models {
             return shipTypes;
         }
 
-        [[nodiscard]] std::vector<PlayerType> getPlayers() const
-        {
-            std::vector<PlayerType> result;
-
-            for (auto const &player : players) {
-                if (player.has_value())
-                    result.push_back(player.value());
-            }
-
-            return result;
-        }
-
-        [[nodiscard]] std::vector<std::reference_wrapper<PlayerType>> getPlayers()
+        [[nodiscard]] std::vector<std::reference_wrapper<PlayerType>> getPlayers() const
         {
             std::vector<std::reference_wrapper<PlayerType>> result;
 
