@@ -36,7 +36,6 @@ namespace models {
         [[nodiscard]] bool hasShip(std::string const &type) const;
         [[nodiscard]] std::string toString(bool showShips) const;
         [[nodiscard]] std::string toString() const;
-        [[nodiscard]] std::optional<HitPoint> getHitPointAt(Coordinate const &coordinate) const;
 
         [[nodiscard]] std::optional<std::reference_wrapper<HitPoint>> getHitPointAt(Coordinate const &coordinate);
         PlacementResult placeShip(Ship const &ship);

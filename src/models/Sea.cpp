@@ -61,15 +61,6 @@ namespace models {
         return height;
     }
 
-    optional<HitPoint> Sea::getHitPointAt(const Coordinate &coordinate) const
-    {
-        try {
-            return grid.at(coordinate.getY()).at(coordinate.getX());
-        } catch (out_of_range&) {
-            return {};
-        }
-    }
-
     optional<reference_wrapper<HitPoint>> Sea::getHitPointAt(Coordinate const &coordinate)
     {
         try {
