@@ -38,8 +38,10 @@ using util::copyString;
 #include "OnlineGame.h"
 
 namespace proto {
-    OnlineGame::OnlineGame(unsigned long id, unsigned short width, unsigned short height)
-        : Game(width, height), id(id), state(GameState::INITIAL)
+    unsigned long OnlineGame::gameId = 0;
+
+    OnlineGame::OnlineGame(unsigned short width, unsigned short height)
+        : Game(width, height), id(++gameId), state(GameState::INITIAL)
     {}
 
     Sea OnlineGame::makeSea() const

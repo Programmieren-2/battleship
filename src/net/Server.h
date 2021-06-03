@@ -19,7 +19,7 @@ namespace net {
          * Abstract method to handle requests.
          * Must be overridden by subclasses.
          */
-        [[nodiscard]] virtual std::string handleRequest(std::string const &buf) = 0;
+        [[nodiscard]] virtual std::string handleRequest(std::string const &buf) const = 0;
     public:
         using TCPService::TCPService;
 

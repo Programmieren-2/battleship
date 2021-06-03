@@ -22,20 +22,19 @@
 namespace proto {
     class GameServer : public net::Server {
     private:
-        static unsigned long gameId;
-        std::set<OnlineGame> games;
+        mutable std::set<OnlineGame> games;
 
         [[nodiscard]] std::optional<std::reference_wrapper<OnlineGame const>> getGame(unsigned long id) const;
-        [[nodiscard]] unsigned long addGame(unsigned short width, unsigned short height);
-        bool removeGame(unsigned long id);
-        bool removeGame(OnlineGame const &game);
-        void cleanup();
+        [[nodiscard]] unsigned long addGame(unsigned short width, unsigned short height) const;
+        bool removeGame(unsigned long id) const;
+        bool removeGame(OnlineGame const &game) const;
+        void cleanup() const;
 
-        [[nodiscard]] NewGameResponse processNewGameRequest(NewGameRequest const &request);
-        [[nodiscard]] std::string processNewGameRequest(std::string const &buf);
+        [[nodiscard]] NewGameResponse processNewGameRequest(NewGameRequest const &request)const;
+        [[nodiscard]] std::string processNewGameRequest(std::string const &buf) const;
 
         [[nodiscard]] std::string processListGamesRequest() const;
-        [[nodiscard]] std::string handleRequest(std::string const &buf) override;
+        [[nodiscard]] std::string handleRequest(std::string const &buf) const override;
     public:
         GameServer(boost::asio::ip::address const &ipAddress, unsigned short port);
     };

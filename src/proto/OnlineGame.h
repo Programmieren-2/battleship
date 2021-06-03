@@ -21,6 +21,7 @@ namespace proto {
         using models::Game<OnlinePlayer>::getPlayers;
         using models::Game<OnlinePlayer>::addPlayer;
 
+        static unsigned long gameId;
         unsigned long id;
         mutable GameState state;
         mutable std::optional<std::reference_wrapper<const OnlinePlayer>> currentPlayer;
@@ -43,7 +44,7 @@ namespace proto {
         using models::Game<OnlinePlayer>::getHeight;
         using models::Game<OnlinePlayer>::getPlayerCount;
 
-        OnlineGame(unsigned long id, unsigned short width, unsigned short height);
+        OnlineGame(unsigned short width, unsigned short height);
 
         [[nodiscard]] unsigned long getId() const;
         [[nodiscard]] GameState getState() const;

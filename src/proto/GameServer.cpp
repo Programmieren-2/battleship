@@ -26,8 +26,6 @@ using net::Server;
 #include "GameServer.h"
 
 namespace proto {
-    unsigned long GameServer::gameId = 0;
-
     GameServer::GameServer(address const &ipAddress, unsigned short port)
         : Server(ipAddress, port)
     {}
@@ -42,13 +40,13 @@ namespace proto {
         return {};
     }
 
-    unsigned long GameServer::addGame(unsigned short width, unsigned short height)
+    unsigned long GameServer::addGame(unsigned short width, unsigned short height) const
     {
-        games.emplace(++gameId, width, height);
-        return gameId;
+        auto [game, _] = games.emplace(width, height);
+        return game->getId();
     }
 
-    bool GameServer::removeGame(unsigned long id)
+    bool GameServer::removeGame(unsigned long id) const
     {
         auto pos = find_if(games.begin(), games.end(), [id](OnlineGame const &game) {
             return game.getId() == id;
@@ -60,12 +58,12 @@ namespace proto {
         return true;
     }
 
-    bool GameServer::removeGame(OnlineGame const &game)
+    bool GameServer::removeGame(OnlineGame const &game) const
     {
         return removeGame(game.getId());
     }
 
-    void GameServer::cleanup()
+    void GameServer::cleanup() const
     {
         for (auto const &game : games) {
             if (game.getState() == ABANDONED)
@@ -89,18 +87,18 @@ namespace proto {
         return buf;
     }
 
-    NewGameResponse GameServer::processNewGameRequest(NewGameRequest const &request)
+    NewGameResponse GameServer::processNewGameRequest(NewGameRequest const &request) const
     {
         auto newGameId = addGame(request.width, request.height);
         return NewGameResponse(request.header.playerId, newGameId);
     }
 
-    string GameServer::processNewGameRequest(string const &buf)
+    string GameServer::processNewGameRequest(string const &buf) const
     {
         return serialize(processNewGameRequest(deserialize<NewGameRequest>(buf)));
     }
 
-    string GameServer::handleRequest(string const &buf)
+    string GameServer::handleRequest(string const &buf) const
     {
         auto header = deserialize<RequestHeader>(buf, true);
 
