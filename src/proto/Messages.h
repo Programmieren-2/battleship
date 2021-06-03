@@ -26,6 +26,7 @@ namespace proto {
         WAITING_FOR_OPPONENTS_SHIP_PLACEMENTS,
         WAITING_FOR_YOUR_TURN,
         WAITING_FOR_OPPONENTS_TURN,
+        ABANDONED,
     };
 
     enum RequestType : unsigned char {

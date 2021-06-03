@@ -111,6 +111,9 @@ namespace proto {
 
     LoginResponse OnlineGame::processLoginRequest(LoginRequest const &request)
     {
+        if (state == ABANDONED)
+            return LoginResponse(0, 0, false);
+
         auto playerId = static_cast<uint32_t>(getPlayers().size() + 1);
         auto newPlayer = OnlinePlayer(playerId, request.playerName, makeSea());
         bool success = addPlayer(newPlayer);
@@ -132,6 +135,7 @@ namespace proto {
             return LogoutResponse(request.header.gameId, request.header.playerId, false);
 
         removePlayer(*player);
+        state = isEmpty() ? ABANDONED : WAITING_FOR_PLAYERS;
         return LogoutResponse(request.header.gameId, request.header.playerId, true);
     }
 

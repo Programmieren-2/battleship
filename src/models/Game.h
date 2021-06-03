@@ -105,6 +105,11 @@ namespace models {
             return std::all_of(players.begin(), players.end(), [] (auto const &player) { return player.has_value(); });
         }
 
+        [[nodiscard]] bool isEmpty() const
+        {
+            return std::none_of(players.begin(), players.end(), [] (auto const &player) { return player.has_value(); });
+        }
+
         bool addPlayer(PlayerType const &player)
         {
             for (auto &candidate : players) {
