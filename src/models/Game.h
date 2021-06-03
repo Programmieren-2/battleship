@@ -53,9 +53,9 @@ namespace models {
             return shipTypes;
         }
 
-        [[nodiscard]] std::vector<std::reference_wrapper<const PlayerType>> getPlayers() const
+        [[nodiscard]] std::vector<std::reference_wrapper<PlayerType const>> getPlayers() const
         {
-            std::vector<std::reference_wrapper<const PlayerType>> result;
+            std::vector<std::reference_wrapper<PlayerType const>> result;
 
             for (auto const &candidate : players) {
                 if (candidate)

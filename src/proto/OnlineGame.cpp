@@ -57,7 +57,7 @@ namespace proto {
         return state;
     }
 
-    optional<reference_wrapper<const OnlinePlayer>> OnlineGame::getOpponent(unsigned long playerId) const
+    optional<reference_wrapper<OnlinePlayer const>> OnlineGame::getOpponent(unsigned long playerId) const
     {
         for (auto &player : getPlayers()) {
             if (player.get().getId() != playerId)
@@ -67,7 +67,7 @@ namespace proto {
         return {};
     }
 
-    optional<reference_wrapper<const OnlinePlayer>> OnlineGame::getPlayer(unsigned long playerId) const
+    optional<reference_wrapper<OnlinePlayer const>> OnlineGame::getPlayer(unsigned long playerId) const
     {
         for (auto &player : getPlayers()) {
             if (player.get().getId() == playerId)

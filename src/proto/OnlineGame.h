@@ -47,8 +47,8 @@ namespace proto {
 
         [[nodiscard]] unsigned long getId() const;
         [[nodiscard]] GameState getState() const;
-        [[nodiscard]] std::optional<std::reference_wrapper<const OnlinePlayer>> getOpponent(unsigned long playerId) const;
-        [[nodiscard]] std::optional<std::reference_wrapper<const OnlinePlayer>> getPlayer(unsigned long playerId) const;
+        [[nodiscard]] std::optional<std::reference_wrapper<OnlinePlayer const>> getOpponent(unsigned long playerId) const;
+        [[nodiscard]] std::optional<std::reference_wrapper<OnlinePlayer const>> getPlayer(unsigned long playerId) const;
 
         [[nodiscard]] std::string processLoginRequest(std::string const &buf) const;
         [[nodiscard]] std::string processLogoutRequest(std::string const &buf) const;
