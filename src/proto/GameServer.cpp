@@ -2,6 +2,9 @@
 // Created by rne on 08.05.21.
 //
 
+#include <algorithm>
+using std::find_if;
+
 #include <functional>
 using std::reference_wrapper;
 
@@ -111,5 +114,22 @@ namespace proto {
             default:
                 return serialize(InvalidRequest(ErrorType::UNKNOWN));
         }
+    }
+
+    bool GameServer::removeGame(unsigned long id)
+    {
+        auto pos = find_if(games.begin(), games.end(), [id] (OnlineGame const &game) {
+            return game.getId() == id;
+        });
+        if (pos == games.end())
+            return false;
+
+        games.erase(pos);
+        return true;
+    }
+
+    bool GameServer::removeGame(const OnlineGame &game)
+    {
+        return removeGame(game.getId());
     }
 }

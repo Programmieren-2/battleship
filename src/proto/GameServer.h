@@ -37,5 +37,8 @@ namespace proto {
         [[nodiscard]] std::string handleRequest(std::string const &buf) override;
     public:
         GameServer(boost::asio::ip::address ipAddress, unsigned short port);
+
+        bool removeGame(unsigned long id);
+        bool removeGame(OnlineGame const &game);
     };
 }
