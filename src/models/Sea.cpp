@@ -3,8 +3,8 @@
 //
 
 #include <algorithm>
-using std::all_of;
-using std::any_of;
+using std::ranges::all_of;
+using std::ranges::any_of;
 
 #include <functional>
 using std::reference_wrapper;
@@ -91,7 +91,7 @@ namespace models {
 
     bool Sea::shipCollides(Ship const &ship) const
     {
-        return any_of(ships.begin(), ships.end(), [ship](Ship const &other) {
+        return any_of(ships, [ship](Ship const &other) {
             return ship.collidesWith(other);
         });
     }
@@ -111,12 +111,12 @@ namespace models {
 
     bool Sea::allShipsDestroyed() const
     {
-        return all_of(ships.begin(), ships.end(), [](Ship const &ship){ return ship.isDestroyed(); });
+        return all_of(ships, [](Ship const &ship){ return ship.isDestroyed(); });
     }
 
     bool Sea::hasShip(string const &type) const
     {
-        return any_of(ships.begin(), ships.end(), [type](Ship const &ship){ return ship.getType() == type; });
+        return any_of(ships, [type](Ship const &ship){ return ship.getType() == type; });
     }
 
     string Sea::toString(bool showShips) const

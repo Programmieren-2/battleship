@@ -2,6 +2,9 @@
 // Created by rne on 07.05.21.
 //
 
+#include <algorithm>
+using std::ranges::any_of;
+
 #include <array>
 using std::array;
 using std::begin;
@@ -52,7 +55,7 @@ namespace util {
         string item;
 
         for (auto const &chr : str) {
-            if (any_of(delimiters.begin(), delimiters.end(), [chr] (auto const &delim) { return chr == delim; })) {
+            if (any_of(delimiters, [chr] (auto const &delim) { return chr == delim; })) {
                 result.push_back(item);
                 item = "";
             } else {

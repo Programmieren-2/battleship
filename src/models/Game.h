@@ -92,17 +92,17 @@ namespace models {
 
         [[nodiscard]] bool hasPlayers() const
         {
-            return std::any_of(players.begin(), players.end(), [] (auto const &player) { return player.has_value(); });
+            return std::ranges::any_of(players, [] (auto const &player) { return player.has_value(); });
         }
 
         [[nodiscard]] bool isFull() const
         {
-            return std::all_of(players.begin(), players.end(), [] (auto const &player) { return player.has_value(); });
+            return std::ranges::all_of(players, [] (auto const &player) { return player.has_value(); });
         }
 
         [[nodiscard]] bool isEmpty() const
         {
-            return std::none_of(players.begin(), players.end(), [] (auto const &player) { return player.has_value(); });
+            return std::ranges::none_of(players, [] (auto const &player) { return player.has_value(); });
         }
 
         bool addPlayer(PlayerType const &player) const

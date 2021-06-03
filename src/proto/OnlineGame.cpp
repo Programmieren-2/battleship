@@ -2,6 +2,9 @@
 // Created by rne on 15.05.21.
 //
 
+#include <algorithm>
+using std::ranges::all_of;
+
 #include <functional>
 using std::reference_wrapper;
 
@@ -86,17 +89,13 @@ namespace proto {
 
     bool OnlineGame::allShipsPlaced(Sea const &sea) const
     {
-        ShipTypes availableShipTypes = getShipTypes();
-        return all_of(availableShipTypes.begin(), availableShipTypes.end(), [sea] (auto &pair) {
-            return sea.hasShip(pair.first);
-        });
+        return all_of(getShipTypes(), [sea] (auto &pair) { return sea.hasShip(pair.first); });
     }
 
     bool OnlineGame::allPlayersReady() const
     {
-        auto const &candidates = getPlayers();
-        return all_of(candidates.begin(), candidates.end(), [this] (auto const &candidate) {
-           return this->allShipsPlaced(candidate.get().getSea());
+        return all_of(getPlayers(), [this] (auto const &candidate) {
+            return this->allShipsPlaced(candidate.get().getSea());
         });
     }
 

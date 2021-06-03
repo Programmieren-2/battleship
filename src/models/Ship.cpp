@@ -3,8 +3,8 @@
 //
 
 #include <algorithm>
-using std::all_of;
-using std::any_of;
+using std::ranges::all_of;
+using std::ranges::any_of;
 
 #include <optional>
 using std::optional;
@@ -73,28 +73,24 @@ namespace models {
 
     bool Ship::occupies(const Coordinate &coordinate) const
     {
-        return any_of(hitPoints.begin(), hitPoints.end(), [coordinate](auto const &hitPoint) {
-            return hitPoint == coordinate;
-        });
+        return any_of(hitPoints, [coordinate](auto const &hitPoint) { return hitPoint == coordinate; });
     }
 
     bool Ship::collidesWith(Ship const &other) const
     {
-        return any_of(hitPoints.begin(), hitPoints.end(), [other](auto const &coordinate) {
-            return other.occupies(coordinate);
-        });
+        return any_of(hitPoints, [other](auto const &coordinate) { return other.occupies(coordinate); });
     }
 
     bool Ship::isHitAt(Coordinate const &coordinate) const
     {
-        return any_of(hitPoints.begin(), hitPoints.end(), [coordinate](auto const &hitPoint) {
+        return any_of(hitPoints, [coordinate](auto const &hitPoint) {
             return hitPoint == coordinate && hitPoint.isHit();
         });
     }
 
     bool Ship::isDestroyed() const
     {
-        return all_of(hitPoints.begin(), hitPoints.end(), [](HitPoint const &hitPoint) {
+        return all_of(hitPoints, [](HitPoint const &hitPoint) {
             return hitPoint.isHit();
         });
     }

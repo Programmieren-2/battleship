@@ -24,6 +24,6 @@ namespace util {
     template <typename ElementType>
     bool contains(std::vector<ElementType> const &haystack, ElementType const &needle)
     {
-        return std::find(haystack.begin(), haystack.end(), needle) != haystack.end();
+        return std::ranges::find(haystack, needle) != haystack.end();
     }
 }
