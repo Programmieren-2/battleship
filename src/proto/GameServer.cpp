@@ -89,8 +89,7 @@ namespace proto {
 
     NewGameResponse GameServer::processNewGameRequest(NewGameRequest const &request) const
     {
-        auto newGameId = addGame(request.width, request.height);
-        return NewGameResponse(request.header.playerId, newGameId);
+        return NewGameResponse(request.header.playerId, addGame(request.width, request.height));
     }
 
     string GameServer::processNewGameRequest(string const &buf) const
