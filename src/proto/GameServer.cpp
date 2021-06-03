@@ -48,14 +48,7 @@ namespace proto {
 
     bool GameServer::removeGame(unsigned long id) const
     {
-        auto pos = find_if(games.begin(), games.end(), [id](OnlineGame const &game) {
-            return game.getId() == id;
-        });
-        if (pos == games.end())
-            return false;
-
-        games.erase(pos);
-        return true;
+        return erase_if(games, [id](OnlineGame const &game) { return game.getId() == id; }) > 0;
     }
 
     bool GameServer::removeGame(OnlineGame const &game) const
