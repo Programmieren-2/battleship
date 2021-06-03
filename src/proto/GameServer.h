@@ -27,6 +27,9 @@ namespace proto {
 
         [[nodiscard]] std::optional<std::reference_wrapper<OnlineGame>> getGame(unsigned long id);
         [[nodiscard]] unsigned long addGame(unsigned short width, unsigned short height);
+        bool removeGame(unsigned long id);
+        bool removeGame(OnlineGame const &game);
+        void cleanup();
 
         [[nodiscard]] NewGameResponse processNewGameRequest(NewGameRequest const &request);
         [[nodiscard]] std::string processNewGameRequest(std::string const &buf);
@@ -35,8 +38,5 @@ namespace proto {
         [[nodiscard]] std::string handleRequest(std::string const &buf) override;
     public:
         GameServer(boost::asio::ip::address const &ipAddress, unsigned short port);
-
-        bool removeGame(unsigned long id);
-        bool removeGame(OnlineGame const &game);
     };
 }

@@ -52,6 +52,11 @@ namespace proto {
         return id;
     }
 
+    GameState OnlineGame::getState() const
+    {
+        return state;
+    }
+
     optional<reference_wrapper<const OnlinePlayer>> OnlineGame::getOpponent(unsigned long playerId) const
     {
         for (auto &player : getPlayers()) {

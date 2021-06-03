@@ -46,6 +46,7 @@ namespace proto {
         OnlineGame(unsigned long id, unsigned short width, unsigned short height);
 
         [[nodiscard]] unsigned long getId() const;
+        [[nodiscard]] GameState getState() const;
         [[nodiscard]] std::optional<std::reference_wrapper<const OnlinePlayer>> getOpponent(unsigned long playerId) const;
         [[nodiscard]] std::optional<std::reference_wrapper<const OnlinePlayer>> getPlayer(unsigned long playerId) const;
 

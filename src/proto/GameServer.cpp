@@ -48,6 +48,31 @@ namespace proto {
         return gameId;
     }
 
+    bool GameServer::removeGame(unsigned long id)
+    {
+        auto pos = find_if(games.begin(), games.end(), [id](OnlineGame const &game) {
+            return game.getId() == id;
+        });
+        if (pos == games.end())
+            return false;
+
+        games.erase(pos);
+        return true;
+    }
+
+    bool GameServer::removeGame(OnlineGame const &game)
+    {
+        return removeGame(game.getId());
+    }
+
+    void GameServer::cleanup()
+    {
+        for (auto const &game : games) {
+            if (game.getState() == ABANDONED)
+                removeGame(game);
+        }
+    }
+
     string GameServer::processListGamesRequest() const
     {
         ListGamesResponse response(static_cast<uint32_t>(games.size()));
@@ -114,22 +139,5 @@ namespace proto {
             default:
                 return serialize(InvalidRequest(ErrorType::UNKNOWN));
         }
-    }
-
-    bool GameServer::removeGame(unsigned long id)
-    {
-        auto pos = find_if(games.begin(), games.end(), [id] (OnlineGame const &game) {
-            return game.getId() == id;
-        });
-        if (pos == games.end())
-            return false;
-
-        games.erase(pos);
-        return true;
-    }
-
-    bool GameServer::removeGame(const OnlineGame &game)
-    {
-        return removeGame(game.getId());
     }
 }
