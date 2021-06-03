@@ -20,12 +20,10 @@
 #include "boostwrap.h"
 
 namespace proto {
-    using Games = std::vector<OnlineGame>;
-
     class GameServer : public net::Server {
     private:
         static unsigned long gameId;
-        Games games;
+        std::vector<OnlineGame> games;
 
         [[nodiscard]] std::optional<std::reference_wrapper<OnlineGame>> getGame(unsigned long id);
         [[nodiscard]] unsigned long addGame(unsigned short width, unsigned short height);
