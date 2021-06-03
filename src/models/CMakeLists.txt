@@ -7,6 +7,6 @@ add_library(models
         Models.h
         Player.cpp Player.h
         Sea.cpp Sea.h
-        Ship.cpp Ship.h)
+        Ship.cpp Ship.h Matrix.h)
 target_include_directories(models PUBLIC ../util)
 target_link_libraries(models util)

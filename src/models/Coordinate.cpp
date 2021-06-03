@@ -18,32 +18,37 @@ using std::pair;
 #include "Coordinate.h"
 
 namespace models {
-    Coordinate::Coordinate(unsigned short x, unsigned short y)
-        : std::pair<unsigned short, unsigned short>(x, y)
+    Coordinate::Coordinate(uint8_t x, uint8_t y)
+        : std::pair<uint8_t, uint8_t>(x, y)
     {}
 
-    unsigned short Coordinate::getX() const
+    Coordinate Coordinate::shift(unsigned short offset, Orientation orientation) const
     {
-        return first;
+        switch (orientation) {
+            case X:
+                return Coordinate(first + offset, second);
+            case Y:
+                return Coordinate(first, second + offset);
+        }
     }
 
-    unsigned short Coordinate::getY() const
+    bool Coordinate::insideBounds(unsigned short x, unsigned short y) const
     {
-        return second;
+        return first < x && second < y;
     }
 
     optional<Coordinate> Coordinate::fromString(const string &strX, const string &strY)
     {
-        unsigned short x, y;
+        uint8_t x, y;
 
         try {
-            x = static_cast<unsigned short>(stoul(strX));
+            x = static_cast<uint8_t>(stoul(strX));
         } catch (invalid_argument&) {
             return {};
         }
 
         try {
-            y = static_cast<unsigned short>(stoul(strY));
+            y = static_cast<uint8_t>(stoul(strY));
         } catch (invalid_argument&) {
             return {};
         }

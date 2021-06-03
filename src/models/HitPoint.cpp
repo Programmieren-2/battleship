@@ -11,6 +11,10 @@ namespace models {
         : Coordinate(x, y), hit(false)
     {}
 
+    HitPoint::HitPoint(Coordinate const &coordinate)
+        : HitPoint(coordinate.first, coordinate.second)
+    {}
+
     bool HitPoint::isHit() const
     {
         return hit;

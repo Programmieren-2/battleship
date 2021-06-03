@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "Coordinate.h"
-#include "Models.h"
+#include "Matrix.h"
 #include "Ship.h"
 
 namespace models {
@@ -22,7 +22,6 @@ namespace models {
         std::vector<Ship> ships;
 
         void initializeGrid();
-        [[nodiscard]] bool coordinateOnBoard(Coordinate const &coordinate) const;
         [[nodiscard]] bool shipOnBoard(Ship const &ship) const;
         [[nodiscard]] bool shipCollides(Ship const &ship) const;
         [[nodiscard]] char getSymbolAt(Coordinate const &coordinate, bool showShips) const;

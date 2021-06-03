@@ -35,7 +35,4 @@ namespace models {
                 {"Aircraft Carrier", static_cast<unsigned short>(5)},
         };
     }
-
-    template <typename T>
-    using Matrix = std::vector<std::vector<T>>;
 }

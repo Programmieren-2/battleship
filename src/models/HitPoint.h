@@ -13,6 +13,7 @@ namespace models {
         bool hit;
     public:
         HitPoint(unsigned short x, unsigned short y);
+        HitPoint(Coordinate const &coordinate);
 
         [[nodiscard]] bool isHit() const;
 

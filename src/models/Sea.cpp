@@ -64,20 +64,15 @@ namespace models {
     optional<reference_wrapper<HitPoint>> Sea::getHitPointAt(Coordinate const &coordinate)
     {
         try {
-            return grid.at(coordinate.getY()).at(coordinate.getX());
+            return grid.at(coordinate);
         } catch (out_of_range&) {
             return {};
         }
     }
 
-    bool Sea::coordinateOnBoard(Coordinate const &coordinate) const
-    {
-        return coordinate.getX() < getWidth() && coordinate.getY() < getHeight();
-    }
-
     bool Sea::shipOnBoard(Ship const &ship) const
     {
-        return coordinateOnBoard(ship.getAnchorPoint()) && coordinateOnBoard(ship.getEndPoint());
+        return ship.getAnchorPoint().insideBounds(width, height) && ship.getEndPoint().insideBounds(width, height);
     }
 
     bool Sea::shipCollides(Ship const &ship) const
@@ -97,7 +92,7 @@ namespace models {
                 return '#';
         }
 
-        return grid.at(coordinate.getY()).at(coordinate.getX()).isHit() ? 'o' : '~';
+        return grid.at(coordinate).isHit() ? 'o' : '~';
     }
 
     bool Sea::allShipsDestroyed() const

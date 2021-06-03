@@ -32,23 +32,8 @@ namespace models {
 
     void Ship::initializeHitPoints()
     {
-        optional<HitPoint> hitPoint;
-
         for (unsigned short offset = 0; offset < length; ++offset) {
-            Coordinate coordinate = getAnchorPoint();
-            hitPoint.reset();
-
-            switch (getOrientation()) {
-                case Orientation::X:
-                    hitPoint = HitPoint(coordinate.getX() + offset, coordinate.getY());
-                    break;
-                case Orientation::Y:
-                    hitPoint = HitPoint(coordinate.getX(), coordinate.getY() + offset);
-                    break;
-                }
-
-            if (hitPoint)
-                hitPoints.push_back(*hitPoint);
+            hitPoints.emplace_back(getAnchorPoint().shift(offset, getOrientation()));
         }
     }
 
@@ -59,16 +44,7 @@ namespace models {
 
     Coordinate Ship::getEndPoint() const
     {
-        Coordinate coordinate = getAnchorPoint();
-
-        switch (getOrientation()) {
-            case Orientation::X:
-                return Coordinate(coordinate.getX() + length - 1, coordinate.getY());
-            case Orientation::Y:
-                return Coordinate(coordinate.getX(), coordinate.getY() + length - 1);
-        }
-
-        throw invalid_argument("Invalid orientation.");
+        return getAnchorPoint().shift(length - 1, getOrientation());
     }
 
     bool Ship::occupies(const Coordinate &coordinate) const

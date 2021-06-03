@@ -168,7 +168,7 @@ namespace proto {
         if (gameOver)
             throw ProtocolError(GAME_OVER);
 
-        TurnRequest request(gameId, playerId, static_cast<uint8_t>(target.getX()), static_cast<uint8_t>(target.getY()));
+        TurnRequest request(gameId, playerId, target);
         auto response = exchangeMessage<TurnRequest, TurnResponse>(request);
         won = response.won;
         return response.hitResult;

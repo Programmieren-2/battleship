@@ -12,8 +12,8 @@
 #include "boostwrap.h"
 
 #include "BasicShip.h"
-#include "Models.h"
 #include "Coordinate.h"
+#include "Models.h"
 #include "Sea.h"
 
 #include "util.h"
@@ -301,10 +301,13 @@ namespace proto {
                 util::copyString(type, typeName, sizeof type);
         }
 
+        ShipPlacementRequest(uint32_t gameId, uint32_t playerId, string const &typeName,
+                             models::Coordinate const &coordinate, models::Orientation orientation)
+            : ShipPlacementRequest(gameId, playerId, typeName, coordinate.first, coordinate.second, orientation)
+        {}
+
         ShipPlacementRequest(uint32_t gameId, uint32_t playerId, models::BasicShip const &ship)
-            : ShipPlacementRequest(gameId, playerId, ship.getType(),
-                                   static_cast<uint8_t>(ship.getAnchorPoint().getX()),
-                                   static_cast<uint8_t>(ship.getAnchorPoint().getY()),
+            : ShipPlacementRequest(gameId, playerId, ship.getType(), ship.getAnchorPoint(),
                                    ship.getOrientation())
         {}
 
@@ -353,6 +356,10 @@ namespace proto {
 
         TurnRequest(uint32_t gameId, uint32_t playerId, uint8_t x, uint8_t y)
             : Request(TURN_REQUEST, gameId, playerId), x(x), y(y)
+        {}
+
+        TurnRequest(uint32_t gameId, uint32_t playerId, models::Coordinate const &coordinate)
+            : TurnRequest(gameId, playerId, coordinate.first, coordinate.second)
         {}
 
         TurnRequest()
