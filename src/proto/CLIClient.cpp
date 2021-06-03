@@ -248,23 +248,26 @@ namespace proto {
             cerr << "Command '" << command << "' does not expect any arguments.\n";
 
         switch (getStatus()) {
-            case GameState::INITIAL:
+            case INITIAL:
                 cout << "Game has not yet started.\n";
                 break;
-            case GameState::WAITING_FOR_PLAYERS:
+            case WAITING_FOR_PLAYERS:
                 cout << "Waiting for an opponent to join.\n";
                 break;
-            case GameState::WAITING_FOR_OPPONENTS_SHIP_PLACEMENTS:
+            case WAITING_FOR_OPPONENTS_SHIP_PLACEMENTS:
                 cout << "Waiting for opponent to place their ships.\n";
                 break;
-            case GameState::WAITING_FOR_YOUR_SHIP_PLACEMENTS:
+            case WAITING_FOR_YOUR_SHIP_PLACEMENTS:
                 cout << "Waiting for you to place your ships.\n";
                 break;
-            case GameState::WAITING_FOR_OPPONENTS_TURN:
+            case WAITING_FOR_OPPONENTS_TURN:
                 cout << "Waiting for opponent to make their turn.\n";
                 break;
-            case GameState::WAITING_FOR_YOUR_TURN:
+            case WAITING_FOR_YOUR_TURN:
                 cout << "Waiting for you to make your turn.\n";
+                break;
+            case ABANDONED:
+                cout << "Game is abandoned.\n";
                 break;
         }
     }
@@ -272,34 +275,34 @@ namespace proto {
     void CLIClient::handleCommand(string const &command, vector<string> const &args)
     {
         switch (getCommand(command)) {
-            case Command::INVALID:
+            case INVALID:
                 cerr << "Invalid command. Type 'help' to list available commands.\n";
                 break;
-            case Command::HELP:
+            case HELP:
                 help(command, args);
                 break;
-            case Command::LIST_GAMES:
+            case LIST_GAMES:
                 listGames(command, args);
                 break;
-            case Command::NEW_GAME:
+            case NEW_GAME:
                 newGame(command, args);
                 break;
-            case Command::JOIN:
+            case JOIN:
                 joinGame(command, args);
                 break;
-            case Command::LOGOUT:
+            case LOGOUT:
                 logout(command, args);
                 break;
-            case Command::GET_SHIP_TYPES:
+            case GET_SHIP_TYPES:
                 getShipTypes(command, args);
                 break;
-            case Command::PLACE_SHIP:
+            case PLACE_SHIP:
                 placeShip(command, args);
                 break;
-            case Command::GET_MAP:
+            case GET_MAP:
                 getMap(command, args);
                 break;
-            case Command::MAKE_TURN:
+            case MAKE_TURN:
                 makeTurn(command, args);
                 break;
             case GET_STATUS:
