@@ -11,28 +11,25 @@ using std::invalid_argument;
 #include <string>
 using std::stoul;
 using std::string;
-using std::to_string;
+
+#include <utility>
+using std::pair;
 
 #include "Coordinate.h"
 
 namespace models {
     Coordinate::Coordinate(unsigned short x, unsigned short y)
-        : x(x), y(y)
+        : std::pair<unsigned short, unsigned short>(x, y)
     {}
 
     unsigned short Coordinate::getX() const
     {
-        return x;
+        return first;
     }
 
     unsigned short Coordinate::getY() const
     {
-        return y;
-    }
-
-    bool Coordinate::operator==(Coordinate const &coordinate) const
-    {
-        return x == coordinate.x && y == coordinate.y;
+        return second;
     }
 
     optional<Coordinate> Coordinate::fromString(const string &strX, const string &strY)
