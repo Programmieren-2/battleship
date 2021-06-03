@@ -22,22 +22,22 @@ namespace proto {
         using models::Game<OnlinePlayer>::addPlayer;
 
         unsigned long id;
-        GameState state;
-        std::optional<std::reference_wrapper<const OnlinePlayer>> currentPlayer;
+        mutable GameState state;
+        mutable std::optional<std::reference_wrapper<const OnlinePlayer>> currentPlayer;
 
         [[nodiscard]] models::Sea makeSea() const;
         [[nodiscard]] bool allPlayersOnline() const;
         [[nodiscard]] bool allShipsPlaced(models::Sea const &sea) const;
         [[nodiscard]] bool allPlayersReady() const;
-        [[nodiscard]] models::PlacementResult placeShip(ShipPlacementRequest const &request, models::Sea &sea);
+        [[nodiscard]] models::PlacementResult placeShip(ShipPlacementRequest const &request, models::Sea &sea) const;
 
-        [[nodiscard]] LoginResponse processLoginRequest(LoginRequest const &request);
-        [[nodiscard]] LogoutResponse processLogoutRequest(LogoutRequest const &request);
+        [[nodiscard]] LoginResponse processLoginRequest(LoginRequest const &request) const;
+        [[nodiscard]] LogoutResponse processLogoutRequest(LogoutRequest const &request) const;
         [[nodiscard]] std::string processShipTypesRequest(ShipTypesRequest const &request) const;
         [[nodiscard]] std::string processMapRequest(MapRequest const &request) const;
-        [[nodiscard]] ShipPlacementResponse processShipPlacementRequest(ShipPlacementRequest const &request);
+        [[nodiscard]] ShipPlacementResponse processShipPlacementRequest(ShipPlacementRequest const &request) const;
         [[nodiscard]] StatusResponse processStatusRequest(StatusRequest const &request) const;
-        [[nodiscard]] TurnResponse processTurnRequest(TurnRequest const &request);
+        [[nodiscard]] TurnResponse processTurnRequest(TurnRequest const &request) const;
     public:
         using models::Game<OnlinePlayer>::getWidth;
         using models::Game<OnlinePlayer>::getHeight;
@@ -50,12 +50,12 @@ namespace proto {
         [[nodiscard]] std::optional<std::reference_wrapper<const OnlinePlayer>> getOpponent(unsigned long playerId) const;
         [[nodiscard]] std::optional<std::reference_wrapper<const OnlinePlayer>> getPlayer(unsigned long playerId) const;
 
-        [[nodiscard]] std::string processLoginRequest(std::string const &buf);
-        [[nodiscard]] std::string processLogoutRequest(std::string const &buf);
+        [[nodiscard]] std::string processLoginRequest(std::string const &buf) const;
+        [[nodiscard]] std::string processLogoutRequest(std::string const &buf) const;
         [[nodiscard]] std::string processShipTypesRequest(std::string const &buf) const;
         [[nodiscard]] std::string processMapRequest(std::string const &buf) const;
-        [[nodiscard]] std::string processShipPlacementRequest(std::string const &buf);
+        [[nodiscard]] std::string processShipPlacementRequest(std::string const &buf) const;
         [[nodiscard]] std::string processStatusRequest(std::string const &buf) const;
-        [[nodiscard]] std::string processTurnRequest(std::string const &buf);
+        [[nodiscard]] std::string processTurnRequest(std::string const &buf) const;
     };
 }

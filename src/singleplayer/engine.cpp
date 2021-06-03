@@ -50,8 +50,8 @@ namespace engine {
             return false;
         }
 
-        Player &player = *playerCandidate;
-        Player &opponent = *opponentCandidate;
+        Player const &player = *playerCandidate;
+        Player const &opponent = *opponentCandidate;
         Sea &sea = opponent.getSea();
         cout << "It's " << player.getName() << "'s turn.\n";
         cout << sea.toString();

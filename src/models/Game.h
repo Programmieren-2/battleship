@@ -24,7 +24,7 @@ namespace models {
         unsigned short width;
         unsigned short height;
         ShipTypes shipTypes;
-        std::array<std::optional<PlayerType>, 2> players;
+        mutable std::array<std::optional<PlayerType>, 2> players;
     public:
         Game(unsigned short width, unsigned short height, ShipTypes shipTypes)
             : width(width), height(height), shipTypes(std::move(shipTypes))
@@ -77,17 +77,12 @@ namespace models {
             return playerCount;
         }
 
-        [[nodiscard]] std::optional<PlayerType> getPlayer(unsigned short index) const
-        {
-            return players.at(index % players.size());
-        }
-
-        [[nodiscard]] std::optional<std::reference_wrapper<PlayerType>> getPlayer(unsigned short index)
+        [[nodiscard]] std::optional<std::reference_wrapper<PlayerType const>> getPlayer(unsigned short index) const
         {
             return *players.at(index % players.size());
         }
 
-        void removePlayer(PlayerType const &player)
+        void removePlayer(PlayerType const &player) const
         {
             for (auto &candidate : players) {
                 if (candidate && *candidate == player)
@@ -110,7 +105,7 @@ namespace models {
             return std::none_of(players.begin(), players.end(), [] (auto const &player) { return player.has_value(); });
         }
 
-        bool addPlayer(PlayerType const &player)
+        bool addPlayer(PlayerType const &player) const
         {
             for (auto &candidate : players) {
                 if (candidate)

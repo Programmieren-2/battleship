@@ -98,7 +98,7 @@ namespace proto {
         });
     }
 
-    PlacementResult OnlineGame::placeShip(ShipPlacementRequest const &request, Sea &sea)
+    PlacementResult OnlineGame::placeShip(ShipPlacementRequest const &request, Sea &sea) const
     {
         ShipTypes availableShipTypes = getShipTypes();
         if (BOOST_UNLIKELY(availableShipTypes.count(request.type) == 0))
@@ -114,7 +114,7 @@ namespace proto {
         return sea.placeShip(ship);
     }
 
-    LoginResponse OnlineGame::processLoginRequest(LoginRequest const &request)
+    LoginResponse OnlineGame::processLoginRequest(LoginRequest const &request) const
     {
         if (state == ABANDONED)
             return LoginResponse(0, 0, false);
@@ -128,12 +128,12 @@ namespace proto {
         return LoginResponse(id, success ? playerId : 0, success);
     }
 
-    string OnlineGame::processLoginRequest(string const &buf)
+    string OnlineGame::processLoginRequest(string const &buf) const
     {
         return serialize(processLoginRequest(deserialize<LoginRequest>(buf)));
     }
 
-    LogoutResponse OnlineGame::processLogoutRequest(LogoutRequest const &request)
+    LogoutResponse OnlineGame::processLogoutRequest(LogoutRequest const &request) const
     {
         auto player = getPlayer(request.header.playerId);
         if (BOOST_UNLIKELY(!player))
@@ -144,7 +144,7 @@ namespace proto {
         return LogoutResponse(request.header.gameId, request.header.playerId, true);
     }
 
-    string OnlineGame::processLogoutRequest(string const &buf)
+    string OnlineGame::processLogoutRequest(string const &buf) const
     {
         return serialize(processLogoutRequest(deserialize<LogoutRequest>(buf)));
     }
@@ -192,7 +192,7 @@ namespace proto {
         }
     }
 
-    ShipPlacementResponse OnlineGame::processShipPlacementRequest(ShipPlacementRequest const &request)
+    ShipPlacementResponse OnlineGame::processShipPlacementRequest(ShipPlacementRequest const &request) const
     {
         auto candidate = getPlayer(request.header.playerId);
         if (BOOST_UNLIKELY(!candidate))
@@ -202,7 +202,7 @@ namespace proto {
         return ShipPlacementResponse(id, player.getId(), placeShip(request, player.getSea()));
     }
 
-    string OnlineGame::processShipPlacementRequest(string const &buf)
+    string OnlineGame::processShipPlacementRequest(string const &buf) const
     {
         try {
             return serialize(processShipPlacementRequest(deserialize<ShipPlacementRequest>(buf)));
@@ -230,7 +230,7 @@ namespace proto {
         }
     }
 
-    TurnResponse OnlineGame::processTurnRequest(TurnRequest const &request)
+    TurnResponse OnlineGame::processTurnRequest(TurnRequest const &request) const
     {
         auto playerRef = getPlayer(request.header.playerId);
         if (!playerRef)
@@ -257,7 +257,7 @@ namespace proto {
         return TurnResponse(id, player.getId(), sea.fireAt(target), sea.allShipsDestroyed());
     }
 
-    string OnlineGame::processTurnRequest(string const &buf)
+    string OnlineGame::processTurnRequest(string const &buf) const
     {
         try {
             return serialize(processTurnRequest(deserialize<TurnRequest>(buf)));
