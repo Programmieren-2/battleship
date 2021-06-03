@@ -28,8 +28,8 @@ using net::Server;
 namespace proto {
     unsigned long GameServer::gameId = 0;
 
-    GameServer::GameServer(address ipAddress, unsigned short port)
-        : Server(ipAddress, port), games(Games())
+    GameServer::GameServer(address const &ipAddress, unsigned short port)
+        : Server(ipAddress, port)
     {}
 
     optional<reference_wrapper<OnlineGame>> GameServer::getGame(unsigned long id)
