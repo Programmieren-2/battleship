@@ -44,7 +44,7 @@ namespace proto {
 
     unsigned long GameServer::addGame(unsigned short width, unsigned short height)
     {
-        games.push_back(OnlineGame(++gameId, width, height));
+        games.emplace_back(++gameId, width, height);
         return gameId;
     }
 
