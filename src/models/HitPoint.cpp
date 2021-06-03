@@ -19,9 +19,9 @@ namespace models {
     HitResult HitPoint::doHit()
     {
         if (hit)
-            return HitResult::ALREADY_HIT;
+            return ALREADY_HIT;
 
         hit = true;
-        return HitResult::HIT;
+        return HIT;
     }
 }

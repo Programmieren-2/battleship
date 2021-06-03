@@ -102,6 +102,6 @@ namespace models {
                 return hitPoint.doHit();
         }
 
-        return HitResult::MISSED;
+        return MISSED;
     }
 }

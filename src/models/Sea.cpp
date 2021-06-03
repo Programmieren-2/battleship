@@ -132,22 +132,22 @@ namespace models {
     PlacementResult Sea::placeShip(Ship const &ship)
     {
         if (!shipOnBoard(ship))
-            return PlacementResult::NOT_ON_BOARD;
+            return NOT_ON_BOARD;
 
         if (shipCollides(ship))
-            return PlacementResult::COLLISION;
+            return COLLISION;
 
         ships.push_back(ship);
-        return PlacementResult::SUCCESS;
+        return SUCCESS;
     }
 
     HitResult Sea::fireAt(Coordinate const &coordinate) {
         for (auto &ship : ships) {
             switch (ship.fireAt(coordinate)) {
-                case HitResult::ALREADY_HIT:
-                    return HitResult::ALREADY_HIT;
-                case HitResult::HIT:
-                    return HitResult::HIT;
+                case ALREADY_HIT:
+                    return ALREADY_HIT;
+                case HIT:
+                    return HIT;
                 default:
                     continue;
             }
@@ -155,15 +155,15 @@ namespace models {
 
         auto candidate = getHitPointAt(coordinate);
         if (!candidate)
-            return HitResult::MISSED;
+            return MISSED;
 
         HitPoint &hitPoint = *candidate;
 
         switch (hitPoint.doHit()) {
-            case HitResult::ALREADY_HIT:
-                return HitResult::ALREADY_HIT;
+            case ALREADY_HIT:
+                return ALREADY_HIT;
             default:
-                return HitResult::MISSED;
+                return MISSED;
         }
     }
 }
