@@ -265,4 +265,14 @@ namespace proto {
             return serialize(invalidRequest);
         }
     }
+
+    bool OnlineGame::operator==(const OnlineGame &other) const
+    {
+        return id == other.id;
+    }
+
+    bool OnlineGame::operator<(const OnlineGame &other) const
+    {
+        return id < other.id;
+    }
 }

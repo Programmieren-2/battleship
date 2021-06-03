@@ -57,5 +57,8 @@ namespace proto {
         [[nodiscard]] std::string processShipPlacementRequest(std::string const &buf) const;
         [[nodiscard]] std::string processStatusRequest(std::string const &buf) const;
         [[nodiscard]] std::string processTurnRequest(std::string const &buf) const;
+
+        [[nodiscard]] bool operator==(OnlineGame const &other) const;
+        [[nodiscard]] bool operator<(OnlineGame const &other) const;
     };
 }

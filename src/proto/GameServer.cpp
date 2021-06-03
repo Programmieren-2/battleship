@@ -32,9 +32,9 @@ namespace proto {
         : Server(ipAddress, port)
     {}
 
-    optional<reference_wrapper<OnlineGame>> GameServer::getGame(unsigned long id)
+    optional<reference_wrapper<OnlineGame const>> GameServer::getGame(unsigned long id) const
     {
-        for (auto &game : games) {
+        for (auto const &game : games) {
             if (game.getId() == id)
                 return game;
         }
@@ -44,7 +44,7 @@ namespace proto {
 
     unsigned long GameServer::addGame(unsigned short width, unsigned short height)
     {
-        games.emplace_back(++gameId, width, height);
+        games.emplace(++gameId, width, height);
         return gameId;
     }
 

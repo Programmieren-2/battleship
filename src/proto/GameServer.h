@@ -6,8 +6,8 @@
 
 #include <functional>
 #include <optional>
+#include <set>
 #include <string>
-#include <vector>
 
 #include "Game.h"
 #include "Ship.h"
@@ -23,9 +23,9 @@ namespace proto {
     class GameServer : public net::Server {
     private:
         static unsigned long gameId;
-        std::vector<OnlineGame> games;
+        std::set<OnlineGame> games;
 
-        [[nodiscard]] std::optional<std::reference_wrapper<OnlineGame>> getGame(unsigned long id);
+        [[nodiscard]] std::optional<std::reference_wrapper<OnlineGame const>> getGame(unsigned long id) const;
         [[nodiscard]] unsigned long addGame(unsigned short width, unsigned short height);
         bool removeGame(unsigned long id);
         bool removeGame(OnlineGame const &game);
