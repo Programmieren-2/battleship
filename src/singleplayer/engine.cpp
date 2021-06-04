@@ -42,7 +42,7 @@ namespace engine {
         if (player && opponent)
             return true;
 
-        cerr <<  "Not enough players.\n";
+        cerr << "Not enough players.\n";
         return false;
     }
 
