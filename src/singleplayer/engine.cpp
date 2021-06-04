@@ -81,7 +81,7 @@ namespace engine {
     static bool playRound(Player const &player, Player const &opponent)
     {
         cout << "It's " << player.getName() << "'s turn.\n";
-        cout << opponent.getSea().toString();
+        cout << opponent.getSea();
         return makeTurn(player, opponent);
     }
 

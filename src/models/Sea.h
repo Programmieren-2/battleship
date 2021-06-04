@@ -6,6 +6,7 @@
 
 #include <functional>
 #include <optional>
+#include <ostream>
 #include <string>
 #include <vector>
 
@@ -39,5 +40,7 @@ namespace models {
         [[nodiscard]] std::optional<std::reference_wrapper<HitPoint>> getHitPointAt(Coordinate const &coordinate);
         PlacementResult placeShip(Ship const &ship);
         HitResult fireAt(Coordinate const &coordinate);
+
+        friend std::ostream& operator<<(std::ostream &out, Sea const &sea);
     };
 }

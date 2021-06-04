@@ -12,6 +12,9 @@ using std::reference_wrapper;
 #include <optional>
 using std::optional;
 
+#include <ostream>
+using std::ostream;
+
 #include <stdexcept>
 using std::out_of_range;
 
@@ -160,5 +163,11 @@ namespace models {
             default:
                 return MISSED;
         }
+    }
+
+    ostream& operator<<(std::ostream &out, const Sea &sea)
+    {
+        out << sea.toString();
+        return out;
     }
 }
