@@ -11,9 +11,9 @@
 namespace models {
     enum Orientation : unsigned char { X, Y };
 
-    class Coordinate : public std::pair<uint8_t, uint8_t> {
+    class Coordinate : public std::pair<unsigned short, unsigned short> {
     public:
-        Coordinate(uint8_t x, uint8_t y);
+        Coordinate(unsigned short x, unsigned short y);
 
         [[nodiscard]] Coordinate shift(unsigned short offset, Orientation orientation) const;
         [[nodiscard]] bool insideBounds(unsigned short x, unsigned short y) const;

@@ -18,8 +18,8 @@ using std::pair;
 #include "Coordinate.h"
 
 namespace models {
-    Coordinate::Coordinate(uint8_t x, uint8_t y)
-        : std::pair<uint8_t, uint8_t>(x, y)
+    Coordinate::Coordinate(unsigned short x, unsigned short y)
+        : std::pair<unsigned short, unsigned short>(x, y)
     {}
 
     Coordinate Coordinate::shift(unsigned short offset, Orientation orientation) const
@@ -39,16 +39,16 @@ namespace models {
 
     optional<Coordinate> Coordinate::fromString(const string &strX, const string &strY)
     {
-        uint8_t x, y;
+        unsigned short x, y;
 
         try {
-            x = static_cast<uint8_t>(stoul(strX));
+            x = static_cast<unsigned short>(stoul(strX));
         } catch (invalid_argument&) {
             return {};
         }
 
         try {
-            y = static_cast<uint8_t>(stoul(strY));
+            y = static_cast<unsigned short>(stoul(strY));
         } catch (invalid_argument&) {
             return {};
         }

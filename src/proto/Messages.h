@@ -303,7 +303,8 @@ namespace proto {
 
         ShipPlacementRequest(uint32_t gameId, uint32_t playerId, string const &typeName,
                              models::Coordinate const &coordinate, models::Orientation orientation)
-            : ShipPlacementRequest(gameId, playerId, typeName, coordinate.first, coordinate.second, orientation)
+            : ShipPlacementRequest(gameId, playerId, typeName, static_cast<uint8_t>(coordinate.first),
+                                   static_cast<uint8_t>(coordinate.second), orientation)
         {}
 
         ShipPlacementRequest(uint32_t gameId, uint32_t playerId, models::BasicShip const &ship)
@@ -359,7 +360,8 @@ namespace proto {
         {}
 
         TurnRequest(uint32_t gameId, uint32_t playerId, models::Coordinate const &coordinate)
-            : TurnRequest(gameId, playerId, coordinate.first, coordinate.second)
+            : TurnRequest(gameId, playerId, static_cast<uint8_t>(coordinate.first),
+                          static_cast<uint8_t>(coordinate.second))
         {}
 
         TurnRequest()
