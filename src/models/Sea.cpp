@@ -77,7 +77,7 @@ namespace models {
 
     bool Sea::shipCollides(Ship const &ship) const
     {
-        return any_of(ships, [ship](Ship const &other) {
+        return any_of(ships, [ship] (Ship const &other) {
             return ship.collidesWith(other);
         });
     }
