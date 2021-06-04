@@ -47,7 +47,7 @@ namespace proto {
 
     bool GameServer::removeGame(unsigned long id) const
     {
-        return erase_if(games, [id](OnlineGame const &game) { return game.getId() == id; }) > 0;
+        return erase_if(games, [id] (OnlineGame const &game) { return game.getId() == id; }) > 0;
     }
 
     bool GameServer::removeGame(OnlineGame const &game) const

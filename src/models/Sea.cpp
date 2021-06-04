@@ -97,12 +97,12 @@ namespace models {
 
     bool Sea::allShipsDestroyed() const
     {
-        return all_of(ships, [](Ship const &ship){ return ship.isDestroyed(); });
+        return all_of(ships, [] (Ship const &ship) { return ship.isDestroyed(); });
     }
 
     bool Sea::hasShip(string const &type) const
     {
-        return any_of(ships, [type](Ship const &ship){ return ship.getType() == type; });
+        return any_of(ships, [type] (Ship const &ship) { return ship.getType() == type; });
     }
 
     string Sea::toString(bool showShips) const
