@@ -15,11 +15,11 @@ namespace models {
         using std::vector<std::vector<T>>::at;
 
         T at(Coordinate const &coordinate) const {
-            return at(coordinate.first).at(coordinate.second);
+            return at(coordinate.second).at(coordinate.first);
         }
 
         T& at(Coordinate const &coordinate) {
-            return at(coordinate.first).at(coordinate.second);
+            return at(coordinate.second).at(coordinate.first);
         }
     };
 }
