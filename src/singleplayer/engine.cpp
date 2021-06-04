@@ -37,26 +37,17 @@ using bootstrap::readGame;
 #include "engine.h"
 
 namespace engine {
-    static bool playNextRound(Game<Player> &game)
+    static bool enoughPlayers(optional<Player> const &player, optional<Player> const &opponent)
     {
-        static unsigned int round = 0;
-        round++;
-        unsigned short index = round % 2;
-        auto playerCandidate = game.getPlayer(index);
-        auto opponentCandidate = game.getPlayer((index + 1) % 2);
+        if (player && opponent)
+            return true;
 
-        if (!playerCandidate || !opponentCandidate) {
-            cerr <<  "Not enough players.\n";
-            return false;
-        }
+        cerr <<  "Not enough players.\n";
+        return false;
+    }
 
-        Player const &player = *playerCandidate;
-        Player const &opponent = *opponentCandidate;
-        Sea &sea = opponent.getSea();
-        cout << "It's " << player.getName() << "'s turn.\n";
-        cout << sea.toString();
-        Coordinate target = readCoordinate("Specify your target (<x>,<y>): ");
-
+    static void takeShot(Sea &sea, Coordinate const &target)
+    {
         switch (sea.fireAt(target)) {
             case HitResult::HIT:
                 cout << "Hit!\n";
@@ -68,14 +59,43 @@ namespace engine {
                 cout << "You already hit here!\n";
                 break;
         }
+    }
 
-        if (sea.allShipsDestroyed()) {
-            cout << "All of " << opponent.getName() << "'s ships have been destroyed!\n";
-            cout << player.getName() << " has won the game.\n";
+    static bool gameOver(Player const &player, Player const &opponent)
+    {
+        if (!opponent.getSea().allShipsDestroyed())
             return false;
-        }
 
+        cout << "All of " << opponent.getName() << "'s ships have been destroyed!\n";
+        cout << player.getName() << " has won the game.\n";
         return true;
+    }
+
+    static bool makeTurn(Player const &player, Player const &opponent)
+    {
+        Coordinate target = readCoordinate("Specify your target (<x>,<y>): ");
+        takeShot(opponent.getSea(), target);
+        return !gameOver(player, opponent);
+    }
+
+    static bool playRound(Player const &player, Player const &opponent)
+    {
+        cout << "It's " << player.getName() << "'s turn.\n";
+        cout << opponent.getSea().toString();
+        return makeTurn(player, opponent);
+    }
+
+    static bool playNextRound(Game<Player> &game)
+    {
+        static unsigned int round = 0;
+        round++;
+        auto playerCandidate = game.getPlayer(round % 2);
+        auto opponentCandidate = game.getPlayer((round + 1) % 2);
+
+        if (!enoughPlayers(playerCandidate, opponentCandidate))
+            return false;
+
+        return playRound(*playerCandidate, *opponentCandidate);
     }
 
     void spawn()
