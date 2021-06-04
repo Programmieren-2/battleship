@@ -42,8 +42,7 @@ namespace proto {
 
     unsigned long GameServer::addGame(unsigned short width, unsigned short height) const
     {
-        auto [game, _] = games.emplace(width, height);
-        return game->getId();
+        return games.emplace(width, height).first->getId();
     }
 
     bool GameServer::removeGame(unsigned long id) const
