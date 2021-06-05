@@ -8,7 +8,10 @@
 #include <string>
 
 namespace models {
-    class PlaceShipError : public std::exception {};
+    class PlaceShipError : public std::exception {
+    public:
+        char const *what() const noexcept override = 0;
+    };
 
     class OutsideSeaBounds : public PlaceShipError {
     private:
