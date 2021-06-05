@@ -44,7 +44,7 @@ namespace multiplayer {
             return deserialize<ResponseType>(sendMessage(request));
         }
     public:
-        GameClient(boost::asio::ip::address ipAddress, unsigned short port);
+        GameClient(boost::asio::ip::address const &ipAddress, unsigned short port);
 
         [[nodiscard]] unsigned long getGameId() const;
         [[nodiscard]] unsigned long getPlayerId() const;

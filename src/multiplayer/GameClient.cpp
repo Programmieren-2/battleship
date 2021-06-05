@@ -30,7 +30,7 @@ using tcp::Client;
 #include "GameClient.h"
 
 namespace multiplayer {
-    GameClient::GameClient(address ipAddress, unsigned short port)
+    GameClient::GameClient(address const &ipAddress, unsigned short port)
             : Client(ipAddress, port), gameId(0), playerId(0), gameOver(false), won(false)
     {}
 
