@@ -155,7 +155,7 @@ namespace util {
             cerr << "Invalid option: " << error.get_option_name() << "\n";
             cerr << desc << "\n";
             return {};
-        } catch (invalid_command_line_syntax &error) {
+        } catch (invalid_command_line_syntax const &error) {
             cerr << "Syntax error: " << error.what() << "\n";
             return {};
         }

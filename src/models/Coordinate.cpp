@@ -43,13 +43,13 @@ namespace models {
 
         try {
             x = static_cast<unsigned short>(stoul(strX));
-        } catch (invalid_argument&) {
+        } catch (invalid_argument const &) {
             return {};
         }
 
         try {
             y = static_cast<unsigned short>(stoul(strY));
-        } catch (invalid_argument&) {
+        } catch (invalid_argument const &) {
             return {};
         }
 

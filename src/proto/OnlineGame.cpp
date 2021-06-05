@@ -118,9 +118,9 @@ namespace proto {
 
         try {
             sea.placeShip(ship);
-        } catch (OutsideSeaBounds&) {
+        } catch (OutsideSeaBounds const &) {
             return OUTSIDE_SEA_BOUNDS;
-        } catch (Collision&) {
+        } catch (Collision const &) {
             return COLLISION;
         }
 
@@ -200,7 +200,7 @@ namespace proto {
     {
         try {
             return processMapRequest(deserialize<MapRequest>(buf));
-        } catch (InvalidRequest &invalidRequest) {
+        } catch (InvalidRequest const &invalidRequest) {
             return serialize(invalidRequest);
         }
     }
@@ -219,7 +219,7 @@ namespace proto {
     {
         try {
             return serialize(processShipPlacementRequest(deserialize<ShipPlacementRequest>(buf)));
-        } catch (InvalidRequest &invalidRequest) {
+        } catch (InvalidRequest const &invalidRequest) {
             return serialize(invalidRequest);
         }
     }
@@ -238,7 +238,7 @@ namespace proto {
     {
         try {
             return serialize(processStatusRequest(deserialize<StatusRequest>(buf)));
-        } catch (InvalidRequest &invalidRequest) {
+        } catch (InvalidRequest const &invalidRequest) {
             return serialize(invalidRequest);
         }
     }
@@ -274,7 +274,7 @@ namespace proto {
     {
         try {
             return serialize(processTurnRequest(deserialize<TurnRequest>(buf)));
-        } catch (InvalidRequest &invalidRequest) {
+        } catch (InvalidRequest const &invalidRequest) {
             return serialize(invalidRequest);
         }
     }

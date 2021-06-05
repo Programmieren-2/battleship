@@ -69,7 +69,7 @@ namespace models {
     {
         try {
             return grid.at(coordinate);
-        } catch (out_of_range&) {
+        } catch (out_of_range const &) {
             return {};
         }
     }

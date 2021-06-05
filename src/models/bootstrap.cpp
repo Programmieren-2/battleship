@@ -86,7 +86,7 @@ namespace models {
 
         try {
             sea.placeShip(ship);
-        } catch (PlaceShipError &error) {
+        } catch (PlaceShipError const &error) {
             cerr << error.what() << "\n";
         }
     }

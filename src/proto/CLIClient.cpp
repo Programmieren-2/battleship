@@ -85,14 +85,14 @@ namespace proto {
         } else if (args.size() == 2) {
             try {
                 width = static_cast<unsigned short>(stoul(args[0]));
-            } catch (invalid_argument&) {
+            } catch (invalid_argument const &) {
                 cerr << "Invalid width.\n";
                 return;
             }
 
             try {
                 height = static_cast<unsigned short>(stoul(args[1]));
-            } catch (invalid_argument&) {
+            } catch (invalid_argument const &) {
                 cerr << "Invalid height.\n";
                 return;
             }
@@ -117,7 +117,7 @@ namespace proto {
 
         try {
             newGameId = stoul(args[0]);
-        } catch (invalid_argument&) {
+        } catch (invalid_argument const &) {
             cerr << "Invalid game ID.\n";
             return;
         }
@@ -349,7 +349,7 @@ namespace proto {
     {
         try {
             handleCommand(command, args);
-        } catch (ProtocolError &error) {
+        } catch (ProtocolError const &error) {
             handleProtocolError(error);
         }
     }
@@ -358,7 +358,7 @@ namespace proto {
     {
         try {
             return COMMANDS.at(command);
-        } catch (out_of_range&) {
+        } catch (out_of_range const &) {
             return Command::INVALID;
         }
     }

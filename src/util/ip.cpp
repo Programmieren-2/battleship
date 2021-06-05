@@ -61,7 +61,7 @@ namespace ip {
         for(struct addrinfo *info = pai; info != nullptr; info = info->ai_next) {
             try {
                 addresses.emplace_back(toAddress(info));
-            } catch (invalid_argument&) {
+            } catch (invalid_argument const &) {
                 continue;
             }
         }
