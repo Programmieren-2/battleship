@@ -57,7 +57,7 @@ namespace proto {
         bool logout();
         models::ShipTypes getShipTypes() const;
         std::string getMap(bool own = false) const;
-        models::PlacementResult placeShip(models::BasicShip const &ship);
+        PlacementResult placeShip(models::BasicShip const &ship);
         GameState getStatus() const;
         models::HitResult fireAt(models::Coordinate const &target);
 

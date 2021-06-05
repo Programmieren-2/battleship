@@ -31,8 +31,8 @@ using models::Player;
 using models::Sea;
 
 #include "bootstrap.h"
-using bootstrap::readCoordinate;
-using bootstrap::readGame;
+using models::readCoordinate;
+using models::readGame;
 
 #include "engine.h"
 

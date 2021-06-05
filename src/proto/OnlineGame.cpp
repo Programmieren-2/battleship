@@ -17,6 +17,10 @@ using std::string;
 #include <stdexcept>
 using std::out_of_range;
 
+#include "exceptions.h"
+using models::OutsideSeaBounds;
+using models::Collision;
+
 #include "Models.h"
 #include "Coordinate.h"
 using models::Coordinate;
@@ -25,7 +29,6 @@ using models::Coordinate;
 using models::Game;
 
 #include "Sea.h"
-using models::PlacementResult;
 using models::Sea;
 
 #include "Ship.h"
@@ -103,16 +106,25 @@ namespace proto {
     {
         ShipTypes availableShipTypes = getShipTypes();
         if (BOOST_UNLIKELY(availableShipTypes.count(request.type) == 0))
-            return PlacementResult::INVALID_SHIP_TYPE;
+            return INVALID_SHIP_TYPE;
 
         if (BOOST_UNLIKELY(sea.hasShip(request.type)))
-            return PlacementResult::ALREADY_PLACED;
+            return ALREADY_PLACED;
 
         Ship ship(request.type,
                   Coordinate(request.x, request.y),
                   availableShipTypes.at(request.type),
                   request.orientation);
-        return sea.placeShip(ship);
+
+        try {
+            sea.placeShip(ship);
+        } catch (OutsideSeaBounds&) {
+            return OUTSIDE_SEA_BOUNDS;
+        } catch (Collision&) {
+            return COLLISION;
+        }
+
+        return SUCCESS;
     }
 
     LoginResponse OnlineGame::processLoginRequest(LoginRequest const &request) const

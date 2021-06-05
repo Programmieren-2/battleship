@@ -33,7 +33,6 @@ using models::Orientation;
 
 #include "Models.h"
 using models::HitResult;
-using models::PlacementResult;
 
 #include "util.h"
 using util::isExitCommand;
@@ -181,19 +180,19 @@ namespace proto {
         BasicShip ship(type, *anchorPoint, orientation);
 
         switch (placeShip(ship)) {
-            case PlacementResult::SUCCESS:
+            case SUCCESS:
                 cout << type << " placed at " << strX << "x" << strY << " facing " << orientationStr << ".\n";
                 break;
-            case PlacementResult::INVALID_SHIP_TYPE:
+            case INVALID_SHIP_TYPE:
                 cerr << "Invalid ship type: " << type << ".\n";
                 break;
-            case PlacementResult::ALREADY_PLACED:
+            case ALREADY_PLACED:
                 cerr << "You already placed your " << type << ".\n";
                 break;
-            case PlacementResult::COLLISION:
+            case COLLISION:
                 cerr << type << " collides with another ship.\n";
                 break;
-            case PlacementResult::NOT_ON_BOARD:
+            case OUTSIDE_SEA_BOUNDS:
                 cerr << type << " is not (entirely) on the sea board.\n";
                 break;
         }

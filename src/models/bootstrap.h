@@ -12,27 +12,27 @@
 
 #include "util.h"
 
-namespace bootstrap {
-    models::Coordinate readCoordinate(std::string const &prompt);
-    models::Coordinate readCoordinate();
-    models::Orientation readOrientation(string const &prompt);
-    models::Orientation readOrientation();
-    models::Sea readSea(unsigned short width, unsigned short height);
+namespace models {
+    Coordinate readCoordinate(std::string const &prompt);
+    Coordinate readCoordinate();
+    Orientation readOrientation(string const &prompt);
+    Orientation readOrientation();
+    Sea readSea(unsigned short width, unsigned short height);
 
     template <typename PlayerType>
     PlayerType readPlayer(unsigned short width, unsigned short height) {
         static unsigned short playerNum = 0;
         playerNum++;
         string name = util::readWithPrompt("Enter name of player #" + std::to_string(playerNum) + ": ");
-        models::Sea sea = readSea(width, height);
+        Sea sea = readSea(width, height);
         cout << sea.toString(true);
         return PlayerType(name, sea);
     }
 
     template <typename PlayerType>
-    models::Game<PlayerType> readGame()
+    Game<PlayerType> readGame()
     {
-        models::Game<PlayerType> game;
+        Game<PlayerType> game;
         unsigned short width = game.getWidth();
         unsigned short height = game.getHeight();
 

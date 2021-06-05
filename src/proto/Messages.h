@@ -55,6 +55,14 @@ namespace proto {
         TURN_RESPONSE,
     };
 
+    enum PlacementResult : unsigned char {
+        SUCCESS,
+        OUTSIDE_SEA_BOUNDS,
+        COLLISION,
+        ALREADY_PLACED,
+        INVALID_SHIP_TYPE
+    };
+
     enum ErrorType : unsigned char {
         UNKNOWN,
         NO_SUCH_GAME,
@@ -318,14 +326,14 @@ namespace proto {
     };
 
     struct ShipPlacementResponse : Response {
-        models::PlacementResult result;
+        PlacementResult result;
 
-        ShipPlacementResponse(uint32_t gameId, uint32_t playerId, models::PlacementResult result)
+        ShipPlacementResponse(uint32_t gameId, uint32_t playerId, PlacementResult result)
             : Response(SHIP_PLACEMENT_RESPONSE, gameId, playerId), result(result)
         {}
 
         ShipPlacementResponse()
-            : ShipPlacementResponse(0, 0, models::PlacementResult::INVALID_SHIP_TYPE)
+            : ShipPlacementResponse(0, 0, INVALID_SHIP_TYPE)
         {}
     };
 

@@ -19,7 +19,6 @@ using models::Coordinate;
 
 #include "Models.h"
 using models::HitResult;
-using models::PlacementResult;
 using models::ShipTypes;
 
 #include "Client.h"

@@ -27,6 +27,7 @@ using std::move;
 #include <vector>
 using std::vector;
 
+#include "exceptions.h"
 #include "Models.h"
 #include "Sea.h"
 #include "Ship.h"
@@ -127,16 +128,15 @@ namespace models {
         return toString(false);
     }
 
-    PlacementResult Sea::placeShip(Ship const &ship)
+    void Sea::placeShip(Ship const &ship)
     {
         if (!shipOnBoard(ship))
-            return NOT_ON_BOARD;
+            throw OutsideSeaBounds(width, height);
 
         if (shipCollides(ship))
-            return COLLISION;
+            throw Collision();
 
         ships.push_back(ship);
-        return SUCCESS;
     }
 
     HitResult Sea::fireAt(Coordinate const &coordinate) {

@@ -9,13 +9,6 @@
 #include <vector>
 
 namespace models {
-    enum PlacementResult : unsigned char {
-        SUCCESS,
-        NOT_ON_BOARD,
-        COLLISION,
-        ALREADY_PLACED,
-        INVALID_SHIP_TYPE
-    };
     enum HitResult : unsigned char {
         HIT,
         ALREADY_HIT,

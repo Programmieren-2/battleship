@@ -14,23 +14,10 @@ using std::to_string;
 using std::vector;
 
 #include "Models.h"
-
+#include "exceptions.h"
 #include "Coordinate.h"
-using models::Coordinate;
-using models::Orientation;
-
-#include "Game.h"
-using models::Game;
-
-#include "Player.h"
-using models::Player;
-
 #include "Sea.h"
-using models::PlacementResult;
-using models::Sea;
-
 #include "Ship.h"
-using models::Ship;
 
 #include "util.h"
 using util::isNumber;
@@ -39,7 +26,7 @@ using util::splitString;
 
 #include "bootstrap.h"
 
-namespace bootstrap {
+namespace models {
     Coordinate readCoordinate(string const &prompt) {
         string input;
         vector<string> items;
@@ -97,23 +84,10 @@ namespace bootstrap {
 
         Ship ship(type, anchorPoint, length, orientation);
 
-        switch (sea.placeShip(ship)) {
-            case PlacementResult::SUCCESS:
-                return;
-            case PlacementResult::NOT_ON_BOARD:
-                cerr << "Ship is not on the board.\n";
-                readShip(sea, type, length);
-                return;
-            case PlacementResult::COLLISION:
-                cerr << "Ship collides with another ship.\n";
-                readShip(sea, type, length);
-                return;
-            case PlacementResult::ALREADY_PLACED:
-                cerr << "You already placed this this.\n";
-                return;
-            case PlacementResult::INVALID_SHIP_TYPE:
-                cerr << "Invalid ship type.\n";
-                return;
+        try {
+            sea.placeShip(ship);
+        } catch (PlaceShipError &error) {
+            cerr << error.what() << "\n";
         }
     }
 
