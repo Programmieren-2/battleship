@@ -180,7 +180,7 @@ namespace proto {
         BasicShip ship(type, *anchorPoint, orientation);
 
         switch (placeShip(ship)) {
-            case SUCCESS:
+            case SHIP_PLACED:
                 cout << type << " placed at " << strX << "x" << strY << " facing " << orientationStr << ".\n";
                 break;
             case INVALID_SHIP_TYPE:

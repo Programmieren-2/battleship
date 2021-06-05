@@ -124,7 +124,7 @@ namespace proto {
             return COLLISION;
         }
 
-        return SUCCESS;
+        return SHIP_PLACED;
     }
 
     LoginResponse OnlineGame::processLoginRequest(LoginRequest const &request) const

@@ -56,7 +56,7 @@ namespace proto {
     };
 
     enum PlacementResult : unsigned char {
-        SUCCESS,
+        SHIP_PLACED,
         OUTSIDE_SEA_BOUNDS,
         COLLISION,
         ALREADY_PLACED,
