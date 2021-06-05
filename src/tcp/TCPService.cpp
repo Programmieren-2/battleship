@@ -28,7 +28,7 @@ using Socket = boost::asio::ip::tcp::socket;
 
 namespace tcp {
     TCPService::TCPService(address ipAddress, unsigned short port)
-            : ipAddress(move(ipAddress)), port(port), service(io_service()), socket(Socket(service))
+        : ipAddress(move(ipAddress)), port(port), service(io_service()), socket(Socket(service))
     {}
 
     address TCPService::getAddress() const

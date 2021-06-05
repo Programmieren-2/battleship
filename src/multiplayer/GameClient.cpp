@@ -31,7 +31,7 @@ using tcp::Client;
 
 namespace multiplayer {
     GameClient::GameClient(address const &ipAddress, unsigned short port)
-            : Client(ipAddress, port), gameId(0), playerId(0), gameOver(false), won(false)
+        : Client(ipAddress, port), gameId(0), playerId(0), gameOver(false), won(false)
     {}
 
     unsigned long GameClient::getGameId() const

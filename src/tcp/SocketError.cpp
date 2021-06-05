@@ -9,7 +9,7 @@ using boost::system::error_code;
 
 namespace tcp {
     SocketError::SocketError(error_code const error)
-            : error(error)
+        : error(error)
     {}
 
     error_code SocketError::getError() const noexcept
