@@ -15,7 +15,7 @@
 #include "Messages.h"
 #include "ProtocolError.h"
 
-namespace proto {
+namespace multiplayer {
     class GameClient : public tcp::Client {
     private:
         using tcp::Client::communicate;

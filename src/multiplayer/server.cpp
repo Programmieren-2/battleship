@@ -18,7 +18,7 @@ using ip::getAddress;
 using util::parseArgDesc;
 
 #include "GameServer.h"
-using proto::GameServer;
+using multiplayer::GameServer;
 
 #include "defaults.h"
 

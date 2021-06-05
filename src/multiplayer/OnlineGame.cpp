@@ -43,7 +43,7 @@ using util::copyString;
 #include "Messages.h"
 #include "OnlineGame.h"
 
-namespace proto {
+namespace multiplayer {
     unsigned long OnlineGame::gameId = 0;
 
     OnlineGame::OnlineGame(unsigned short width, unsigned short height)

@@ -41,7 +41,7 @@ using util::readCommandLine;
 
 #include "CLIClient.h"
 
-namespace proto {
+namespace multiplayer {
     void CLIClient::help(string const &command, vector<string> const &args)
     {
         if (args.empty()) {

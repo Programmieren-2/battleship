@@ -9,7 +9,7 @@
 #include "Player.h"
 #include "Sea.h"
 
-namespace proto {
+namespace multiplayer {
     using Timestamp = std::chrono::time_point<std::chrono::system_clock>;
 
     class OnlinePlayer : public models::Player {

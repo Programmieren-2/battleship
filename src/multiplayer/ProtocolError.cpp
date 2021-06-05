@@ -12,7 +12,7 @@ using std::to_string;
 #include "Messages.h"
 #include "ProtocolError.h"
 
-namespace proto {
+namespace multiplayer {
     ProtocolError::ProtocolError(ErrorType type)
         : exception(), type(type)
     {

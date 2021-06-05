@@ -18,7 +18,7 @@ using ip::getAddress;
 using util::parseArgDesc;
 
 #include "CLIClient.h"
-using proto::CLIClient;
+using multiplayer::CLIClient;
 
 #include "defaults.h"
 

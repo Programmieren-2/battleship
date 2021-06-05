@@ -14,7 +14,7 @@
 #include "Messages.h"
 #include "OnlinePlayer.h"
 
-namespace proto {
+namespace multiplayer {
     class OnlineGame : public models::Game<OnlinePlayer> {
     private:
         using models::Game<OnlinePlayer>::getShipTypes;

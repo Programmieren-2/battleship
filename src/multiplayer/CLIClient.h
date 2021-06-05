@@ -10,7 +10,7 @@
 #include "GameClient.h"
 #include "ProtocolError.h"
 
-namespace proto {
+namespace multiplayer {
     enum Command {
         INVALID,
         HELP,

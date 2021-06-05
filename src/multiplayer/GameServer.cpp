@@ -25,7 +25,7 @@ using tcp::Server;
 
 #include "GameServer.h"
 
-namespace proto {
+namespace multiplayer {
     GameServer::GameServer(address const &ipAddress, unsigned short port)
         : Server(ipAddress, port)
     {}

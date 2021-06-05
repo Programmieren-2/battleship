@@ -18,7 +18,7 @@
 
 #include "util.h"
 
-namespace proto {
+namespace multiplayer {
     enum GameState : unsigned char {
         INITIAL,
         WAITING_FOR_PLAYERS,

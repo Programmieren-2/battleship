@@ -9,7 +9,7 @@
 
 #include "Messages.h"
 
-namespace proto {
+namespace multiplayer {
     class ProtocolError : public std::exception {
     private:
         ErrorType type;
