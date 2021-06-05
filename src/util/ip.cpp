@@ -22,7 +22,7 @@ using boost::asio::ip::address_v6;
 #include "ip.h"
 
 namespace ip {
-    static address_v4 toIPv4(struct sockaddr_in* socketAddressIPv4)
+    static address_v4 toIPv4(struct sockaddr_in *socketAddressIPv4)
     {
         return address_v4(htonl(socketAddressIPv4->sin_addr.s_addr));
     }
