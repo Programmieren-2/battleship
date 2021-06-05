@@ -16,11 +16,11 @@ using boost::asio::buffer_cast;
 using boost::asio::error::eof;
 using boost::asio::io_service;
 using boost::asio::ip::address;
-using boost::asio::ip::tcp;
 using boost::asio::read_until;
 using boost::asio::streambuf;
 using boost::asio::write;
 using boost::system::error_code;
+using Endpoint = boost::asio::ip::tcp::endpoint;
 using Socket = boost::asio::ip::tcp::socket;
 
 #include "SocketError.h"
@@ -41,9 +41,9 @@ namespace tcp {
         return port;
     }
 
-    tcp::endpoint TCPService::getEndpoint() const
+    Endpoint TCPService::getEndpoint() const
     {
-        return tcp::endpoint(ipAddress, port);
+        return Endpoint(ipAddress, port);
     }
 
     string TCPService::receive(string const &terminator) const

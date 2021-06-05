@@ -6,19 +6,19 @@
 using std::string;
 
 #include "boostwrap.h"
-using boost::asio::ip::tcp;
+using Acceptor = boost::asio::ip::tcp::acceptor;
 
 #include "Server.h"
 
 namespace tcp {
-    tcp::acceptor Server::getAcceptor() const
+    Acceptor Server::getAcceptor() const
     {
-        return tcp::acceptor(service, getEndpoint());
+        return Acceptor(service, getEndpoint());
     }
 
     void Server::listen()
     {
-        tcp::acceptor acceptor = getAcceptor();
+        Acceptor acceptor = getAcceptor();
         string buf;
 
         while (true) {
