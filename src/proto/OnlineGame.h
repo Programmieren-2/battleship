@@ -24,7 +24,7 @@ namespace proto {
         static unsigned long gameId;
         unsigned long id;
         mutable GameState state;
-        mutable std::optional<std::reference_wrapper<const OnlinePlayer>> currentPlayer;
+        mutable std::optional<std::reference_wrapper<OnlinePlayer const>> currentPlayer;
 
         [[nodiscard]] models::Sea makeSea() const;
         [[nodiscard]] bool allPlayersOnline() const;
