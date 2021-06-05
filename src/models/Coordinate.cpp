@@ -30,6 +30,8 @@ namespace models {
             case Y:
                 return Coordinate(first, second + offset);
         }
+
+        throw invalid_argument("Invalid orientation.");
     }
 
     bool Coordinate::insideBounds(unsigned short x, unsigned short y) const
