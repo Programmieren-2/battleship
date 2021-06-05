@@ -8,7 +8,7 @@
 
 #include "boostwrap.h"
 
-namespace net {
+namespace tcp {
     class TCPService {
     private:
         boost::asio::ip::address ipAddress;

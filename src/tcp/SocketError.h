@@ -8,7 +8,7 @@
 
 #include "boostwrap.h"
 
-namespace net {
+namespace tcp {
     class SocketError : public std::exception {
     private:
         const boost::system::error_code error;

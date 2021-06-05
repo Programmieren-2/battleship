@@ -1,6 +1,6 @@
 add_subdirectory(models)
 add_subdirectory(multiplayer)
-add_subdirectory(net)
+add_subdirectory(tcp)
 add_subdirectory(proto)
 add_subdirectory(singleplayer)
 add_subdirectory(util)

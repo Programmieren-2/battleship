@@ -7,7 +7,7 @@ using boost::system::error_code;
 
 #include "SocketError.h"
 
-namespace net {
+namespace tcp {
     SocketError::SocketError(error_code const error)
             : error(error)
     {}

@@ -16,9 +16,9 @@
 #include "ProtocolError.h"
 
 namespace proto {
-    class GameClient : public net::Client {
+    class GameClient : public tcp::Client {
     private:
-        using net::Client::communicate;
+        using tcp::Client::communicate;
 
         unsigned long gameId;
         unsigned long playerId;

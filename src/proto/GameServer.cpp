@@ -18,7 +18,7 @@ using std::string;
 using boost::asio::ip::address;
 
 #include "Server.h"
-using net::Server;
+using tcp::Server;
 
 #include "Messages.h"
 #include "OnlineGame.h"

@@ -8,7 +8,7 @@
 
 #include "TCPService.h"
 
-namespace net {
+namespace tcp {
     class Client : public TCPService {
     private:
         using TCPService::receive;

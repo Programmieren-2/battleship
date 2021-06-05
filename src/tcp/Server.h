@@ -10,7 +10,7 @@
 
 #include "TCPService.h"
 
-namespace net {
+namespace tcp {
     class Server : public TCPService {
     private:
         boost::asio::ip::tcp::acceptor getAcceptor() const;

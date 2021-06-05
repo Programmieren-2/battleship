@@ -10,7 +10,7 @@ using boost::asio::ip::tcp;
 
 #include "Server.h"
 
-namespace net {
+namespace tcp {
     tcp::acceptor Server::getAcceptor() const
     {
         return tcp::acceptor(service, getEndpoint());

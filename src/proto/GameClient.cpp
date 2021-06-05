@@ -22,7 +22,7 @@ using models::HitResult;
 using models::ShipTypes;
 
 #include "Client.h"
-using net::Client;
+using tcp::Client;
 
 #include "Messages.h"
 #include "ProtocolError.h"

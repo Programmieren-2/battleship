@@ -20,7 +20,7 @@
 #include "boostwrap.h"
 
 namespace proto {
-    class GameServer : public net::Server {
+    class GameServer : public tcp::Server {
     private:
         mutable std::set<OnlineGame> games;
 

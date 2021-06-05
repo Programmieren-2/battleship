@@ -26,7 +26,7 @@ using Socket = boost::asio::ip::tcp::socket;
 #include "SocketError.h"
 #include "TCPService.h"
 
-namespace net {
+namespace tcp {
     TCPService::TCPService(address ipAddress, unsigned short port)
             : ipAddress(move(ipAddress)), port(port), service(io_service()), socket(Socket(service))
     {}

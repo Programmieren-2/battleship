@@ -6,5 +6,5 @@ add_library(proto
         OnlineGame.cpp OnlineGame.h
         OnlinePlayer.cpp OnlinePlayer.h
         ProtocolError.cpp ProtocolError.h)
-target_include_directories(proto PUBLIC ../models ../net ../os ../util)
+target_include_directories(proto PUBLIC ../models ../tcp ../os ../util)
 target_link_libraries(proto net models util)
