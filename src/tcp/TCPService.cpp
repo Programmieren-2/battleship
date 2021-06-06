@@ -13,7 +13,6 @@ using std::move;
 #include "boostwrap.h"
 using boost::asio::buffer;
 using boost::asio::buffer_cast;
-using boost::asio::error::eof;
 using boost::asio::io_service;
 using boost::asio::ip::address;
 using boost::asio::read_until;
@@ -52,7 +51,7 @@ namespace tcp {
         error_code error;
         read_until(socket, buf, terminator, error);
 
-        if (BOOST_UNLIKELY(error && error != eof))
+        if (BOOST_UNLIKELY(error.failed()))
             throw SocketError(error);
 
         string raw = buffer_cast<const char*>(buf.data());
