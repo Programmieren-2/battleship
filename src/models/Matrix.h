@@ -23,11 +23,13 @@ namespace models {
                 push_back(std::vector<T>(width, initializer));
         }
 
-        T const & at(Coordinate const &coordinate) const {
+        T const & at(Coordinate const &coordinate) const
+        {
             return at(coordinate.second).at(coordinate.first);
         }
 
-        T& at(Coordinate const &coordinate) {
+        T& at(Coordinate const &coordinate)
+        {
             return at(coordinate.second).at(coordinate.first);
         }
     };
