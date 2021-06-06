@@ -17,7 +17,6 @@ namespace models {
         unsigned short length;
         std::vector<HitPoint> hitPoints;
 
-        [[nodiscard]] std::vector<Coordinate> getCoordinates() const;
         [[nodiscard]] unsigned short getHitPointIndex(Coordinate const &coordinate) const;
         [[nodiscard]] HitPoint const & getHitPointAt(Coordinate const &coordinate) const;
         HitPoint& getHitPointAt(Coordinate const &coordinate);
@@ -25,7 +24,7 @@ namespace models {
         Ship(std::string const &type, Coordinate const &anchorPoint, unsigned short length, Orientation const &orientation);
 
         [[nodiscard]] unsigned short getLength() const;
-        [[nodiscard]] Coordinate getEndPoint() const;
+        [[nodiscard]] std::vector<Coordinate> getCoordinates() const;
 
         [[nodiscard]] bool occupies(Coordinate const &coordinate) const;
         [[nodiscard]] bool collidesWith(Ship const &ship) const;

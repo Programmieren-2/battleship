@@ -53,7 +53,9 @@ namespace models {
 
     bool Sea::shipOnBoard(Ship const &ship) const
     {
-        return ship.getAnchorPoint().insideBounds(width, height) && ship.getEndPoint().insideBounds(width, height);
+        return all_of(ship.getCoordinates(), [this] (auto const &coordinate) {
+            return coordinate.insideBounds(width, height);
+        });
     }
 
     bool Sea::shipCollides(Ship const &ship) const

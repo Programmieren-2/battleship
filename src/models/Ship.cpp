@@ -37,17 +37,6 @@ namespace models {
         return length;
     }
 
-    vector<Coordinate> Ship::getCoordinates() const
-    {
-        vector<Coordinate> coordinates;
-        Coordinate const &anchorPoint = getAnchorPoint();
-
-        for (unsigned int offset = 0; offset < length; ++offset)
-            coordinates.push_back(anchorPoint.shift(offset, getOrientation()));
-
-        return coordinates;
-    }
-
     unsigned short Ship::getHitPointIndex(Coordinate const &coordinate) const
     {
         Coordinate const &anchorPoint = getAnchorPoint();
@@ -87,9 +76,15 @@ namespace models {
         return hitPoints.at(getHitPointIndex(coordinate));
     }
 
-    Coordinate Ship::getEndPoint() const
+    vector<Coordinate> Ship::getCoordinates() const
     {
-        return getAnchorPoint().shift(length - 1, getOrientation());
+        vector<Coordinate> coordinates;
+        Coordinate const &anchorPoint = getAnchorPoint();
+
+        for (unsigned int offset = 0; offset < length; ++offset)
+            coordinates.push_back(anchorPoint.shift(offset, getOrientation()));
+
+        return coordinates;
     }
 
     bool Ship::occupies(const Coordinate &coordinate) const
