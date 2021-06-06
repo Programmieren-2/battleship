@@ -14,7 +14,7 @@ namespace models {
     public:
         using std::vector<std::vector<T>>::at;
 
-        T at(Coordinate const &coordinate) const {
+        T const & at(Coordinate const &coordinate) const {
             return at(coordinate.second).at(coordinate.first);
         }
 
