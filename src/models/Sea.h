@@ -22,7 +22,6 @@ namespace models {
         Matrix<HitPoint> grid;
         std::vector<Ship> ships;
 
-        void initializeGrid();
         [[nodiscard]] bool shipOnBoard(Ship const &ship) const;
         [[nodiscard]] bool shipCollides(Ship const &ship) const;
         [[nodiscard]] char getSymbolAt(Coordinate const &coordinate, bool showShips) const;
@@ -37,7 +36,6 @@ namespace models {
         [[nodiscard]] std::string toString(bool showShips) const;
         [[nodiscard]] std::string toString() const;
 
-        [[nodiscard]] std::optional<std::reference_wrapper<HitPoint>> getHitPointAt(Coordinate const &coordinate);
         void placeShip(Ship const &ship);
         HitResult fireAt(Coordinate const &coordinate);
 

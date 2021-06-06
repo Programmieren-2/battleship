@@ -17,7 +17,10 @@ namespace models {
         unsigned short length;
         std::vector<HitPoint> hitPoints;
 
-        void initializeHitPoints();
+        [[nodiscard]] std::vector<Coordinate> getCoordinates() const;
+        [[nodiscard]] unsigned short getHitPointIndex(Coordinate const &coordinate) const;
+        [[nodiscard]] HitPoint const & getHitPointAt(Coordinate const &coordinate) const;
+        HitPoint& getHitPointAt(Coordinate const &coordinate);
     public:
         Ship(std::string const &type, Coordinate const &anchorPoint, unsigned short length, Orientation const &orientation);
 

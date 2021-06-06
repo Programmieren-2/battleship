@@ -5,15 +5,13 @@
 #pragma once
 
 #include "Models.h"
-#include "Coordinate.h"
 
 namespace models {
-    class HitPoint : public Coordinate {
+    class HitPoint {
     private:
         bool hit;
     public:
-        HitPoint(unsigned short x, unsigned short y);
-        HitPoint(Coordinate const &coordinate);
+        HitPoint();
 
         [[nodiscard]] bool isHit() const;
 

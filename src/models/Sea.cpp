@@ -34,26 +34,12 @@ using std::vector;
 
 namespace models {
     Sea::Sea(unsigned short width, unsigned short height)
-        : width(width), height(height)
-    {
-        initializeGrid();
-    }
+        : width(width), height(height), grid(Matrix<HitPoint>(width, height, HitPoint()))
+    {}
 
     Sea::Sea()
         : Sea(Defaults::WIDTH, Defaults::HEIGHT)
     {}
-
-    void Sea::initializeGrid()
-    {
-        for (unsigned short y = 0; y < height; ++y) {
-            vector<HitPoint> row;
-
-            for (unsigned short x = 0; x < height; ++x)
-                row.emplace_back(x, y);
-
-            grid.push_back(row);
-        }
-    }
 
     unsigned short Sea::getWidth() const
     {
@@ -63,15 +49,6 @@ namespace models {
     unsigned short Sea::getHeight() const
     {
         return height;
-    }
-
-    optional<reference_wrapper<HitPoint>> Sea::getHitPointAt(Coordinate const &coordinate)
-    {
-        try {
-            return grid.at(coordinate);
-        } catch (out_of_range const &) {
-            return {};
-        }
     }
 
     bool Sea::shipOnBoard(Ship const &ship) const
@@ -139,7 +116,8 @@ namespace models {
         ships.push_back(ship);
     }
 
-    HitResult Sea::fireAt(Coordinate const &coordinate) {
+    HitResult Sea::fireAt(Coordinate const &coordinate)
+    {
         for (auto &ship : ships) {
             switch (ship.fireAt(coordinate)) {
                 case ALREADY_HIT:
@@ -151,11 +129,13 @@ namespace models {
             }
         }
 
-        auto candidate = getHitPointAt(coordinate);
-        if (!candidate)
-            return MISSED;
+        HitPoint hitPoint;
 
-        HitPoint &hitPoint = *candidate;
+        try {
+            hitPoint = grid.at(coordinate);
+        } catch (out_of_range const &) {
+            return MISSED;
+        }
 
         switch (hitPoint.doHit()) {
             case ALREADY_HIT:

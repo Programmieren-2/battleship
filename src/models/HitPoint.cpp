@@ -2,17 +2,11 @@
 // Created by rne on 07.05.21.
 //
 
-#include "Coordinate.h"
-
 #include "HitPoint.h"
 
 namespace models {
-    HitPoint::HitPoint(unsigned short x, unsigned short y)
-        : Coordinate(x, y), hit(false)
-    {}
-
-    HitPoint::HitPoint(Coordinate const &coordinate)
-        : HitPoint(coordinate.first, coordinate.second)
+    HitPoint::HitPoint()
+        : hit(false)
     {}
 
     bool HitPoint::isHit() const

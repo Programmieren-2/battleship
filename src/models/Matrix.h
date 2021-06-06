@@ -20,7 +20,7 @@ namespace models {
                 throw std::invalid_argument("Matrix size must be > 0.");
 
             for (size_t y = 0; y < height; ++y)
-                push_back(std::vector<T>(width, initializer));
+                this->push_back(std::vector<T>(width, initializer));
         }
 
         T const & at(Coordinate const &coordinate) const
