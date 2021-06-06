@@ -24,7 +24,7 @@ using std::move;
 #include "Ship.h"
 
 namespace models {
-    Ship::Ship(string const &type, Coordinate const &anchorPoint, unsigned short length, Orientation orientation)
+    Ship::Ship(string const &type, Coordinate const &anchorPoint, unsigned short length, Orientation const &orientation)
         : BasicShip(type, anchorPoint, orientation), length(length)
     {
         initializeHitPoints();

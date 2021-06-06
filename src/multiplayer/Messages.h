@@ -302,7 +302,7 @@ namespace multiplayer {
         models::Orientation orientation;
 
         ShipPlacementRequest(uint32_t gameId, uint32_t playerId, string const &typeName, uint8_t x, uint8_t y,
-                             models::Orientation orientation)
+                             models::Orientation const &orientation)
              : Request(SHIP_PLACEMENT_REQUEST, gameId, playerId), type(""), x(x), y(y), orientation(orientation)
         {
             if (!typeName.empty())
@@ -310,7 +310,7 @@ namespace multiplayer {
         }
 
         ShipPlacementRequest(uint32_t gameId, uint32_t playerId, string const &typeName,
-                             models::Coordinate const &coordinate, models::Orientation orientation)
+                             models::Coordinate const &coordinate, models::Orientation const &orientation)
             : ShipPlacementRequest(gameId, playerId, typeName, static_cast<uint8_t>(coordinate.first),
                                    static_cast<uint8_t>(coordinate.second), orientation)
         {}

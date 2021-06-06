@@ -22,7 +22,7 @@ namespace models {
         : std::pair<unsigned short, unsigned short>(x, y)
     {}
 
-    Coordinate Coordinate::shift(unsigned short offset, Orientation orientation) const
+    Coordinate Coordinate::shift(unsigned short offset, Orientation const &orientation) const
     {
         switch (orientation) {
             case X:

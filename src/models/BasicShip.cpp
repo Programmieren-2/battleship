@@ -12,8 +12,8 @@ using std::move;
 #include "BasicShip.h"
 
 namespace models {
-    BasicShip::BasicShip(string type, const Coordinate &anchorPoint, Orientation orientation)
-        : type(move(type)), anchorPoint(anchorPoint), orientation(orientation)
+    BasicShip::BasicShip(string type, Coordinate anchorPoint, Orientation const &orientation)
+        : type(move(type)), anchorPoint(move(anchorPoint)), orientation(orientation)
     {}
 
     string BasicShip::getType() const

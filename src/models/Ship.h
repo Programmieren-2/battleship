@@ -19,7 +19,7 @@ namespace models {
 
         void initializeHitPoints();
     public:
-        Ship(std::string const &type, Coordinate const &anchorPoint, unsigned short length, Orientation orientation);
+        Ship(std::string const &type, Coordinate const &anchorPoint, unsigned short length, Orientation const &orientation);
 
         [[nodiscard]] unsigned short getLength() const;
         [[nodiscard]] Coordinate getEndPoint() const;

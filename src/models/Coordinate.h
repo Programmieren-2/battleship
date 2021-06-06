@@ -15,7 +15,7 @@ namespace models {
     public:
         Coordinate(unsigned short x, unsigned short y);
 
-        [[nodiscard]] Coordinate shift(unsigned short offset, Orientation orientation) const;
+        [[nodiscard]] Coordinate shift(unsigned short offset, Orientation const &orientation) const;
         [[nodiscard]] bool insideBounds(unsigned short x, unsigned short y) const;
 
         static std::optional<Coordinate> fromString(std::string const &strX, std::string const &strY);

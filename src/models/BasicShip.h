@@ -15,7 +15,7 @@ namespace models {
         Coordinate anchorPoint;
         Orientation orientation;
     public:
-        BasicShip(std::string type, Coordinate const &anchorPoint, Orientation orientation);
+        BasicShip(std::string type, Coordinate anchorPoint, Orientation const &orientation);
 
         [[nodiscard]] std::string getType() const;
         [[nodiscard]] Coordinate getAnchorPoint() const;
