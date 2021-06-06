@@ -8,9 +8,9 @@
 #include <string>
 #include <utility>
 
-namespace models {
-    enum Orientation : unsigned char { X, Y };
+#include "Orientation.h"
 
+namespace models {
     class Coordinate : public std::pair<unsigned short, unsigned short> {
     public:
         Coordinate(unsigned short x, unsigned short y);

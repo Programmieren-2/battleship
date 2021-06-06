@@ -21,7 +21,7 @@ using models::Coordinate;
 #include "Game.h"
 using models::Game;
 
-#include "HitPoint.h"
+#include "HitResult.h"
 using models::HitResult;
 
 #include "Player.h"

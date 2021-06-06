@@ -14,6 +14,7 @@
 #include "Client.h"
 #include "Messages.h"
 #include "ProtocolError.h"
+#include "ShipTypes.h"
 
 namespace multiplayer {
     class GameClient : public tcp::Client {

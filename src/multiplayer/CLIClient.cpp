@@ -31,7 +31,7 @@ using models::BasicShip;
 using models::Coordinate;
 using models::Orientation;
 
-#include "Models.h"
+#include "HitResult.h"
 using models::HitResult;
 
 #include "util.h"

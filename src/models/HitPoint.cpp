@@ -3,6 +3,7 @@
 //
 
 #include "HitPoint.h"
+#include "HitResult.h"
 
 namespace models {
     HitPoint::HitPoint()

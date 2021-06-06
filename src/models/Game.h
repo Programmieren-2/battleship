@@ -14,8 +14,9 @@
 
 #include <boost/config.hpp>
 
-#include "Models.h"
+#include "Defaults.h"
 #include "Ship.h"
+#include "ShipTypes.h"
 
 namespace models {
     template <typename PlayerType>

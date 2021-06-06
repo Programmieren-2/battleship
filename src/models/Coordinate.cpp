@@ -16,6 +16,7 @@ using std::string;
 using std::pair;
 
 #include "Coordinate.h"
+#include "Orientation.h"
 
 namespace models {
     Coordinate::Coordinate(unsigned short x, unsigned short y)

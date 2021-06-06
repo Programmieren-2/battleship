@@ -21,7 +21,7 @@ using std::out_of_range;
 using models::OutsideSeaBounds;
 using models::Collision;
 
-#include "Models.h"
+#include "Defaults.h"
 #include "Coordinate.h"
 using models::Coordinate;
 
@@ -33,6 +33,8 @@ using models::Sea;
 
 #include "Ship.h"
 using models::Ship;
+
+#include "ShipTypes.h"
 using models::ShipTypes;
 
 #include "OnlinePlayer.h"

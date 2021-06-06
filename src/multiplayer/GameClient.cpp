@@ -17,8 +17,10 @@ using models::BasicShip;
 #include "Coordinate.h"
 using models::Coordinate;
 
-#include "Models.h"
+#include "HitResult.h"
 using models::HitResult;
+
+#include "ShipTypes.h"
 using models::ShipTypes;
 
 #include "Client.h"

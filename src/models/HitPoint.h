@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "Models.h"
+#include "HitResult.h"
 
 namespace models {
     class HitPoint {
