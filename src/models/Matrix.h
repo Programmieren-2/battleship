@@ -9,26 +9,26 @@
 #include "Coordinate.h"
 
 namespace models {
-    template <typename T>
-    class Matrix : public std::vector<std::vector<T>> {
+    template <typename ElementType>
+    class Matrix : public std::vector<std::vector<ElementType>> {
     public:
-        using std::vector<std::vector<T>>::at;
+        using std::vector<std::vector<ElementType>>::at;
 
-        Matrix(size_t width, size_t height, T const &initializer)
+        Matrix(size_t width, size_t height, ElementType const &initializer)
         {
             if (!width || ! height)
                 throw std::invalid_argument("Matrix size must be > 0.");
 
             for (size_t y = 0; y < height; ++y)
-                this->push_back(std::vector<T>(width, initializer));
+                this->push_back(std::vector<ElementType>(width, initializer));
         }
 
-        T const & at(Coordinate const &coordinate) const
+        ElementType const & at(Coordinate const &coordinate) const
         {
             return at(coordinate.second).at(coordinate.first);
         }
 
-        T& at(Coordinate const &coordinate)
+        ElementType& at(Coordinate const &coordinate)
         {
             return at(coordinate.second).at(coordinate.first);
         }
