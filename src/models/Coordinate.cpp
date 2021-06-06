@@ -39,7 +39,7 @@ namespace models {
         return first < x && second < y;
     }
 
-    optional<Coordinate> Coordinate::fromString(const string &strX, const string &strY)
+    optional<Coordinate> Coordinate::fromString(string const &strX, string const &strY)
     {
         unsigned short x, y;
 
