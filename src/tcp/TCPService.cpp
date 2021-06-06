@@ -69,7 +69,7 @@ namespace tcp {
         error_code error;
         write(socket, buffer(message + terminator), error);
 
-        if (BOOST_UNLIKELY(error))
+        if (BOOST_UNLIKELY(error.failed()))
             throw SocketError(error);
     }
 
