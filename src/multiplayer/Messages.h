@@ -13,7 +13,7 @@
 
 #include "BasicShip.h"
 #include "Coordinate.h"
-#include "Defaults.h"
+#include "MultiplayerDefaults.h"
 #include "Sea.h"
 
 #include "util.h"

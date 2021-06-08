@@ -39,28 +39,28 @@ namespace models {
 
     unsigned short Ship::getHitPointIndex(Coordinate const &coordinate) const
     {
-        Coordinate const &anchorPoint = getAnchorPoint();
+        Coordinate const &startingPoint = getAnchorPoint();
         int offset;
 
         switch (getOrientation()) {
             case X:
-                if (coordinate.first != anchorPoint.first)
+                if (coordinate.first != startingPoint.first)
                     throw out_of_range("X-coordinates do not match.");
 
-                offset = coordinate.second - anchorPoint.second;
+                offset = coordinate.second - startingPoint.second;
                 if (offset < 0 || offset >= length)
                     throw out_of_range("Y-coordinate does not match.");
 
-                return offset;
+                return static_cast<unsigned short>(offset);
             case Y:
-                if (coordinate.second != anchorPoint.second)
+                if (coordinate.second != startingPoint.second)
                     throw out_of_range("Y-coordinates do not match.");
 
-                offset = coordinate.first - anchorPoint.first;
+                offset = coordinate.first - startingPoint.first;
                 if (offset < 0 || offset >= length)
                     throw out_of_range("X-coordinate does not match.");
 
-                return offset;
+                return static_cast<unsigned short>(offset);
             default:
                 throw invalid_argument("Invalid orientation.");
         }
@@ -79,10 +79,10 @@ namespace models {
     vector<Coordinate> Ship::getCoordinates() const
     {
         vector<Coordinate> coordinates;
-        Coordinate const &anchorPoint = getAnchorPoint();
+        Coordinate const &startingPoint = getAnchorPoint();
 
-        for (unsigned int offset = 0; offset < length; ++offset)
-            coordinates.push_back(anchorPoint.shift(offset, getOrientation()));
+        for (unsigned short offset = 0; offset < length; ++offset)
+            coordinates.push_back(startingPoint.shift(offset, getOrientation()));
 
         return coordinates;
     }

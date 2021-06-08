@@ -31,6 +31,10 @@ using models::BasicShip;
 using models::Coordinate;
 using models::Orientation;
 
+#include "ModelDefaults.h"
+using models::Defaults::WIDTH;
+using models::Defaults::HEIGHT;
+
 #include "HitResult.h"
 using models::HitResult;
 
@@ -80,8 +84,8 @@ namespace multiplayer {
         unsigned short width, height;
 
         if (args.empty()) {
-            width = models::Defaults::WIDTH;
-            height = models::Defaults::HEIGHT;
+            width = WIDTH;
+            height = HEIGHT;
         } else if (args.size() == 2) {
             try {
                 width = static_cast<unsigned short>(stoul(args[0]));

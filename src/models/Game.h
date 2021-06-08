@@ -14,7 +14,7 @@
 
 #include <boost/config.hpp>
 
-#include "Defaults.h"
+#include "ModelDefaults.h"
 #include "Ship.h"
 #include "ShipTypes.h"
 

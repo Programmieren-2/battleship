@@ -20,7 +20,7 @@ using util::parseArgDesc;
 #include "CLIClient.h"
 using multiplayer::CLIClient;
 
-#include "defaults.h"
+#include "MultiplayerDefaults.h"
 
 static auto parseArgs(int argc, const char *argv[])
 {

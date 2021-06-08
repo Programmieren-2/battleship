@@ -20,7 +20,7 @@ using util::parseArgDesc;
 #include "GameServer.h"
 using multiplayer::GameServer;
 
-#include "defaults.h"
+#include "MultiplayerDefaults.h"
 
 static auto parseArgs(int argc, const char *argv[])
 {
