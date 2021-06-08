@@ -7,7 +7,7 @@ add_library(multiplayer
         ../multiplayer/OnlinePlayer.cpp ../multiplayer/OnlinePlayer.h
         ../multiplayer/ProtocolError.cpp ../multiplayer/ProtocolError.h)
 target_include_directories(multiplayer PUBLIC ../models ../tcp ../os ../util)
-target_link_libraries(multiplayer net models util)
+target_link_libraries(multiplayer tcp models util)
 
 add_executable(bssrv server.cpp)
 target_include_directories(bssrv PUBLIC ../util)
