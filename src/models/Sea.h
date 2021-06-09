@@ -27,7 +27,6 @@ namespace models {
         [[nodiscard]] char getSymbolAt(Coordinate const &coordinate, bool showShips) const;
     public:
         Sea(unsigned short width, unsigned short height);
-        Sea();
 
         [[nodiscard]] unsigned short getWidth() const;
         [[nodiscard]] unsigned short getHeight() const;

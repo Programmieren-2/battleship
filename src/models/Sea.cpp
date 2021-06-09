@@ -37,10 +37,6 @@ namespace models {
         : width(width), height(height), grid(Matrix<HitPoint>(width, height, HitPoint()))
     {}
 
-    Sea::Sea()
-        : Sea(Defaults::WIDTH, Defaults::HEIGHT)
-    {}
-
     unsigned short Sea::getWidth() const
     {
         return width;
