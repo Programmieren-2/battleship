@@ -9,6 +9,7 @@ This file provides some guidelines for contributing to this project.
 * `&` is bound to the type on return values and to the variable name otherwise.
 * Opening braces are on a new line in function definitions and on the same line on branch conditions and exceptions.
 * One-liner blocks of branch conditions shall not be wrapped in braces.
+* Use `#pragma once`, not `ifndef ...` as header guards.
 
 ```cpp
 Foo& getFoo(Bar const &bar, SpammBox &spamm)
