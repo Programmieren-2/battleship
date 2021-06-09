@@ -30,17 +30,9 @@ namespace models {
         static unsigned short const HEIGHT = 10;
         static ShipTypes const SHIP_TYPES;
 
-        Game(unsigned short width, unsigned short height, ShipTypes shipTypes)
-            : width(width), height(height), shipTypes(std::move(shipTypes))
-        {}
-
-        Game(unsigned short width, unsigned short height)
-            : Game(width, height, SHIP_TYPES)
-        {}
-
-        Game()
-            : Game(WIDTH, HEIGHT)
-        {}
+        Game(unsigned short width, unsigned short height, ShipTypes shipTypes);
+        Game(unsigned short width, unsigned short height);
+        Game();
 
         [[nodiscard]] unsigned short getWidth() const;
         [[nodiscard]] unsigned short getHeight() const;

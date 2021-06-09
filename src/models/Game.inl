@@ -3,6 +3,21 @@
 //
 
 template <typename PlayerType>
+models::Game<PlayerType>::Game(unsigned short width, unsigned short height, ShipTypes shipTypes)
+    : width(width), height(height), shipTypes(std::move(shipTypes))
+{}
+
+template <typename PlayerType>
+models::Game<PlayerType>::Game(unsigned short width, unsigned short height)
+    : Game(width, height, SHIP_TYPES)
+{}
+
+template <typename PlayerType>
+models::Game<PlayerType>::Game()
+    : Game(WIDTH, HEIGHT)
+{}
+
+template <typename PlayerType>
 unsigned short models::Game<PlayerType>::getWidth() const
 {
     return width;
