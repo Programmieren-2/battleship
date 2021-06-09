@@ -9,7 +9,7 @@
 #include "boostwrap.h"
 
 namespace tcp {
-    class TCPService {
+    class Service {
     private:
         boost::asio::ip::address ipAddress;
         unsigned short port;
@@ -18,7 +18,7 @@ namespace tcp {
         mutable boost::asio::ip::tcp::socket socket;
         [[nodiscard]] boost::asio::ip::tcp::endpoint getEndpoint() const;
     public:
-        TCPService(boost::asio::ip::address ipAddress, unsigned short port);
+        Service(boost::asio::ip::address ipAddress, unsigned short port);
 
         [[nodiscard]] boost::asio::ip::address getAddress() const;
         [[nodiscard]] unsigned int getPort() const;

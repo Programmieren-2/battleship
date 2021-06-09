@@ -1,4 +1,4 @@
-add_library(tcp Client.cpp Client.h Server.cpp Server.h SocketError.cpp SocketError.h TCPService.cpp TCPService.h)
+add_library(tcp Client.cpp Client.h Server.cpp Server.h SocketError.cpp SocketError.h Service.cpp Service.h)
 target_include_directories(tcp PRIVATE ../base64 ../os)
 
 if(MSVC)

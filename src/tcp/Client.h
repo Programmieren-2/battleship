@@ -6,15 +6,15 @@
 
 #include <string>
 
-#include "TCPService.h"
+#include "Service.h"
 
 namespace tcp {
-    class Client : public TCPService {
+    class Client : public Service {
     private:
-        using TCPService::receive;
-        using TCPService::send;
+        using Service::receive;
+        using Service::send;
     public:
-        using TCPService::TCPService;
+        using Service::Service;
 
         std::string communicate(std::string const &message) const;
     };

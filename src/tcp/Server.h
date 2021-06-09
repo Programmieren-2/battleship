@@ -8,10 +8,10 @@
 
 #include "boostwrap.h"
 
-#include "TCPService.h"
+#include "Service.h"
 
 namespace tcp {
-    class Server : public TCPService {
+    class Server : public Service {
     private:
         boost::asio::ip::tcp::acceptor getAcceptor() const;
     protected:
@@ -21,7 +21,7 @@ namespace tcp {
          */
         [[nodiscard]] virtual std::string handleRequest(std::string const &buf) const = 0;
     public:
-        using TCPService::TCPService;
+        using Service::Service;
 
         virtual ~Server() = default;
 

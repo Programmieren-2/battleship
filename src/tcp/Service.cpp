@@ -23,29 +23,29 @@ using Endpoint = boost::asio::ip::tcp::endpoint;
 using Socket = boost::asio::ip::tcp::socket;
 
 #include "SocketError.h"
-#include "TCPService.h"
+#include "Service.h"
 
 namespace tcp {
-    TCPService::TCPService(address ipAddress, unsigned short port)
+    Service::Service(address ipAddress, unsigned short port)
         : ipAddress(move(ipAddress)), port(port), service(io_service()), socket(Socket(service))
     {}
 
-    address TCPService::getAddress() const
+    address Service::getAddress() const
     {
         return ipAddress;
     }
 
-    unsigned int TCPService::getPort() const
+    unsigned int Service::getPort() const
     {
         return port;
     }
 
-    Endpoint TCPService::getEndpoint() const
+    Endpoint Service::getEndpoint() const
     {
         return Endpoint(ipAddress, port);
     }
 
-    string TCPService::receive(string const &terminator) const
+    string Service::receive(string const &terminator) const
     {
         streambuf buf;
         error_code error;
@@ -58,12 +58,12 @@ namespace tcp {
         return raw.substr(0, raw.size() - terminator.size());
     }
 
-    string TCPService::receive() const
+    string Service::receive() const
     {
         return base64_decode(receive("\n"));
     }
 
-    void TCPService::send(string const &message, string const &terminator) const
+    void Service::send(string const &message, string const &terminator) const
     {
         error_code error;
         write(socket, buffer(message + terminator), error);
@@ -72,7 +72,7 @@ namespace tcp {
             throw SocketError(error);
     }
 
-    void TCPService::send(string const &message) const
+    void Service::send(string const &message) const
     {
         return send(base64_encode(message), "\n");
     }
