@@ -16,6 +16,10 @@ Foo& getFoo(Bar const &bar, SpammBox &spamm)
     if (bar.hasFoo())
         return bar.getFoo();
     
-    return spamm.getFoo();
+    try {
+        return spamm.getFoo();   
+    } catch (SomeException const &) {
+        return GLOBAL_FOO;
+    }
 }
 ```
