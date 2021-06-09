@@ -1,7 +1,7 @@
 # Contributing
 This file provides some guidelines for contributing to this project.
 
-## Style
+## Code Style
 * Function names and member variables shall be written in `camelCase`.
 * Class names shall be written in `PascalCase`.
 * Static variables and constants shall be written in `SNAKE_CAPS`.
