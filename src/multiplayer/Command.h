@@ -45,5 +45,5 @@ namespace multiplayer {
         static Command invalid();
     };
 
-    std::map<std::string, Command> commandsToMap(std::vector<Command> const &command);
+    std::map<std::string, Command> commandsToMap(std::vector<Command> const &commands);
 }
