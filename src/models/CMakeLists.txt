@@ -6,6 +6,6 @@ add_library(models
         HitPoint.cpp HitPoint.h
         Player.cpp Player.h
         Sea.cpp Sea.h
-        Ship.cpp Ship.h Matrix.h exceptions.cpp exceptions.h Orientation.h HitResult.h ShipTypes.h)
+        Ship.cpp Ship.h Matrix.h exceptions.cpp exceptions.h Orientation.h HitResult.h ShipTypes.h Game.inl)
 target_include_directories(models PUBLIC ../util)
 target_link_libraries(models util)

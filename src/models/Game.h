@@ -42,93 +42,18 @@ namespace models {
             : Game(WIDTH, HEIGHT)
         {}
 
-        [[nodiscard]] unsigned short getWidth() const
-        {
-            return width;
-        }
-
-        [[nodiscard]] unsigned short getHeight() const
-        {
-            return height;
-        }
-
-        [[nodiscard]] ShipTypes getShipTypes() const
-        {
-            return shipTypes;
-        }
-
-        [[nodiscard]] std::vector<std::reference_wrapper<PlayerType const>> getPlayers() const
-        {
-            std::vector<std::reference_wrapper<PlayerType const>> result;
-
-            for (auto const &candidate : players) {
-                if (candidate)
-                    result.push_back(*candidate);
-            }
-
-            return result;
-        }
-
-        [[nodiscard]] unsigned short getPlayerCount() const
-        {
-            unsigned short playerCount = 0;
-
-            for (auto const &candidate : players) {
-                if (candidate)
-                    playerCount++;
-            }
-
-            return playerCount;
-        }
-
-        [[nodiscard]] std::optional<std::reference_wrapper<PlayerType const>> getPlayer(unsigned short index) const
-        {
-            return *players.at(index % players.size());
-        }
-
-        void removePlayer(PlayerType const &player) const
-        {
-            for (auto &candidate : players) {
-                if (candidate && *candidate == player)
-                    candidate.reset();
-            }
-        }
-
-        [[nodiscard]] bool hasPlayers() const
-        {
-            return std::ranges::any_of(players, [] (auto const &player) { return player.has_value(); });
-        }
-
-        [[nodiscard]] bool isFull() const
-        {
-            return std::ranges::all_of(players, [] (auto const &player) { return player.has_value(); });
-        }
-
-        [[nodiscard]] bool isEmpty() const
-        {
-            return std::ranges::none_of(players, [] (auto const &player) { return player.has_value(); });
-        }
-
-        bool addPlayer(PlayerType const &player) const
-        {
-            for (auto &candidate : players) {
-                if (candidate)
-                    continue;
-
-                candidate = player;
-                return true;
-            }
-
-            return false;
-        }
+        [[nodiscard]] unsigned short getWidth() const;
+        [[nodiscard]] unsigned short getHeight() const;
+        [[nodiscard]] ShipTypes getShipTypes() const;
+        [[nodiscard]] std::vector<std::reference_wrapper<PlayerType const>> getPlayers() const;
+        [[nodiscard]] unsigned short getPlayerCount() const;
+        [[nodiscard]] std::optional<std::reference_wrapper<PlayerType const>> getPlayer(unsigned short index) const;
+        void removePlayer(PlayerType const &player) const;
+        [[nodiscard]] bool hasPlayers() const;
+        [[nodiscard]] bool isFull() const;
+        [[nodiscard]] bool isEmpty() const;
+        bool addPlayer(PlayerType const &player) const;
     };
 
-    template <typename PlayerType>
-    ShipTypes const Game<PlayerType>::SHIP_TYPES = {
-        {"Speed boat", static_cast<unsigned short>(2)},
-        {"Destroyer", static_cast<unsigned short>(3)},
-        {"Submarine", static_cast<unsigned short>(3)},
-        {"Battleship", static_cast<unsigned short>(4)},
-        {"Aircraft Carrier", static_cast<unsigned short>(5)},
-    };
+#include "Game.inl"
 }
