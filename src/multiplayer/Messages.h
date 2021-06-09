@@ -82,13 +82,8 @@ namespace multiplayer {
         uint32_t gameId;
         uint32_t playerId;
 
-        RequestHeader(RequestType type, uint32_t gameId, uint32_t playerId)
-            : type(type), gameId(gameId), playerId(playerId)
-        {}
-
-        RequestHeader()
-            : RequestHeader(NOOP, 0, 0)
-        {}
+        RequestHeader(RequestType type, uint32_t gameId, uint32_t playerId);
+        RequestHeader();
     };
 
     struct ResponseHeader {
@@ -96,47 +91,31 @@ namespace multiplayer {
         uint32_t gameId;
         uint32_t playerId;
 
-        ResponseHeader(ResponseType type, uint32_t gameId, uint32_t playerId)
-            : type(type), gameId(gameId), playerId(playerId)
-        {}
-
-        ResponseHeader()
-            : ResponseHeader(INVALID_REQUEST, 0, 0)
-        {}
+        ResponseHeader(ResponseType type, uint32_t gameId, uint32_t playerId);
+        ResponseHeader();
     };
 
     struct Request {
         RequestHeader header;
 
-        Request(RequestType type, uint32_t gameId, uint32_t playerId)
-            : header(RequestHeader(type, gameId, playerId))
-        {}
+        Request(RequestType type, uint32_t gameId, uint32_t playerId);
     };
 
     struct Response {
         ResponseHeader header;
 
-        Response(ResponseType type, uint32_t gameId, uint32_t playerId)
-            : header(ResponseHeader(type, gameId, playerId))
-        {}
+        Response(ResponseType type, uint32_t gameId, uint32_t playerId);
     };
 
     struct ListGamesRequest : Request {
-        ListGamesRequest()
-            : Request(LIST_GAMES_REQUEST, 0, 0)
-        {}
+        ListGamesRequest();
     };
 
     struct ListGamesResponse : Response {
         uint32_t games;
 
-        ListGamesResponse(uint32_t games)
-            : Response(LIST_GAMES_RESPONSE, 0, 0), games(games)
-        {}
-
-        ListGamesResponse()
-            : ListGamesResponse(0)
-        {}
+        ListGamesResponse(uint32_t games);
+        ListGamesResponse();
     };
 
     struct ListedGame {
@@ -145,13 +124,8 @@ namespace multiplayer {
         uint8_t height;
         uint8_t players;
 
-        ListedGame(uint32_t id, uint8_t width, uint8_t height, uint8_t players)
-            : id(id), width(width), height(height), players(players)
-        {}
-
-        ListedGame()
-            : ListedGame(0, 0, 0, 0)
-        {}
+        ListedGame(uint32_t id, uint8_t width, uint8_t height, uint8_t players);
+        ListedGame();
 
         friend std::ostream& operator<<(std::ostream &out, ListedGame const &game);
     };
@@ -160,96 +134,53 @@ namespace multiplayer {
         uint8_t width;
         uint8_t height;
 
-        NewGameRequest(uint8_t width, uint8_t height)
-            : Request(NEW_GAME_REQUEST, 0 ,0), width(width), height(height)
-        {}
-
-        NewGameRequest()
-            : NewGameRequest(0, 0)
-        {}
+        NewGameRequest(uint8_t width, uint8_t height);
+        NewGameRequest();
     };
 
     struct NewGameResponse : Response {
         uint32_t gameId;
 
-        NewGameResponse(uint32_t playerId, uint32_t gameId)
-            : Response(NEW_GAME_RESPONSE, gameId, playerId), gameId(gameId)
-        {}
-
-        NewGameResponse()
-            : NewGameResponse(0 ,0)
-        {}
+        NewGameResponse(uint32_t playerId, uint32_t gameId);
+        NewGameResponse();
     };
     
     struct LoginRequest : Request {
         char playerName[32];
 
-        LoginRequest(uint32_t gameId, std::string const &name)
-            : Request(LOGIN_REQUEST, gameId, 0), playerName("")
-        {
-            if (!name.empty())
-                util::copyString(playerName, name, sizeof playerName);
-        }
-
-        LoginRequest()
-            : LoginRequest(0, "")
-        {}
+        LoginRequest(uint32_t gameId, std::string const &name);
+        LoginRequest();
     };
 
     struct LoginResponse : Response {
         bool accepted;
 
-        LoginResponse(uint32_t gameId, uint32_t playerId, bool accepted)
-            : Response(LOGIN_RESPONSE, gameId, playerId), accepted(accepted)
-        {}
-
-        LoginResponse()
-            : LoginResponse(0, 0, false)
-        {}
+        LoginResponse(uint32_t gameId, uint32_t playerId, bool accepted);
+        LoginResponse();
     };
 
     struct LogoutRequest : Request {
-        LogoutRequest(uint32_t gameId, uint32_t playerId)
-            : Request(LOGOUT_REQUEST, gameId, playerId)
-        {}
-
-        LogoutRequest()
-            : LogoutRequest(0, 0)
-        {}
+        LogoutRequest(uint32_t gameId, uint32_t playerId);
+        LogoutRequest();
     };
 
     struct LogoutResponse : Response {
         bool accepted;
 
-        LogoutResponse(uint32_t gameId, uint32_t playerId, bool accepted)
-            : Response(LOGOUT_RESPONSE, gameId, playerId), accepted(accepted)
-        {}
-
-        LogoutResponse()
-            : LogoutResponse(0, 0, false)
-        {}
+        LogoutResponse(uint32_t gameId, uint32_t playerId, bool accepted);
+        LogoutResponse();
     };
 
     struct ShipTypesRequest : Request {
-        ShipTypesRequest(uint32_t gameId, uint32_t playerId)
-            : Request(SHIP_TYPES_REQUEST, gameId, playerId)
-        {}
-
-        ShipTypesRequest()
-            : ShipTypesRequest(0, 0)
-        {}
+        ShipTypesRequest(uint32_t gameId, uint32_t playerId);
+        ShipTypesRequest();
     };
 
     struct ShipTypesResponse : Response {
         uint8_t ships;
 
-        ShipTypesResponse(uint32_t gameId, uint32_t playerId, uint8_t ships)
-            : Response(SHIP_TYPES_RESPONSE, gameId, playerId), ships(ships)
-        {}
-
-        ShipTypesResponse()
-            : ShipTypesResponse(0, 0, 0)
-        {}
+        ShipTypesResponse(uint32_t gameId, uint32_t playerId, uint8_t ships);
+        ShipTypesResponse();
     };
 
     /*
@@ -259,28 +190,15 @@ namespace multiplayer {
         char name[32];
         uint8_t size;
 
-        ShipType(std::string const &type, uint8_t size)
-            : name(""), size(size)
-        {
-            if (!type.empty())
-                util::copyString(name, type, sizeof name);
-        }
-
-        ShipType()
-            : ShipType("", 0)
-        {}
+        ShipType(std::string const &type, uint8_t size);
+        ShipType();
     };
 
     struct MapRequest : Request {
         bool own;
 
-        MapRequest(uint32_t gameId, uint32_t playerId, bool own)
-            : Request(MAP_REQUEST, gameId, playerId), own(own)
-        {}
-
-        MapRequest()
-            : MapRequest(0, 0, false)
-        {}
+        MapRequest(uint32_t gameId, uint32_t playerId, bool own);
+        MapRequest();
     };
 
     struct MapResponse : Response {
@@ -288,13 +206,8 @@ namespace multiplayer {
         uint8_t height;
         uint32_t size;  // Followed by so many ASCII chars for ASCII representation of the map.
 
-        MapResponse(uint32_t gameId, uint32_t playerId, uint8_t width, uint8_t height, uint32_t size)
-            : Response(MAP_RESPONSE, gameId, playerId), width(width), height(height), size(size)
-        {}
-
-        MapResponse()
-            : MapResponse(0, 0, 0, 0, 0)
-        {}
+        MapResponse(uint32_t gameId, uint32_t playerId, uint8_t width, uint8_t height, uint32_t size);
+        MapResponse();
     };
 
     struct ShipPlacementRequest : Request {
@@ -304,143 +217,65 @@ namespace multiplayer {
         models::Orientation orientation;
 
         ShipPlacementRequest(uint32_t gameId, uint32_t playerId, std::string const &typeName, uint8_t x, uint8_t y,
-                             models::Orientation const &orientation)
-             : Request(SHIP_PLACEMENT_REQUEST, gameId, playerId), type(""), x(x), y(y), orientation(orientation)
-        {
-            if (!typeName.empty())
-                util::copyString(type, typeName, sizeof type);
-        }
-
+                             models::Orientation const &orientation);
         ShipPlacementRequest(uint32_t gameId, uint32_t playerId, std::string const &typeName,
-                             models::Coordinate const &coordinate, models::Orientation const &orientation)
-            : ShipPlacementRequest(gameId, playerId, typeName, static_cast<uint8_t>(coordinate.first),
-                                   static_cast<uint8_t>(coordinate.second), orientation)
-        {}
-
-        ShipPlacementRequest(uint32_t gameId, uint32_t playerId, models::BasicShip const &ship)
-            : ShipPlacementRequest(gameId, playerId, ship.getType(), ship.getAnchorPoint(),
-                                   ship.getOrientation())
-        {}
-
-        ShipPlacementRequest()
-            : ShipPlacementRequest(0, 0, "", 0, 0, models::Orientation::X)
-        {}
+                             models::Coordinate const &coordinate, models::Orientation const &orientation);
+        ShipPlacementRequest(uint32_t gameId, uint32_t playerId, models::BasicShip const &ship);
+        ShipPlacementRequest();
     };
 
     struct ShipPlacementResponse : Response {
         PlacementResult result;
 
-        ShipPlacementResponse(uint32_t gameId, uint32_t playerId, PlacementResult result)
-            : Response(SHIP_PLACEMENT_RESPONSE, gameId, playerId), result(result)
-        {}
-
-        ShipPlacementResponse()
-            : ShipPlacementResponse(0, 0, INVALID_SHIP_TYPE)
-        {}
+        ShipPlacementResponse(uint32_t gameId, uint32_t playerId, PlacementResult result);
+        ShipPlacementResponse();
     };
 
     struct StatusRequest : Request {
-        StatusRequest(uint32_t gameId, uint32_t playerId)
-            : Request(STATUS_REQUEST, gameId, playerId)
-        {}
-
-        StatusRequest()
-            : StatusRequest(0, 0)
-        {}
+        StatusRequest(uint32_t gameId, uint32_t playerId);
+        StatusRequest();
     };
 
     struct StatusResponse : Response {
         GameState state;
 
-        StatusResponse(uint32_t gameId, uint32_t playerId, GameState state)
-            : Response(STATUS_RESPONSE, gameId, playerId), state(state)
-        {}
-
-        StatusResponse()
-            : StatusResponse(0, 0, GameState::INITIAL)
-        {}
+        StatusResponse(uint32_t gameId, uint32_t playerId, GameState state);
+        StatusResponse();
     };
 
     struct TurnRequest : Request {
         uint8_t x;
         uint8_t y;
 
-        TurnRequest(uint32_t gameId, uint32_t playerId, uint8_t x, uint8_t y)
-            : Request(TURN_REQUEST, gameId, playerId), x(x), y(y)
-        {}
-
-        TurnRequest(uint32_t gameId, uint32_t playerId, models::Coordinate const &coordinate)
-            : TurnRequest(gameId, playerId, static_cast<uint8_t>(coordinate.first),
-                          static_cast<uint8_t>(coordinate.second))
-        {}
-
-        TurnRequest()
-            : TurnRequest(0, 0, 0, 0)
-        {}
+        TurnRequest(uint32_t gameId, uint32_t playerId, uint8_t x, uint8_t y);
+        TurnRequest(uint32_t gameId, uint32_t playerId, models::Coordinate const &coordinate);
+        TurnRequest();
     };
 
     struct TurnResponse : Response {
         models::HitResult hitResult;
         bool won;
 
-        TurnResponse(uint32_t gameId, uint32_t playerId, models::HitResult hitResult, bool won)
-            : Response(TURN_RESPONSE, gameId, playerId), hitResult(hitResult), won(won)
-        {}
-
-        TurnResponse()
-            : TurnResponse(0, 0, models::HitResult::MISSED, false)
-        {}
+        TurnResponse(uint32_t gameId, uint32_t playerId, models::HitResult hitResult, bool won);
+        TurnResponse();
     };
 
     struct InvalidRequest : Response {
         ErrorType error;
 
-        InvalidRequest(uint32_t gameId, uint32_t playerId, ErrorType error)
-            : Response(INVALID_REQUEST, gameId, playerId), error(error)
-        {}
-
-        InvalidRequest(uint32_t playerId, ErrorType error)
-            : InvalidRequest(0, playerId, error)
-        {}
-
-        explicit InvalidRequest(ErrorType error)
-            : InvalidRequest(0, error)
-        {}
-
-        InvalidRequest()
-            : InvalidRequest(ErrorType::UNKNOWN)
-        {}
+        InvalidRequest(uint32_t gameId, uint32_t playerId, ErrorType error);
+        InvalidRequest(uint32_t playerId, ErrorType error);
+        explicit InvalidRequest(ErrorType error);
+        InvalidRequest();
     };
 
 #pragma pack(pop)
 
-    /*
-     * Convert a byte string into a message struct.
-     */
     template <typename Message>
-    Message deserialize(std::string const &buf, bool partialProcessing = false)
-    {
-        Message msg;
-        size_t bufSize = buf.length();
-        size_t msgSize = sizeof msg;
+    Message deserialize(std::string const &buf, bool partialProcessing = false);
 
-        if (msgSize > bufSize)
-            throw std::underflow_error("Message size exceeds buffer size.");
-
-        if (msgSize < bufSize && !partialProcessing)
-            throw std::overflow_error("Buffer size exceeds message size.");
-
-        std::memcpy(&msg, &buf[0], (msgSize < bufSize) ? msgSize : bufSize);
-        return msg;
-    }
-
-    /*
-     * Convert a message struct into a byte string.
-     */
     template <typename Message>
-    std::string serialize(Message const &msg)
-    {
-        auto ptr = reinterpret_cast<const char*>(&msg);
-        return std::string(ptr, ptr + sizeof msg);
-    }
+    std::string serialize(Message const &msg);
+
+#include "Messages.inl"
 }
