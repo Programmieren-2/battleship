@@ -30,11 +30,9 @@ namespace multiplayer {
         std::string sendMessage(RequestType const &request) const
         {
             std::string buf = communicate(serialize(request));
-            auto header = deserialize<ResponseHeader>(buf, true);
-            if (header.type == ResponseType::INVALID_REQUEST) {
-                auto invalidRequest = deserialize<InvalidRequest>(buf);
-                throw ProtocolError(invalidRequest.error);
-            }
+            auto header = deserialize<ResponseHeader>(buf);
+            if (header.type == ResponseType::INVALID_REQUEST)
+                throw ProtocolError(deserialize<InvalidRequest>(buf).error);
 
             return buf;
         }

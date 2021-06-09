@@ -91,7 +91,7 @@ namespace multiplayer {
 
     string GameServer::handleRequest(string const &buf) const
     {
-        auto header = deserialize<RequestHeader>(buf, true);
+        auto header = deserialize<RequestHeader>(buf);
 
         switch (header.type) {
             case NOOP:

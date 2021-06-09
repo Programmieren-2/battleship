@@ -3,7 +3,7 @@
 //
 
 template <typename Message>
-Message deserialize(std::string const &buf, bool partialProcessing)
+Message deserialize(std::string const &buf, bool partial)
 {
     Message msg;
     size_t bufSize = buf.length();
@@ -12,11 +12,17 @@ Message deserialize(std::string const &buf, bool partialProcessing)
     if (msgSize > bufSize)
         throw std::underflow_error("Message size exceeds buffer size.");
 
-    if (msgSize < bufSize && !partialProcessing)
+    if (msgSize < bufSize && !partial)
         throw std::overflow_error("Buffer size exceeds message size.");
 
     std::memcpy(&msg, &buf[0], (msgSize < bufSize) ? msgSize : bufSize);
     return msg;
+}
+
+template <typename Message>
+Message deserialize(std::string const &buf)
+{
+    return deserialize<Message>(buf, false);
 }
 
 template <typename Message>

@@ -64,22 +64,11 @@ namespace multiplayer {
     {
         ListGamesRequest request;
         string buf = sendMessage(request);
-        auto header = deserialize<ResponseHeader>(buf, true);
+        auto header = deserialize<ResponseHeader>(buf);
         if (header.type != ResponseType::LIST_GAMES_RESPONSE)
             throw ProtocolError(UNEXPECTED_RESPONSE_TYPE);
 
-        auto response = deserialize<ListGamesResponse>(buf, true);
-        vector<ListedGame> listedGames;
-        ListedGame listedGame;
-        size_t offset;
-
-        for (unsigned long i = 0; i < response.games; ++i) {
-            offset = sizeof response + sizeof listedGame * i;
-            listedGame = deserialize<ListedGame>(buf.substr(offset, sizeof listedGame));
-            listedGames.push_back(listedGame);
-        }
-
-        return listedGames;
+        return deserialize<vector<ListedGame>>(buf);
     }
 
     unsigned long GameClient::newGame(unsigned short width, unsigned short height)
@@ -126,38 +115,26 @@ namespace multiplayer {
     {
         ShipTypesRequest request(gameId, playerId);
         string buf = sendMessage(request);
-        auto response = deserialize<ShipTypesResponse>(buf, true);
-        ShipTypes shipTypes;
-        ShipType shipType;
-        size_t offset;
-
-        for (unsigned short i = 0; i < response.ships; ++i) {
-            offset = sizeof response + sizeof shipType * i;
-            shipType = deserialize<ShipType>(buf.substr(offset, sizeof shipType), true);
-            shipTypes[shipType.name] = shipType.size;
-        }
-
-        return shipTypes;
+        return deserialize<ShipTypes>(buf);
     }
 
     string GameClient::getMap(bool own) const
     {
         MapRequest request(gameId, playerId, own);
         string buf = sendMessage(request);
-        auto header = deserialize<ResponseHeader>(buf, true);
+        auto header = deserialize<ResponseHeader>(buf);
 
         if (BOOST_UNLIKELY(header.type != ResponseType::MAP_RESPONSE))
             throw ProtocolError(UNEXPECTED_RESPONSE_TYPE);
 
-        auto response = deserialize<MapResponse>(buf, true);
-        return buf.substr(sizeof response, response.size);
+        return deserialize<string>(buf);
     }
 
     PlacementResult GameClient::placeShip(BasicShip const &ship)
     {
         ShipPlacementRequest request(gameId, playerId, ship);
         string buf = sendMessage(request);
-        auto header = deserialize<ResponseHeader>(buf, true);
+        auto header = deserialize<ResponseHeader>(buf);
 
         if (BOOST_UNLIKELY(header.type != ResponseType::SHIP_PLACEMENT_RESPONSE))
             throw ProtocolError(UNEXPECTED_RESPONSE_TYPE);

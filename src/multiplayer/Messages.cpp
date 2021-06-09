@@ -239,4 +239,71 @@ namespace multiplayer {
         out << "  Current players: " << static_cast<unsigned long>(game.players) << "\n";
         return out;
     }
+
+    template <>
+    RequestHeader deserialize(std::string const &buf)
+    {
+        return deserialize<RequestHeader>(buf, true);
+    }
+
+    template <>
+    ResponseHeader deserialize(std::string const &buf)
+    {
+        return deserialize<ResponseHeader>(buf, true);
+    }
+
+    template <>
+    ListGamesResponse deserialize(std::string const &buf)
+    {
+        return deserialize<ListGamesResponse>(buf, true);
+    }
+
+    template <>
+    std::vector<ListedGame> deserialize(std::string const &buf)
+    {
+        auto response = deserialize<ListGamesResponse>(buf);
+        std::vector<ListedGame> listedGames;
+
+        for (unsigned long i = 0; i < response.games; ++i) {
+            auto offset = sizeof response + sizeof(ListedGame) * i;
+            auto listedGame = deserialize<ListedGame>(buf.substr(offset, sizeof(ListedGame)));
+            listedGames.push_back(listedGame);
+        }
+
+        return listedGames;
+    }
+
+    template <>
+    ShipTypesResponse deserialize(std::string const &buf)
+    {
+        return deserialize<ShipTypesResponse>(buf, true);
+    }
+
+    template <>
+    models::ShipTypes deserialize(std::string const &buf)
+    {
+        auto response = deserialize<ShipTypesResponse>(buf);
+        models::ShipTypes shipTypes;
+
+        for (unsigned short i = 0; i < response.ships; ++i) {
+            auto offset = sizeof response + sizeof(ShipType) * i;
+            auto shipType = deserialize<ShipType>(buf.substr(offset, sizeof(ShipType)), true);
+            shipTypes[shipType.name] = shipType.size;
+        }
+
+        return shipTypes;
+    }
+
+    template <>
+    MapResponse deserialize(std::string const &buf)
+    {
+        return deserialize<MapResponse>(buf, true);
+    }
+
+    template <>
+    std::string deserialize(std::string const &buf)
+    {
+        auto response = deserialize<MapResponse>(buf);
+        return buf.substr(sizeof response, response.size);
+    }
 }

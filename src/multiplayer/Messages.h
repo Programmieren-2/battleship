@@ -8,6 +8,7 @@
 #include <exception>
 #include <iostream>
 #include <string>
+#include <vector>
 
 #include "boostwrap.h"
 
@@ -15,6 +16,7 @@
 #include "Coordinate.h"
 #include "Defaults.h"
 #include "Sea.h"
+#include "ShipTypes.h"
 
 #include "util.h"
 
@@ -272,10 +274,34 @@ namespace multiplayer {
 #pragma pack(pop)
 
     template <typename Message>
-    Message deserialize(std::string const &buf, bool partialProcessing = false);
+    Message deserialize(std::string const &buf);
 
     template <typename Message>
     std::string serialize(Message const &msg);
+
+    template <>
+    RequestHeader deserialize(std::string const &buf);
+
+    template <>
+    ResponseHeader deserialize(std::string const &buf);
+
+    template <>
+    ListGamesResponse deserialize(std::string const &buf);
+
+    template <>
+    std::vector<ListedGame> deserialize(std::string const &buf);
+
+    template <>
+    ShipTypesResponse deserialize(std::string const &buf);
+
+    template <>
+    models::ShipTypes deserialize(std::string const &buf);
+
+    template <>
+    MapResponse deserialize(std::string const &buf);
+
+    template <>
+    std::string deserialize(std::string const &buf);
 
 #include "Messages.inl"
 }
