@@ -149,7 +149,7 @@ namespace multiplayer {
             throw CLIError(command);
 
         vector<string> typeElements(args.begin(), args.begin() + args.size() - 3);
-        string type = joinStrings(typeElements, " ");
+        string type = joinStrings(typeElements);
         string strX = args[args.size() - 3];
         string strY = args[args.size() - 2];
 
