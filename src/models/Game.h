@@ -26,17 +26,21 @@ namespace models {
         unsigned short height;
         ShipTypes shipTypes;
         mutable std::array<std::optional<PlayerType>, 2> players;
+
+        static unsigned short const WIDTH = 10;
+        static unsigned short const HEIGHT = 10;
+        static ShipTypes const SHIP_TYPES;
     public:
         Game(unsigned short width, unsigned short height, ShipTypes shipTypes)
             : width(width), height(height), shipTypes(std::move(shipTypes))
         {}
 
         Game(unsigned short width, unsigned short height)
-            : Game(width, height, Defaults::SHIP_TYPES)
+            : Game(width, height, SHIP_TYPES)
         {}
 
         Game()
-            : Game(Defaults::WIDTH, Defaults::HEIGHT)
+            : Game(WIDTH, HEIGHT)
         {}
 
         [[nodiscard]] unsigned short getWidth() const
@@ -118,5 +122,14 @@ namespace models {
 
             return false;
         }
+    };
+
+    template <typename PlayerType>
+    Game<PlayerType>::SHIP_TYPES = {
+        {"Speed boat", static_cast<unsigned short>(2)},
+        {"Destroyer", static_cast<unsigned short>(3)},
+        {"Submarine", static_cast<unsigned short>(3)},
+        {"Battleship", static_cast<unsigned short>(4)},
+        {"Aircraft Carrier", static_cast<unsigned short>(5)},
     };
 }
