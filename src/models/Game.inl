@@ -68,15 +68,6 @@ std::optional<std::reference_wrapper<PlayerType const>> models::Game<PlayerType>
 }
 
 template <typename PlayerType>
-void models::Game<PlayerType>::removePlayer(PlayerType const &player) const
-{
-    for (auto &candidate : players) {
-        if (candidate && *candidate == player)
-            candidate.reset();
-    }
-}
-
-template <typename PlayerType>
 bool models::Game<PlayerType>::hasPlayers() const
 {
     return std::ranges::any_of(players, [] (auto const &player) { return player.has_value(); });
@@ -106,6 +97,15 @@ bool models::Game<PlayerType>::addPlayer(PlayerType const &player) const
     }
 
     return false;
+}
+
+template <typename PlayerType>
+void models::Game<PlayerType>::removePlayer(PlayerType const &player) const
+{
+    for (auto &candidate : players) {
+        if (candidate && *candidate == player)
+            candidate.reset();
+    }
 }
 
 template <typename PlayerType>

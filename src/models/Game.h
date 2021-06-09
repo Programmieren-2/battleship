@@ -40,11 +40,11 @@ namespace models {
         [[nodiscard]] std::vector<std::reference_wrapper<PlayerType const>> getPlayers() const;
         [[nodiscard]] unsigned short getPlayerCount() const;
         [[nodiscard]] std::optional<std::reference_wrapper<PlayerType const>> getPlayer(unsigned short index) const;
-        void removePlayer(PlayerType const &player) const;
         [[nodiscard]] bool hasPlayers() const;
         [[nodiscard]] bool isFull() const;
         [[nodiscard]] bool isEmpty() const;
         bool addPlayer(PlayerType const &player) const;
+        void removePlayer(PlayerType const &player) const;
     };
 
 #include "Game.inl"
