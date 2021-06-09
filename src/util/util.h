@@ -23,8 +23,7 @@ namespace util {
         parseArgDesc(int argc, char const *argv[], boost::program_options::options_description const &desc);
 
     template <typename ElementType>
-    bool contains(std::vector<ElementType> const &haystack, ElementType const &needle)
-    {
-        return std::ranges::find(haystack, needle) != haystack.end();
-    }
+    bool contains(std::vector<ElementType> const &haystack, ElementType const &needle);
+
+#include "util.inl"
 }
