@@ -3,40 +3,40 @@
 //
 
 template <typename PlayerType>
-models::Game<PlayerType>::Game(unsigned short width, unsigned short height, ShipTypes shipTypes)
+Game<PlayerType>::Game(unsigned short width, unsigned short height, ShipTypes shipTypes)
     : width(width), height(height), shipTypes(std::move(shipTypes))
 {}
 
 template <typename PlayerType>
-models::Game<PlayerType>::Game(unsigned short width, unsigned short height)
+Game<PlayerType>::Game(unsigned short width, unsigned short height)
     : Game(width, height, SHIP_TYPES)
 {}
 
 template <typename PlayerType>
-models::Game<PlayerType>::Game()
+Game<PlayerType>::Game()
     : Game(WIDTH, HEIGHT)
 {}
 
 template <typename PlayerType>
-unsigned short models::Game<PlayerType>::getWidth() const
+unsigned short Game<PlayerType>::getWidth() const
 {
     return width;
 }
 
 template <typename PlayerType>
-unsigned short models::Game<PlayerType>::getHeight() const
+unsigned short Game<PlayerType>::getHeight() const
 {
     return height;
 }
 
 template <typename PlayerType>
-ShipTypes models::Game<PlayerType>::getShipTypes() const
+ShipTypes Game<PlayerType>::getShipTypes() const
 {
     return shipTypes;
 }
 
 template <typename PlayerType>
-std::vector<std::reference_wrapper<PlayerType const>> models::Game<PlayerType>::getPlayers() const
+std::vector<std::reference_wrapper<PlayerType const>> Game<PlayerType>::getPlayers() const
 {
     std::vector<std::reference_wrapper<PlayerType const>> result;
 
@@ -49,7 +49,7 @@ std::vector<std::reference_wrapper<PlayerType const>> models::Game<PlayerType>::
 }
 
 template <typename PlayerType>
-unsigned short models::Game<PlayerType>::getPlayerCount() const
+unsigned short Game<PlayerType>::getPlayerCount() const
 {
     unsigned short playerCount = 0;
 
@@ -62,31 +62,31 @@ unsigned short models::Game<PlayerType>::getPlayerCount() const
 }
 
 template <typename PlayerType>
-std::optional<std::reference_wrapper<PlayerType const>> models::Game<PlayerType>::getPlayer(unsigned short index) const
+std::optional<std::reference_wrapper<PlayerType const>> Game<PlayerType>::getPlayer(unsigned short index) const
 {
     return *players.at(index % players.size());
 }
 
 template <typename PlayerType>
-bool models::Game<PlayerType>::hasPlayers() const
+bool Game<PlayerType>::hasPlayers() const
 {
     return std::ranges::any_of(players, [] (auto const &player) { return player.has_value(); });
 }
 
 template <typename PlayerType>
-bool models::Game<PlayerType>::isFull() const
+bool Game<PlayerType>::isFull() const
 {
     return std::ranges::all_of(players, [] (auto const &player) { return player.has_value(); });
 }
 
 template <typename PlayerType>
-bool models::Game<PlayerType>::isEmpty() const
+bool Game<PlayerType>::isEmpty() const
 {
     return std::ranges::none_of(players, [] (auto const &player) { return player.has_value(); });
 }
 
 template <typename PlayerType>
-bool models::Game<PlayerType>::addPlayer(PlayerType const &player) const
+bool Game<PlayerType>::addPlayer(PlayerType const &player) const
 {
     for (auto &candidate : players) {
         if (candidate)
@@ -100,7 +100,7 @@ bool models::Game<PlayerType>::addPlayer(PlayerType const &player) const
 }
 
 template <typename PlayerType>
-void models::Game<PlayerType>::removePlayer(PlayerType const &player) const
+void Game<PlayerType>::removePlayer(PlayerType const &player) const
 {
     for (auto &candidate : players) {
         if (candidate && *candidate == player)
@@ -109,7 +109,7 @@ void models::Game<PlayerType>::removePlayer(PlayerType const &player) const
 }
 
 template <typename PlayerType>
-ShipTypes const models::Game<PlayerType>::SHIP_TYPES = {
+ShipTypes const Game<PlayerType>::SHIP_TYPES = {
     {"Speed boat", static_cast<unsigned short>(2)},
     {"Destroyer", static_cast<unsigned short>(3)},
     {"Submarine", static_cast<unsigned short>(3)},
