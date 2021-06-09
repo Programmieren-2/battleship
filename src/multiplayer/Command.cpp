@@ -45,7 +45,7 @@ namespace multiplayer {
                 usage += arg;
         }
 
-        return usage;
+        return usage + "\n";
     }
 
     string Command::operator+(string const &other)
