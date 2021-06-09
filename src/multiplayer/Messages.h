@@ -276,9 +276,6 @@ namespace multiplayer {
     template <typename Message>
     Message deserialize(std::string const &buf);
 
-    template <typename Message>
-    std::string serialize(Message const &msg);
-
     template <>
     RequestHeader deserialize(std::string const &buf);
 
@@ -302,6 +299,9 @@ namespace multiplayer {
 
     template <>
     std::string deserialize(std::string const &buf);
+
+    template <typename Message>
+    std::string serialize(Message const &msg);
 
 #include "Messages.inl"
 }
