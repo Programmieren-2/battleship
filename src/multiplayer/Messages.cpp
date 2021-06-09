@@ -8,6 +8,9 @@ using std::ostream;
 #include <string>
 using std::string;
 
+#include <vector>
+using std::vector;
+
 #include "Messages.h"
 
 namespace multiplayer {
@@ -247,22 +250,22 @@ namespace multiplayer {
     }
 
     template <>
-    ResponseHeader deserialize(std::string const &buf)
+    ResponseHeader deserialize(string const &buf)
     {
         return deserialize<ResponseHeader>(buf, true);
     }
 
     template <>
-    ListGamesResponse deserialize(std::string const &buf)
+    ListGamesResponse deserialize(string const &buf)
     {
         return deserialize<ListGamesResponse>(buf, true);
     }
 
     template <>
-    std::vector<ListedGame> deserialize(std::string const &buf)
+    vector<ListedGame> deserialize(string const &buf)
     {
         auto response = deserialize<ListGamesResponse>(buf);
-        std::vector<ListedGame> listedGames;
+        vector<ListedGame> listedGames;
 
         for (unsigned long i = 0; i < response.games; ++i) {
             auto offset = sizeof response + sizeof(ListedGame) * i;
@@ -274,13 +277,13 @@ namespace multiplayer {
     }
 
     template <>
-    ShipTypesResponse deserialize(std::string const &buf)
+    ShipTypesResponse deserialize(string const &buf)
     {
         return deserialize<ShipTypesResponse>(buf, true);
     }
 
     template <>
-    models::ShipTypes deserialize(std::string const &buf)
+    models::ShipTypes deserialize(string const &buf)
     {
         auto response = deserialize<ShipTypesResponse>(buf);
         models::ShipTypes shipTypes;
@@ -295,13 +298,13 @@ namespace multiplayer {
     }
 
     template <>
-    MapResponse deserialize(std::string const &buf)
+    MapResponse deserialize(string const &buf)
     {
         return deserialize<MapResponse>(buf, true);
     }
 
     template <>
-    std::string deserialize(std::string const &buf)
+    string deserialize(string const &buf)
     {
         auto response = deserialize<MapResponse>(buf);
         return buf.substr(sizeof response, response.size);
