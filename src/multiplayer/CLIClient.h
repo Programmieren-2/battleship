@@ -7,36 +7,23 @@
 #include <string>
 #include <vector>
 
+#include "Command.h"
 #include "GameClient.h"
 #include "ProtocolError.h"
 
 namespace multiplayer {
-    enum Command {
-        INVALID,
-        HELP,
-        LIST_GAMES,
-        NEW_GAME,
-        JOIN,
-        LOGOUT,
-        GET_SHIP_TYPES,
-        PLACE_SHIP,
-        GET_MAP,
-        GET_STATUS,
-        MAKE_TURN,
-    };
-
-    const std::map<std::string, Command> COMMANDS = {
-            {"help", Command::HELP},
-            {"list", Command::LIST_GAMES},
-            {"new", Command::NEW_GAME},
-            {"join", Command::JOIN},
-            {"logout", Command::LOGOUT},
-            {"types", Command::GET_SHIP_TYPES},
-            {"place", Command::PLACE_SHIP},
-            {"map", Command::GET_MAP},
-            {"status", Command::GET_STATUS},
-            {"fire", Command::MAKE_TURN},
-    };
+    const std::map<std::string, Command> COMMANDS = make_map({
+        {CommandCode::HELP, "help", {"[<command>]"}, "Show help page."},
+        {CommandCode::LIST_GAMES, "list", {}, "List available games."},
+        {CommandCode::NEW_GAME, "new", {"[<width> <height>]"}, "Create a new game."},
+        {CommandCode::JOIN, "join", {"<gameID>", "<playerName>"}, "Join a game."},
+        {CommandCode::LOGOUT, "logout", {}, "Log out of the current game."},
+        {CommandCode::GET_SHIP_TYPES, "types", {}, "List available ship types."},
+        {CommandCode::PLACE_SHIP, "place", {"<type...>", "<x>", "<y>", "(x|y)"}, "Place a ship."},
+        {CommandCode::GET_MAP, "map", {"[own]"}, "Show opponent's or own map."},
+        {CommandCode::GET_STATUS, "status", {}, "Show game status."},
+        {CommandCode::MAKE_TURN, "fire", {"<x>", "<y>"}, "Fire a shot."},
+    });
 
     class CLIClient : GameClient {
     private:
@@ -50,16 +37,16 @@ namespace multiplayer {
         using GameClient::getStatus;
         using GameClient::fireAt;
 
-        static void help(std::string const &string, std::vector<std::string> const &args);
-        void listGames(std::string const &string, std::vector<std::string> const &args);
-        void newGame(std::string const &command, std::vector<std::string> const &args);
-        void joinGame(std::string const &command, std::vector<std::string> const &args);
-        void logout(std::string const &string, std::vector<std::string> const &args);
-        void getShipTypes(std::string const &command, std::vector<std::string> const &args);
-        void placeShip(std::string const &command, std::vector<std::string> const &args);
-        void getMap(std::string const &command, std::vector<std::string> const &args);
-        void makeTurn(std::string const &command, std::vector<std::string> const &args);
-        void getStatus(std::string const &command, std::vector<std::string> const &args);
+        static void help(Command const &command, std::vector<std::string> const &args);
+        void listGames(Command const &command, std::vector<std::string> const &args);
+        void newGame(Command const &command, std::vector<std::string> const &args);
+        void joinGame(Command const &command, std::vector<std::string> const &args);
+        void logout(Command const &command, std::vector<std::string> const &args);
+        void getShipTypes(Command const &command, std::vector<std::string> const &args);
+        void placeShip(Command const &command, std::vector<std::string> const &args);
+        void getMap(Command const &command, std::vector<std::string> const &args);
+        void makeTurn(Command const &command, std::vector<std::string> const &args);
+        void getStatus(Command const &command, std::vector<std::string> const &args);
         void handleCommand(std::string const &command, std::vector<std::string>const &args);
         void handleProtocolError(ProtocolError const &error);
         void handleCommandSafely(std::string const &command, std::vector<std::string>const &args);

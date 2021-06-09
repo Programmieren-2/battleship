@@ -5,7 +5,7 @@ add_library(multiplayer
         ../multiplayer/Messages.h
         ../multiplayer/OnlineGame.cpp ../multiplayer/OnlineGame.h
         ../multiplayer/OnlinePlayer.cpp ../multiplayer/OnlinePlayer.h
-        ../multiplayer/ProtocolError.cpp ../multiplayer/ProtocolError.h CLIError.cpp CLIError.h Messages.cpp Messages.inl)
+        ../multiplayer/ProtocolError.cpp ../multiplayer/ProtocolError.h CLIError.cpp CLIError.h Messages.cpp Messages.inl "Command.cpp" "Command.h")
 target_include_directories(multiplayer PUBLIC ../models ../tcp ../os ../util)
 target_link_libraries(multiplayer tcp models util)
 

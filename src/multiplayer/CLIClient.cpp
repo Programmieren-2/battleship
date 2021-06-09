@@ -44,7 +44,7 @@ using util::readCommandLine;
 #include "CLIClient.h"
 
 namespace multiplayer {
-    void CLIClient::help(string const &command, vector<string> const &args)
+    void CLIClient::help(Command const &command, vector<string> const &args)
     {
         if (args.empty()) {
             cout << "Available commands:\n";
@@ -62,16 +62,16 @@ namespace multiplayer {
         cerr << "Use '" << command << " <command>' to get help on a specific command.\n";
     }
 
-    void CLIClient::listGames(string const &command, vector<string> const &args)
+    void CLIClient::listGames(Command const &command, vector<string> const &args)
     {
         if (!args.empty())
-            throw CLIError("Command '" + command + "' does not expect any arguments.");
+            throw CLIError(command);
 
         for (auto const &game : listGames())
             cout << game;
     }
 
-    void CLIClient::newGame(string const &command, vector<string> const &args)
+    void CLIClient::newGame(Command const &command, vector<string> const &args)
     {
         unsigned short width, height;
         unsigned long newGameId;
@@ -93,16 +93,16 @@ namespace multiplayer {
 
             newGameId = newGame(width, height);
         } else {
-            throw CLIError("Usage: '" + command + "' or '" + command + " <width> <height>'.");
+            throw CLIError(command);
         }
 
         cout << "New game id: " << newGameId << "\n";
     }
 
-    void CLIClient::joinGame(string const &command, vector<string> const &args)
+    void CLIClient::joinGame(Command const &command, vector<string> const &args)
     {
         if (args.size() != 2)
-            throw CLIError("Usage: '" + command + " <gameID> <playerName>' to join a game.");
+            throw CLIError(command);
 
         unsigned long newGameId = 0;
 
@@ -118,18 +118,18 @@ namespace multiplayer {
         cout << "Joined game #" << newGameId << ".\n";
     }
 
-    void CLIClient::logout(string const &command, vector<string> const &args)
+    void CLIClient::logout(Command const &command, vector<string> const &args)
     {
         if (!args.empty())
-            throw CLIError("Command '" + command + "' expects no arguments.");
+            throw CLIError(command);
 
         logout();
     }
 
-    void CLIClient::getShipTypes(string const &command, vector<string> const &args)
+    void CLIClient::getShipTypes(Command const &command, vector<string> const &args)
     {
         if (!args.empty())
-            throw CLIError("Command '" + command + "' expects not arguments.");
+            throw CLIError(command);
 
         cout << "Available ship types:\n";
 
@@ -137,10 +137,10 @@ namespace multiplayer {
             cout << "* " << name << " (" << size << ")\n";
     }
 
-    void CLIClient::placeShip(string const &command, vector<string> const &args)
+    void CLIClient::placeShip(Command const &command, vector<string> const &args)
     {
         if (args.size() < 4)
-            throw CLIError("Usage: '" + command + " <type...> <x> <y> (x|y)");
+            throw CLIError(command);
 
         vector<string> typeElements(args.begin(), args.begin() + args.size() - 3);
         string type = joinStrings(typeElements, " ");
@@ -182,7 +182,7 @@ namespace multiplayer {
         }
     }
 
-    void CLIClient::getMap(string const &command, vector<string> const &args)
+    void CLIClient::getMap(Command const &command, vector<string> const &args)
     {
         bool own;
 
@@ -191,16 +191,16 @@ namespace multiplayer {
         } else if (args.size() == 1 && args[0] == "own") {
             own = true;
         } else {
-            throw CLIError("Usage: '" + command + " (own)'.");
+            throw CLIError(command);
         }
 
         cout << getMap(own);
     }
 
-    void CLIClient::makeTurn(string const &command, vector<string> const &args)
+    void CLIClient::makeTurn(Command const &command, vector<string> const &args)
     {
         if (args.size() != 2)
-            throw CLIError("Usage: '" + command + " <x> <y>'.");
+            throw CLIError(command);
 
         optional<Coordinate> target = Coordinate::fromString(args[0], args[1]);
 
@@ -220,10 +220,10 @@ namespace multiplayer {
         }
     }
 
-    void CLIClient::getStatus(string const &command, vector<string> const &args)
+    void CLIClient::getStatus(Command const &command, vector<string> const &args)
     {
         if (!args.empty())
-            throw CLIError("Command '" + command + "' does not expect any arguments.");
+            throw CLIError(command);
 
         switch (getStatus()) {
             case INITIAL:
@@ -252,39 +252,41 @@ namespace multiplayer {
 
     void CLIClient::handleCommand(string const &command, vector<string> const &args)
     {
-        switch (getCommand(command)) {
+        Command const &cmd = getCommand(command);
+
+        switch (cmd.getId()) {
             case INVALID:
                 cerr << "Invalid command. Type 'help' to list available commands.\n";
                 break;
             case HELP:
-                help(command, args);
+                help(cmd, args);
                 break;
             case LIST_GAMES:
-                listGames(command, args);
+                listGames(cmd, args);
                 break;
             case NEW_GAME:
-                newGame(command, args);
+                newGame(cmd, args);
                 break;
             case JOIN:
-                joinGame(command, args);
+                joinGame(cmd, args);
                 break;
             case LOGOUT:
-                logout(command, args);
+                logout(cmd, args);
                 break;
             case GET_SHIP_TYPES:
-                getShipTypes(command, args);
+                getShipTypes(cmd, args);
                 break;
             case PLACE_SHIP:
-                placeShip(command, args);
+                placeShip(cmd, args);
                 break;
             case GET_MAP:
-                getMap(command, args);
+                getMap(cmd, args);
                 break;
             case MAKE_TURN:
-                makeTurn(command, args);
+                makeTurn(cmd, args);
                 break;
             case GET_STATUS:
-                getStatus(command, args);
+                getStatus(cmd, args);
                 break;
         }
     }
@@ -340,7 +342,7 @@ namespace multiplayer {
         try {
             return COMMANDS.at(command);
         } catch (out_of_range const &) {
-            return Command::INVALID;
+            return Command::invalid();
         }
     }
 

@@ -24,7 +24,7 @@ using multiplayer::GameServer;
 
 static auto parseArgs(int argc, const char *argv[])
 {
-    options_description desc("Command line options");
+    options_description desc("CommandCode line options");
     desc.add_options()
             ("help,h", "Show this page")
             ("address,a", value<string>()

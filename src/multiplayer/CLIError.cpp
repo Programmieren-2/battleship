@@ -11,11 +11,17 @@ using std::string;
 #include <utility>
 using std::move;
 
+#include "Command.h"
+
 #include "CLIError.h"
 
 namespace multiplayer{
     CLIError::CLIError(string message)
         : message(move(message))
+    {}
+
+    CLIError::CLIError(Command const &command)
+        : CLIError(command.usage())
     {}
 
     char const *CLIError::what() const noexcept
