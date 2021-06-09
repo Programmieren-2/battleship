@@ -152,6 +152,8 @@ namespace multiplayer {
         ListedGame()
             : ListedGame(0, 0, 0, 0)
         {}
+
+        friend std::ostream& operator<<(std::ostream &out, ListedGame const &game);
     };
 
     struct NewGameRequest : Request {
@@ -257,7 +259,7 @@ namespace multiplayer {
         char name[32];
         uint8_t size;
 
-        ShipType(string const &type, uint8_t size)
+        ShipType(std::string const &type, uint8_t size)
             : name(""), size(size)
         {
             if (!type.empty())
@@ -301,7 +303,7 @@ namespace multiplayer {
         uint8_t y;
         models::Orientation orientation;
 
-        ShipPlacementRequest(uint32_t gameId, uint32_t playerId, string const &typeName, uint8_t x, uint8_t y,
+        ShipPlacementRequest(uint32_t gameId, uint32_t playerId, std::string const &typeName, uint8_t x, uint8_t y,
                              models::Orientation const &orientation)
              : Request(SHIP_PLACEMENT_REQUEST, gameId, playerId), type(""), x(x), y(y), orientation(orientation)
         {
@@ -309,7 +311,7 @@ namespace multiplayer {
                 util::copyString(type, typeName, sizeof type);
         }
 
-        ShipPlacementRequest(uint32_t gameId, uint32_t playerId, string const &typeName,
+        ShipPlacementRequest(uint32_t gameId, uint32_t playerId, std::string const &typeName,
                              models::Coordinate const &coordinate, models::Orientation const &orientation)
             : ShipPlacementRequest(gameId, playerId, typeName, static_cast<uint8_t>(coordinate.first),
                                    static_cast<uint8_t>(coordinate.second), orientation)

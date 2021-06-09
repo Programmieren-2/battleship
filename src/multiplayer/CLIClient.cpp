@@ -34,6 +34,8 @@ using models::Orientation;
 #include "HitResult.h"
 using models::HitResult;
 
+#include "CLIError.h"
+
 #include "util.h"
 using util::isExitCommand;
 using util::joinStrings;
@@ -53,10 +55,8 @@ namespace multiplayer {
             return;
         }
 
-        if (args.size() == 1) {
-            cerr << "Help on specific commands is not yet implemented. Sorry.\n";
-            return;
-        }
+        if (args.size() == 1)
+            throw CLIError("Help on specific commands is not yet implemented. Sorry.");
 
         cerr << "Use '" << command << "' to get general help.\n";
         cerr << "Use '" << command << " <command>' to get help on a specific command.\n";
@@ -65,14 +65,10 @@ namespace multiplayer {
     void CLIClient::listGames(string const &command, vector<string> const &args)
     {
         if (!args.empty())
-            cerr << "Command '" << command << "' does not expect any arguments.\n";
+            throw CLIError("Command '" + command + "' does not expect any arguments.");
 
-        for (auto const &game : listGames()) {
-            cout << "Game #" << game.id << ":\n";
-            cout << "  Sea size: " << static_cast<unsigned short>(game.width)
-                    << "x" << static_cast<unsigned short>(game.height) << "\n";
-            cout << "  Current players: " << static_cast<unsigned long>(game.players) << "\n";
-        }
+        for (auto const &game : listGames())
+            cout << game;
     }
 
     void CLIClient::newGame(string const &command, vector<string> const &args)
@@ -86,22 +82,18 @@ namespace multiplayer {
             try {
                 width = static_cast<unsigned short>(stoul(args[0]));
             } catch (invalid_argument const &) {
-                cerr << "Invalid width.\n";
-                return;
+                throw CLIError("Invalid width.");
             }
 
             try {
                 height = static_cast<unsigned short>(stoul(args[1]));
             } catch (invalid_argument const &) {
-                cerr << "Invalid height.\n";
-                return;
+                throw CLIError("Invalid height.");
             }
 
             newGameId = newGame(width, height);
         } else {
-            cerr << "Invalid amount of parameters.\n";
-            cerr << "Use '" << command << "' or '" << command << " <width> <height>'.\n";
-            return;
+            throw CLIError("Usage: '" + command + "' or '" + command + " <width> <height>'.");
         }
 
         cout << "New game id: " << newGameId << "\n";
@@ -109,30 +101,27 @@ namespace multiplayer {
 
     void CLIClient::joinGame(string const &command, vector<string> const &args)
     {
-        if (args.size() != 2) {
-            cerr << "Usage: '" << command << " <gameID> <playerName>' to join a game.\n";
-            return;
-        }
+        if (args.size() != 2)
+            throw CLIError("Usage: '" + command + " <gameID> <playerName>' to join a game.");
 
         unsigned long newGameId = 0;
 
         try {
             newGameId = stoul(args[0]);
         } catch (invalid_argument const &) {
-            cerr << "Invalid game ID.\n";
-            return;
+            throw CLIError("Invalid game ID.");
         }
 
-        if (join(newGameId, args[1]))
-            cout << "Joined game #" << newGameId << ".\n";
-        else
-            cerr << "Failed to join game.\n";
+        if (!join(newGameId, args[1]))
+            throw CLIError("Failed to join game.");
+
+        cout << "Joined game #" << newGameId << ".\n";
     }
 
     void CLIClient::logout(string const &command, vector<string> const &args)
     {
         if (!args.empty())
-            cerr << "Command '" << command << "' expects no arguments.\n";
+            throw CLIError("Command '" + command + "' expects no arguments.");
 
         logout();
     }
@@ -140,7 +129,7 @@ namespace multiplayer {
     void CLIClient::getShipTypes(string const &command, vector<string> const &args)
     {
         if (!args.empty())
-            cerr << "Command '" << command << "' expects not arguments.\n";
+            throw CLIError("Command '" + command + "' expects not arguments.");
 
         cout << "Available ship types:\n";
 
@@ -150,10 +139,8 @@ namespace multiplayer {
 
     void CLIClient::placeShip(string const &command, vector<string> const &args)
     {
-        if (args.size() < 4) {
-            cerr << "Usage: '" << command << " <type...> <x> <y> (x|y)\n";
-            return;
-        }
+        if (args.size() < 4)
+            throw CLIError("Usage: '" + command + " <type...> <x> <y> (x|y)");
 
         vector<string> typeElements(args.begin(), args.begin() + args.size() - 3);
         string type = joinStrings(typeElements, " ");
@@ -161,10 +148,8 @@ namespace multiplayer {
         string strY = args[args.size() - 2];
 
         auto anchorPoint = Coordinate::fromString(strX, strY);
-        if (!anchorPoint) {
-            cerr << "Invalid coordinates: " << strX << "x" << strY << "\n";
-            return;
-        }
+        if (!anchorPoint)
+            throw CLIError("Invalid coordinates: " + strX + "x" + strY);
 
         string orientationStr = args[args.size() - 1];
         Orientation orientation;
@@ -173,10 +158,8 @@ namespace multiplayer {
             orientation = Orientation::X;
         else if (orientationStr == "y")
             orientation = Orientation::Y;
-        else {
-            cerr << "Invalid orientation: '" << orientationStr << "'. Use 'x' or 'y'.\n";
-            return;
-        }
+        else
+            throw CLIError("Invalid orientation: '" + orientationStr + "'. Use 'x' or 'y'.");
 
         BasicShip ship(type, *anchorPoint, orientation);
 
@@ -208,8 +191,7 @@ namespace multiplayer {
         } else if (args.size() == 1 && args[0] == "own") {
             own = true;
         } else {
-            cerr << "Usage: '" << command << " (own)'.\n";
-            return;
+            throw CLIError("Usage: '" + command + " (own)'.");
         }
 
         cout << getMap(own);
@@ -217,17 +199,13 @@ namespace multiplayer {
 
     void CLIClient::makeTurn(string const &command, vector<string> const &args)
     {
-        if (args.size() != 2) {
-            cerr << "Usage: '" << command << " <x> <y>'.\n";
-            return;
-        }
+        if (args.size() != 2)
+            throw CLIError("Usage: '" + command + " <x> <y>'.");
 
         optional<Coordinate> target = Coordinate::fromString(args[0], args[1]);
 
-        if (!target) {
-            cerr << "Invalid coordinate: " << args[0] << "x" << args[1] << "\n";
-            return;
-        }
+        if (!target)
+            throw CLIError("Invalid coordinate: " + args[0] + "x" + args[1]);
 
         switch (fireAt(*target)) {
             case HitResult::HIT:
@@ -245,7 +223,7 @@ namespace multiplayer {
     void CLIClient::getStatus(string const &command, vector<string> const &args)
     {
         if (!args.empty())
-            cerr << "Command '" << command << "' does not expect any arguments.\n";
+            throw CLIError("Command '" + command + "' does not expect any arguments.");
 
         switch (getStatus()) {
             case INITIAL:
@@ -352,6 +330,8 @@ namespace multiplayer {
             handleCommand(command, args);
         } catch (ProtocolError const &error) {
             handleProtocolError(error);
+        } catch (CLIError const &error) {
+            cerr << error << "\n";
         }
     }
 
