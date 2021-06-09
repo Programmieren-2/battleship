@@ -13,6 +13,6 @@ add_executable(bssrv server.cpp)
 target_include_directories(bssrv PUBLIC ../util)
 target_link_libraries(bssrv multiplayer util ${Boost_LIBRARIES})
 
-add_executable(bsclt client.cpp MultiplayerDefaults.h)
+add_executable(bsclt client.cpp Defaults.h)
 target_include_directories(bsclt PUBLIC ../util)
 target_link_libraries(bsclt multiplayer util ${Boost_LIBRARIES})

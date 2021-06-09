@@ -13,9 +13,10 @@ using std::to_string;
 #include <vector>
 using std::vector;
 
-#include "ModelDefaults.h"
 #include "exceptions.h"
 #include "Coordinate.h"
+#include "Game.h"
+#include "Player.h"
 #include "Sea.h"
 #include "Ship.h"
 
@@ -94,7 +95,7 @@ namespace models {
     Sea readSea(unsigned short width, unsigned short height) {
         Sea sea(width, height);
 
-        for (auto const &[type, length] : models::Defaults::SHIP_TYPES) {
+        for (auto const &[type, length] : Game<Player>::SHIP_TYPES) {
             cout << sea.toString(true);
             cout << "Place your " << type << " (size " << length << ").\n";
             readShip(sea, type, length);

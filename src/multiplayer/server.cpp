@@ -20,7 +20,7 @@ using util::parseArgDesc;
 #include "GameServer.h"
 using multiplayer::GameServer;
 
-#include "MultiplayerDefaults.h"
+#include "Defaults.h"
 
 static auto parseArgs(int argc, const char *argv[])
 {
@@ -28,11 +28,11 @@ static auto parseArgs(int argc, const char *argv[])
     desc.add_options()
             ("help,h", "Show this page")
             ("address,a", value<string>()
-                ->default_value(Defaults::ADDRESS)
+                ->default_value(multiplayer::Defaults::ADDRESS)
                 ->value_name("ip_address"),
                     "IP address to listen on")
             ("port,p", value<unsigned short>()
-                ->default_value(Defaults::PORT)
+                ->default_value(multiplayer::Defaults::PORT)
                 ->value_name("portnum"),
                     "Port to listen on");
     return parseArgDesc(argc, argv, desc);

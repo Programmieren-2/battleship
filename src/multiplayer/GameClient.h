@@ -54,6 +54,7 @@ namespace multiplayer {
 
         std::vector<ListedGame> listGames() const;
         unsigned long newGame(unsigned short width, unsigned short height);
+        unsigned long newGame();
         bool join(unsigned long gameId, std::string const &name);
         bool logout();
         models::ShipTypes getShipTypes() const;

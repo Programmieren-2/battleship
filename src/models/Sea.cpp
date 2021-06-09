@@ -28,7 +28,6 @@ using std::move;
 using std::vector;
 
 #include "exceptions.h"
-#include "ModelDefaults.h"
 #include "Sea.h"
 #include "Ship.h"
 

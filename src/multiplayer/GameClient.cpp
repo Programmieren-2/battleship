@@ -17,6 +17,9 @@ using models::BasicShip;
 #include "Coordinate.h"
 using models::Coordinate;
 
+#include "Game.h"
+using models::Game;
+
 #include "HitResult.h"
 using models::HitResult;
 
@@ -27,6 +30,7 @@ using models::ShipTypes;
 using tcp::Client;
 
 #include "Messages.h"
+#include "OnlinePlayer.h"
 #include "ProtocolError.h"
 
 #include "GameClient.h"
@@ -83,6 +87,11 @@ namespace multiplayer {
         NewGameRequest request(static_cast<uint8_t>(width), static_cast<uint8_t>(height));
         auto response = exchangeMessage<NewGameRequest, NewGameResponse>(request);
         return response.gameId;
+    }
+
+    unsigned long GameClient::newGame()
+    {
+        return newGame(Game<OnlinePlayer>::WIDTH, Game<OnlinePlayer>::HEIGHT);
     }
 
     bool GameClient::join(unsigned long newGameId, string const &playerName)

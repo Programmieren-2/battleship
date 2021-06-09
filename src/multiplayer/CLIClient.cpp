@@ -31,10 +31,6 @@ using models::BasicShip;
 using models::Coordinate;
 using models::Orientation;
 
-#include "ModelDefaults.h"
-using models::Defaults::WIDTH;
-using models::Defaults::HEIGHT;
-
 #include "HitResult.h"
 using models::HitResult;
 
@@ -82,10 +78,10 @@ namespace multiplayer {
     void CLIClient::newGame(string const &command, vector<string> const &args)
     {
         unsigned short width, height;
+        unsigned long newGameId;
 
         if (args.empty()) {
-            width = WIDTH;
-            height = HEIGHT;
+            newGameId = newGame();
         } else if (args.size() == 2) {
             try {
                 width = static_cast<unsigned short>(stoul(args[0]));
@@ -100,13 +96,14 @@ namespace multiplayer {
                 cerr << "Invalid height.\n";
                 return;
             }
+
+            newGameId = newGame(width, height);
         } else {
             cerr << "Invalid amount of parameters.\n";
             cerr << "Use '" << command << "' or '" << command << " <width> <height>'.\n";
             return;
         }
 
-        unsigned long newGameId = newGame(width, height);
         cout << "New game id: " << newGameId << "\n";
     }
 

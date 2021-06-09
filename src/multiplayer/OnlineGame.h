@@ -17,6 +17,7 @@
 namespace multiplayer {
     class OnlineGame : public models::Game<OnlinePlayer> {
     private:
+        using models::Game<OnlinePlayer>::SHIP_TYPES;
         using models::Game<OnlinePlayer>::getShipTypes;
         using models::Game<OnlinePlayer>::getPlayers;
         using models::Game<OnlinePlayer>::addPlayer;

@@ -14,7 +14,6 @@
 
 #include <boost/config.hpp>
 
-#include "ModelDefaults.h"
 #include "Ship.h"
 #include "ShipTypes.h"
 
@@ -26,11 +25,11 @@ namespace models {
         unsigned short height;
         ShipTypes shipTypes;
         mutable std::array<std::optional<PlayerType>, 2> players;
-
+    public:
         static unsigned short const WIDTH = 10;
         static unsigned short const HEIGHT = 10;
         static ShipTypes const SHIP_TYPES;
-    public:
+
         Game(unsigned short width, unsigned short height, ShipTypes shipTypes)
             : width(width), height(height), shipTypes(std::move(shipTypes))
         {}
@@ -125,7 +124,7 @@ namespace models {
     };
 
     template <typename PlayerType>
-    Game<PlayerType>::SHIP_TYPES = {
+    ShipTypes const Game<PlayerType>::SHIP_TYPES = {
         {"Speed boat", static_cast<unsigned short>(2)},
         {"Destroyer", static_cast<unsigned short>(3)},
         {"Submarine", static_cast<unsigned short>(3)},
