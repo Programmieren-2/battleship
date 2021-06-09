@@ -106,6 +106,11 @@ namespace util {
         return result;
     }
 
+    string joinStrings(vector<string> const &strings)
+    {
+        return joinStrings(strings, " ");
+    }
+
     string readWithPrompt(string const &prompt)
     {
         string result;

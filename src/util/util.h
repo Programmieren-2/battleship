@@ -14,6 +14,7 @@ namespace util {
     std::vector<std::string> splitString(std::string const &str, std::string const &delimiter);
     std::vector<std::string> splitString(std::string const &str);
     std::string joinStrings(std::vector<std::string> const &strings, std::string const &delimiter);
+    std::string joinStrings(std::vector<std::string> const &strings);
     std::string readWithPrompt(std::string const &prompt);
     std::vector<std::string> readCommandLine(std::string const &prompt);
     bool isExitCommand(std::string const &command);
