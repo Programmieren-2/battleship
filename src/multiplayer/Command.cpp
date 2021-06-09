@@ -17,6 +17,9 @@ using std::move;
 #include <vector>
 using std::vector;
 
+#include "util.h"
+using util::joinStrings;
+
 #include "Command.h"
 
 namespace multiplayer {
@@ -38,12 +41,8 @@ namespace multiplayer {
     {
         string usage = help + "\nUsage: " + name;
 
-        if (!args.empty()) {
-            usage += " ";
-
-            for (auto const &arg : args)
-                usage += arg;
-        }
+        if (!args.empty())
+            usage += " " + joinStrings(args);
 
         return usage + "\n";
     }
