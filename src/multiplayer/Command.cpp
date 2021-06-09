@@ -74,7 +74,7 @@ namespace multiplayer {
         map<string, Command> result;
 
         for (auto const &command : commands)
-            result.at(command.getName()) = command;
+            result.insert({command.getName(), command});
 
         return result;
     }
