@@ -68,7 +68,7 @@ namespace multiplayer {
         return Command(INVALID, "", {}, "");
     }
 
-    map<string, Command> make_map(vector<Command> const &commands)
+    map<string, Command> commandsToMap(vector<Command> const &commands)
     {
         map<string, Command> result;
 

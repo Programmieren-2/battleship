@@ -12,7 +12,7 @@
 #include "ProtocolError.h"
 
 namespace multiplayer {
-    auto const COMMANDS = make_map({
+    auto const COMMANDS = commandsToMap({
         {CommandCode::HELP, "help", {"[<command>]"}, "Show help page."},
         {CommandCode::LIST_GAMES, "list", {}, "List available games."},
         {CommandCode::NEW_GAME, "new", {"[<width> <height>]"}, "Create a new game."},
