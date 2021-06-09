@@ -55,11 +55,15 @@ namespace multiplayer {
             return;
         }
 
-        if (args.size() == 1)
-            throw CLIError("Help on specific commands is not yet implemented. Sorry.");
+        if (args.size() == 1) {
+            try {
+                cout << COMMANDS.at(args[0]);
+            } catch (out_of_range const &) {
+                cerr << "No such command: " << args[0] << "\n";
+            }
+        }
 
-        cerr << "Use '" << command << "' to get general help.\n";
-        cerr << "Use '" << command << " <command>' to get help on a specific command.\n";
+        throw CLIError(command);
     }
 
     void CLIClient::listGames(Command const &command, vector<string> const &args)
