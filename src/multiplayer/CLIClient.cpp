@@ -61,6 +61,8 @@ namespace multiplayer {
             } catch (out_of_range const &) {
                 cerr << "No such command: " << args[0] << "\n";
             }
+
+            return;
         }
 
         throw CLIError(command);
