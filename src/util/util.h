@@ -5,6 +5,7 @@
 #pragma once
 
 #include <algorithm>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -23,8 +24,8 @@ namespace util {
     std::optional<boost::program_options::variables_map>
         parseArgDesc(int argc, char const *argv[], boost::program_options::options_description const &desc);
 
-    template <typename ElementType>
-    bool contains(std::vector<ElementType> const &haystack, ElementType const &needle);
+    template <template<typename, typename> class Container, typename ElementType>
+    bool contains(Container<ElementType, std::allocator<ElementType>> const &haystack, ElementType const &needle);
 
 #include "util.inl"
 }

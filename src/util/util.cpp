@@ -126,7 +126,7 @@ namespace util {
 
     bool isExitCommand(string const &command)
     {
-        return contains({"exit", "quit"}, command);
+        return contains<vector, string>({"exit", "quit"}, command);
     }
 
     bool isNumber(string const &str)
