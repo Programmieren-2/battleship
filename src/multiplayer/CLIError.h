@@ -10,7 +10,7 @@
 #include "Command.h"
 
 namespace multiplayer {
-    class CLIError : std::exception {
+    class CLIError : public std::exception {
     private:
         std::string message;
     public:
