@@ -27,21 +27,10 @@ namespace multiplayer {
         bool won;
 
         template <typename RequestType>
-        std::string sendMessage(RequestType const &request) const
-        {
-            std::string buf = communicate(serialize(request));
-            auto header = deserialize<ResponseHeader>(buf);
-            if (header.type == ResponseType::INVALID_REQUEST)
-                throw ProtocolError(deserialize<InvalidRequest>(buf).error);
-
-            return buf;
-        }
+        std::string sendMessage(RequestType const &request) const;
 
         template <typename RequestType, typename ResponseType>
-        ResponseType exchangeMessage(RequestType const &request) const
-        {
-            return deserialize<ResponseType>(sendMessage(request));
-        }
+        ResponseType exchangeMessage(RequestType const &request) const;
     public:
         GameClient(boost::asio::ip::address const &ipAddress, unsigned short port);
 
@@ -64,4 +53,6 @@ namespace multiplayer {
         [[nodiscard]] bool isLoggedIn() const;
         void teardown();
     };
+
+#include "GameClient.inl"
 }

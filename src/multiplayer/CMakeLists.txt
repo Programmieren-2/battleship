@@ -1,11 +1,15 @@
 add_library(multiplayer
-        ../multiplayer/CLIClient.cpp ../multiplayer/CLIClient.h
-        ../multiplayer/GameClient.cpp ../multiplayer/GameClient.h
-        ../multiplayer/GameServer.cpp ../multiplayer/GameServer.h
-        ../multiplayer/Messages.h
-        ../multiplayer/OnlineGame.cpp ../multiplayer/OnlineGame.h
-        ../multiplayer/OnlinePlayer.cpp ../multiplayer/OnlinePlayer.h
-        ../multiplayer/ProtocolError.cpp ../multiplayer/ProtocolError.h CLIError.cpp CLIError.h Messages.cpp Messages.inl "Command.cpp" "Command.h")
+        CLIClient.cpp CLIClient.h
+        CLIError.cpp CLIError.h
+        Command.cpp Command.h
+        Defaults.h
+        GameClient.cpp GameClient.h GameClient.inl
+        GameServer.cpp GameServer.h
+        Messages.cpp Messages.h Messages.inl
+        OnlineGame.cpp OnlineGame.h
+        OnlinePlayer.cpp OnlinePlayer.h
+        ProtocolError.cpp ProtocolError.h
+)
 target_include_directories(multiplayer PUBLIC ../models ../tcp ../os ../util)
 target_link_libraries(multiplayer tcp models util)
 
