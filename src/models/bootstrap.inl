@@ -3,7 +3,7 @@
 //
 
 template <typename PlayerType>
-PlayerType models::readPlayer(unsigned short width, unsigned short height)
+PlayerType readPlayer(unsigned short width, unsigned short height)
 {
     static unsigned short playerNum = 0;
     playerNum++;
@@ -14,7 +14,7 @@ PlayerType models::readPlayer(unsigned short width, unsigned short height)
 }
 
 template <typename PlayerType>
-Game<PlayerType> models::readGame()
+Game<PlayerType> readGame()
 {
     Game<PlayerType> game;
     unsigned short width = game.getWidth();

@@ -3,7 +3,7 @@
 //
 
 template <typename RequestType>
-std::string models::GameClient::sendMessage(RequestType const &request) const
+std::string GameClient::sendMessage(RequestType const &request) const
 {
     std::string buf = communicate(serialize(request));
     auto header = deserialize<ResponseHeader>(buf);
@@ -14,7 +14,7 @@ std::string models::GameClient::sendMessage(RequestType const &request) const
 }
 
 template <typename RequestType, typename ResponseType>
-ResponseType models::GameClient::exchangeMessage(RequestType const &request) const
+ResponseType GameClient::exchangeMessage(RequestType const &request) const
 {
     return deserialize<ResponseType>(sendMessage(request));
 }
