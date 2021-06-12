@@ -6,8 +6,7 @@ template <typename PlayerType>
 PlayerType readPlayer(unsigned short width, unsigned short height)
 {
     static unsigned short playerNum = 0;
-    playerNum++;
-    string name = util::readWithPrompt("Enter name of player #" + std::to_string(playerNum) + ": ");
+    string name = util::readWithPrompt("Enter name of player #" + std::to_string(++playerNum) + ": ");
     Sea sea = readSea(width, height);
     cout << sea.toString(true);
     return PlayerType(name, sea);
