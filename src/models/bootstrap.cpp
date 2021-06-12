@@ -29,22 +29,13 @@ using util::splitString;
 
 namespace models {
     Coordinate readCoordinate(string const &prompt) {
-        string input;
-        vector<string> items;
-        string strX, strY;
-        unsigned short x, y;
-
         while (true) {
-            input = readWithPrompt(prompt);
-            items = splitString(input, ",");
+            auto items = splitString(readWithPrompt(prompt), ",");
 
             if (items.size() == 2) {
-                strX = items[0];
-                strY = items[1];
-
-                if (isNumber(strX) && isNumber(strY)) {
-                    x = static_cast<unsigned short>(stoul(strX));
-                    y = static_cast<unsigned short>(stoul(strY));
+                if (isNumber(items[0]) && isNumber(items[1])) {
+                    auto x = static_cast<unsigned short>(stoul(items[0]));
+                    auto y = static_cast<unsigned short>(stoul(items[1]));
                     return Coordinate(x, y);
                 }
             }
@@ -80,10 +71,7 @@ namespace models {
     }
 
     static void readShip(Sea &sea, string const &type, unsigned short length) {
-        Coordinate anchorPoint = readCoordinate();
-        Orientation orientation = readOrientation();
-
-        Ship ship(type, anchorPoint, length, orientation);
+        Ship ship(type, readCoordinate(), length, readOrientation());
 
         try {
             sea.placeShip(ship);
