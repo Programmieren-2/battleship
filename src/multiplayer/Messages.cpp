@@ -11,6 +11,12 @@ using std::string;
 #include <vector>
 using std::vector;
 
+#include "util.h"
+using util::copyString;
+
+#include "ShipTypes.h"
+using models::ShipTypes;
+
 #include "Messages.h"
 
 namespace multiplayer {
@@ -78,7 +84,7 @@ namespace multiplayer {
         : Request(LOGIN_REQUEST, gameId, 0), playerName("")
     {
         if (!name.empty())
-            util::copyString(playerName, name, sizeof playerName);
+            copyString(playerName, name, sizeof playerName);
     }
 
     LoginRequest::LoginRequest()
@@ -129,7 +135,7 @@ namespace multiplayer {
         : name(""), size(size)
     {
         if (!type.empty())
-            util::copyString(name, type, sizeof name);
+            copyString(name, type, sizeof name);
     }
 
     ShipType::ShipType()
@@ -157,7 +163,7 @@ namespace multiplayer {
         : Request(SHIP_PLACEMENT_REQUEST, gameId, playerId), type(""), x(x), y(y), orientation(orientation)
     {
         if (!typeName.empty())
-            util::copyString(type, typeName, sizeof type);
+            copyString(type, typeName, sizeof type);
     }
 
     ShipPlacementRequest::ShipPlacementRequest(uint32_t gameId, uint32_t playerId, string const &typeName,
@@ -286,7 +292,7 @@ namespace multiplayer {
     models::ShipTypes deserialize(string const &buf)
     {
         auto response = deserialize<ShipTypesResponse>(buf);
-        models::ShipTypes shipTypes;
+        ShipTypes shipTypes;
 
         for (unsigned short i = 0; i < response.ships; ++i) {
             auto offset = sizeof response + sizeof(ShipType) * i;
