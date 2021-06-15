@@ -17,7 +17,7 @@ namespace models {
     public:
         Matrix(size_t width, size_t height, ElementType const &initializer)
         {
-            if (!width || ! height)
+            if (!width || !height)
                 throw std::invalid_argument("Matrix size must be > 0.");
 
             for (size_t y = 0; y < height; ++y)
