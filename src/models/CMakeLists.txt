@@ -6,7 +6,7 @@ add_library(models
         Game.h Game.inl
         HitPoint.cpp HitPoint.h
         HitResult.h
-        Matrix.h
+        Matrix.h Matrix.inl
         Orientation.h
         Player.cpp Player.h
         Sea.cpp Sea.h
