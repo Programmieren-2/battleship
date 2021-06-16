@@ -1,4 +1,5 @@
 .idea/
+CMakeFiles/
 build/
 cmake-build-debug/
 src/base64/
