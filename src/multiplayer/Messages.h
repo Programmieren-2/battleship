@@ -14,7 +14,6 @@
 
 #include "BasicShip.h"
 #include "Coordinate.h"
-#include "Defaults.h"
 #include "Sea.h"
 #include "ShipTypes.h"
 

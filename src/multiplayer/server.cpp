@@ -20,19 +20,17 @@ using util::parseArgDesc;
 #include "GameServer.h"
 using multiplayer::GameServer;
 
-#include "Defaults.h"
-
 static auto parseArgs(int argc, const char *argv[])
 {
     options_description desc("CommandCode line options");
     desc.add_options()
             ("help,h", "Show this page")
             ("address,a", value<string>()
-                ->default_value(multiplayer::Defaults::ADDRESS)
+                ->default_value("127.0.0.1")
                 ->value_name("ip_address"),
                     "IP address to listen on")
             ("port,p", value<unsigned short>()
-                ->default_value(multiplayer::Defaults::PORT)
+                ->default_value(9000)
                 ->value_name("portnum"),
                     "Port to listen on");
     return parseArgDesc(argc, argv, desc);
