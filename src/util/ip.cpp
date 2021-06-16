@@ -71,7 +71,9 @@ namespace ip {
 
     vector<address> getAddresses(string const &hostname, int family, int socketType)
     {
-        struct addrinfo req = {.ai_family = family, .ai_socktype = socketType};
+        struct addrinfo req;
+        req.ai_family = family;
+        req.ai_socktype = socketType;
         struct addrinfo *pai;
         int error = getaddrinfo(hostname.c_str(), nullptr, &req, &pai);
         if (error)
