@@ -108,9 +108,7 @@ namespace models {
 
     bool Ship::isDestroyed() const
     {
-        return all_of(hitPoints, [] (HitPoint const &hitPoint) {
-            return hitPoint.isHit();
-        });
+        return all_of(hitPoints, [] (HitPoint const &hitPoint) { return hitPoint.isHit(); });
     }
 
     HitResult Ship::fireAt(const Coordinate &coordinate)
