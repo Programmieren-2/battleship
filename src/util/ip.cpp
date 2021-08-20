@@ -2,6 +2,9 @@
 // Created by rne on 20.05.21.
 //
 
+#include <array>
+using std::array;
+
 #include <stdexcept>
 using std::domain_error;
 using std::invalid_argument;
@@ -34,7 +37,7 @@ namespace ip {
 
     static address_v6 toIPv6(struct sockaddr_in6* socketAddressIPv6)
     {
-        auto &bytes = reinterpret_cast<std::array<unsigned char, 16>&>(socketAddressIPv6->sin6_addr.s6_addr);
+        auto &bytes = reinterpret_cast<array<unsigned char, 16>&>(socketAddressIPv6->sin6_addr.s6_addr);
         return address_v6(bytes, socketAddressIPv6->sin6_scope_id);
     }
 
