@@ -10,7 +10,7 @@
 namespace models {
     class PlaceShipError : public std::exception {
     public:
-        char const *what() const noexcept override = 0;
+        [[nodiscard]] char const *what() const noexcept override = 0;
     };
 
     class OutsideSeaBounds : public PlaceShipError {
@@ -19,11 +19,11 @@ namespace models {
     public:
         OutsideSeaBounds(unsigned short width, unsigned short height);
 
-        char const *what() const noexcept override;
+        [[nodiscard]] char const *what() const noexcept override;
     };
 
     class Collision : public PlaceShipError {
     public:
-        char const *what() const noexcept override;
+        [[nodiscard]] char const *what() const noexcept override;
     };
 }
