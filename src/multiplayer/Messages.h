@@ -61,7 +61,7 @@ namespace multiplayer {
         OUTSIDE_SEA_BOUNDS,
         COLLISION,
         ALREADY_PLACED,
-        INVALID_SHIP_TYPE
+        INVALID_SHIP_TYPE,
     };
 
     enum ErrorType : unsigned char {
