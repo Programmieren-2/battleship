@@ -28,11 +28,6 @@ namespace multiplayer {
         return keepalive;
     }
 
-    unsigned long OnlinePlayer::getId()
-    {
-        return id;
-    }
-
     void OnlinePlayer::updateTimestamp()
     {
         keepalive = system_clock::now();

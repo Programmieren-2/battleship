@@ -21,7 +21,6 @@ namespace multiplayer {
         [[nodiscard]] unsigned long getId() const;
         [[nodiscard]] Timestamp getKeepalive() const;
 
-        unsigned long getId();
         void updateTimestamp();
 
         bool operator==(OnlinePlayer const &other) const;
