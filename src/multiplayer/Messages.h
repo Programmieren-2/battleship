@@ -115,7 +115,7 @@ namespace multiplayer {
     struct ListGamesResponse : Response {
         uint32_t games;
 
-        ListGamesResponse(uint32_t games);
+        explicit ListGamesResponse(uint32_t games);
         ListGamesResponse();
     };
 
