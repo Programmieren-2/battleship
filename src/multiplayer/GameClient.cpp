@@ -150,7 +150,7 @@ namespace multiplayer {
         return response.state;
     }
 
-    models::HitResult GameClient::fireAt(const Coordinate &target)
+    HitResult GameClient::fireAt(const Coordinate &target)
     {
         if (gameOver)
             throw ProtocolError(GAME_OVER);
