@@ -33,8 +33,8 @@ namespace multiplayer {
         keepalive = system_clock::now();
     }
 
-    bool OnlinePlayer::operator==(const OnlinePlayer &other) const
+    bool OnlinePlayer::operator==(OnlinePlayer const &other) const
     {
-        return other.getId() == id;
+        return id == other.id;
     }
 }
