@@ -6,6 +6,9 @@
 using std::ranges::all_of;
 using std::ranges::any_of;
 
+#include <iostream>
+using std::cout;
+
 #include <optional>
 using std::optional;
 
@@ -37,30 +40,41 @@ namespace models {
         return length;
     }
 
-    unsigned short Ship::getHitPointIndex(Coordinate const &coordinate) const
+    unsigned short Ship::getHitPointIndexX(Coordinate const &coordinate) const
     {
         Coordinate const &startingPoint = getAnchorPoint();
-        int offset;
 
+        if (coordinate.second != startingPoint.second)
+            throw out_of_range("Y-coordinates do not match.");
+
+        int offset = coordinate.first - startingPoint.first;
+        if (offset < 0 || offset >= length)
+            throw out_of_range("X-coordinate does not match.");
+
+        return static_cast<unsigned short>(offset);
+    }
+
+    unsigned short Ship::getHitPointIndexY(Coordinate const &coordinate) const
+    {
+        Coordinate const &startingPoint = getAnchorPoint();
+
+        if (coordinate.first != startingPoint.first)
+            throw out_of_range("X-coordinates do not match.");
+
+        int offset = coordinate.second - startingPoint.second;
+        if (offset < 0 || offset >= length)
+            throw out_of_range("Y-coordinate does not match.");
+
+        return static_cast<unsigned short>(offset);
+    }
+
+    unsigned short Ship::getHitPointIndex(Coordinate const &coordinate) const
+    {
         switch (getOrientation()) {
             case X:
-                if (coordinate.first != startingPoint.first)
-                    throw out_of_range("X-coordinates do not match.");
-
-                offset = coordinate.second - startingPoint.second;
-                if (offset < 0 || offset >= length)
-                    throw out_of_range("Y-coordinate does not match.");
-
-                return static_cast<unsigned short>(offset);
+                return getHitPointIndexX(coordinate);
             case Y:
-                if (coordinate.second != startingPoint.second)
-                    throw out_of_range("Y-coordinates do not match.");
-
-                offset = coordinate.first - startingPoint.first;
-                if (offset < 0 || offset >= length)
-                    throw out_of_range("X-coordinate does not match.");
-
-                return static_cast<unsigned short>(offset);
+                return getHitPointIndexY(coordinate);
             default:
                 throw invalid_argument("Invalid orientation.");
         }

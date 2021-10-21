@@ -61,6 +61,8 @@ namespace engine {
             case HitResult::INVALID_COORDINATE:
                 cout << "Invalid coordinate!\n";
                 return false;
+            default:
+                return false;
         }
     }
 

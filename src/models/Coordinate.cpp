@@ -5,6 +5,9 @@
 #include <optional>
 using std::optional;
 
+#include <ostream>
+using std::ostream;
+
 #include <stdexcept>
 using std::invalid_argument;
 
@@ -57,5 +60,11 @@ namespace models {
         }
 
         return Coordinate(x, y);
+    }
+
+    ostream& operator<<(ostream &out, Coordinate const &coordinate)
+    {
+        out << coordinate.first << "x" << coordinate.second;
+        return out;
     }
 }

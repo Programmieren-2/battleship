@@ -17,6 +17,8 @@ namespace models {
         unsigned short length;
         std::vector<HitPoint> hitPoints;
 
+        [[nodiscard]] unsigned short getHitPointIndexX(Coordinate const &coordinate) const;
+        [[nodiscard]] unsigned short getHitPointIndexY(Coordinate const &coordinate) const;
         [[nodiscard]] unsigned short getHitPointIndex(Coordinate const &coordinate) const;
         [[nodiscard]] HitPoint const & getHitPointAt(Coordinate const &coordinate) const;
         HitPoint& getHitPointAt(Coordinate const &coordinate);

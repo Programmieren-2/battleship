@@ -5,6 +5,7 @@
 #pragma once
 
 #include <optional>
+#include <ostream>
 #include <string>
 #include <utility>
 
@@ -19,5 +20,6 @@ namespace models {
         [[nodiscard]] bool insideBounds(unsigned short x, unsigned short y) const;
 
         static std::optional<Coordinate> fromString(std::string const &strX, std::string const &strY);
+        friend std::ostream& operator<<(std::ostream &out, Coordinate const &coordinate);
     };
 }
