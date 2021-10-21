@@ -46,18 +46,21 @@ namespace engine {
         return false;
     }
 
-    static void takeShot(Sea &sea, Coordinate const &target)
+    static bool takeShot(Sea &sea, Coordinate const &target)
     {
         switch (sea.fireAt(target)) {
             case HitResult::HIT:
                 cout << "Hit!\n";
-                break;
+                return true;
             case HitResult::MISSED:
                 cout << "Miss!\n";
-                break;
+                return true;
             case HitResult::ALREADY_HIT:
                 cout << "You already hit here!\n";
-                break;
+                return false;
+            case HitResult::INVALID_COORDINATE:
+                cout << "Invalid coordinate!\n";
+                return false;
         }
     }
 
@@ -74,7 +77,7 @@ namespace engine {
     static bool makeTurn(Player const &player, Player const &opponent)
     {
         Coordinate target = readCoordinate("Specify your target (<x>,<y>): ");
-        takeShot(opponent.getSea(), target);
+        while (!takeShot(opponent.getSea(), target));
         return !gameOver(player, opponent);
     }
 

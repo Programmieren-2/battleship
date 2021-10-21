@@ -131,7 +131,7 @@ namespace models {
         try {
             hitPoint = grid.at(coordinate);
         } catch (out_of_range const &) {
-            return MISSED;
+            return INVALID_COORDINATE;
         }
 
         switch (hitPoint.doHit()) {

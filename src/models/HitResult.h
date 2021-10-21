@@ -8,6 +8,7 @@ namespace models {
     enum HitResult : unsigned char {
         HIT,
         ALREADY_HIT,
-        MISSED
+        MISSED,
+        INVALID_COORDINATE
     };
 }
