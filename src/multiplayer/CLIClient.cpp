@@ -223,6 +223,9 @@ namespace multiplayer {
             case HitResult::ALREADY_HIT:
                 cerr << "You already hit here!\n";
                 break;
+			case HitResult::INVALID_COORDINATE:
+				cerr << "Invalid coordinate!\n";
+				break;
         }
     }
 
